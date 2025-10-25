@@ -1,0 +1,75 @@
+.reconstruction {
+  text-align: center;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #f5fdf9, #e8f9f1);
+}
+
+.reconstruction h2 {
+  color: #0a8754;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.reconstruction p {
+  color: #444;
+  margin-bottom: 40px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.gallery-item {
+  flex: 1 1 300px;
+  background: #ffffffb3;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-3px);
+}
+
+.gallery-item h3 {
+  font-weight: 600;
+  color: #0a8754;
+  margin-bottom: 10px;
+}
+
+.gallery-item img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+/* 🕌 Back to Home Button */
+.back-home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn-home {
+  display: inline-block;
+  background-color: #0a8754;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+  background-color: #00ffc3;
+  color: #0a8754;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 255, 195, 0.3);
+}

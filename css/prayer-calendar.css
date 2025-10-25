@@ -1,0 +1,112 @@
+/* 🌙 Prayer Calendar Page Styles */
+
+.prayer-calendar {
+  text-align: center;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #f5fdf9, #e8f9f1);
+  min-height: 80vh;
+}
+
+/* Page Heading */
+.prayer-calendar h2 {
+  color: #0a8754;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.prayer-calendar p {
+  color: #444;
+  margin-bottom: 40px;
+}
+
+/* 📅 Calendar List Layout */
+.calendar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.calendar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 14px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.calendar-item:hover {
+  transform: translateY(-2px);
+}
+
+.month-name {
+  font-weight: 600;
+  color: #0a8754;
+  font-size: 1.1rem;
+}
+
+/* 🟢 Active Button (once files are ready) */
+.btn-calendar {
+  background-color: #0a8754;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-calendar:hover {
+  background-color: #00ffc3;
+  color: #0a8754;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 255, 195, 0.3);
+}
+
+/* ⚪ Disabled Button (Coming Soon) */
+.btn-disabled {
+  background-color: #ccc;
+  color: #666;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 📱 Responsive for Mobile */
+@media (max-width: 600px) {
+  .calendar-item {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+/* 🕌 Back to Home Button */
+.back-home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn-home {
+  display: inline-block;
+  background-color: #0a8754;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+  background-color: #00ffc3;
+  color: #0a8754;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 255, 195, 0.3);
+}
