@@ -3,6 +3,7 @@
   width: 80px; /* Adjust this value */
   height: auto;
 }
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -28,6 +29,50 @@
   color: #333;
   font-weight: 500;
 }
+/* 🌟 Logo Fade-In */
+#masjidLogo {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(-20px); /* slide from left */
+  animation: fadeInLogo 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInLogo {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes fadeInTitle {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .masjid-title {
+    font-size: 1.2rem;
+  }
+}
+.masjid-title {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0a8754;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateX(20px);
+  animation: fadeInTitle 1s ease forwards;
+  animation-delay: 0.6s;
+}
+
 /* 💚 Donation Section */
 .donation-section {
   background: linear-gradient(135deg, #e8f9f1, #c6f6e0);
