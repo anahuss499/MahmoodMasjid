@@ -11,8 +11,7 @@
     <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon" />
     <!-- Socials links-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <!--urdu text style-->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+
 </head>
 <body>
   <nav class="navbar">
@@ -60,51 +59,55 @@
   </div>
 </section>
 
-  <!-- 🕌 Prayer Times Section -->
-  <section class="prayer-times">
+ <!-- 🕌 Prayer Times Section -->
+<section class="prayer-times">
   <div class="container">
-    <!--Live Clock and Date-->
-  <div class="live-date">
-  <span id="gregorianDate">--/--/----</span> |
-  <span id="hijriDate">--/--/----</span>
-</div>
+
+    <!-- Live Clock & Date -->
     <div class="live-clock-container">
-  <div class="live-clock" id="liveClock">--:--:--</div>
-  <div class="live-date" id="liveDate">Loading date...</div>
-  <div class="time-note">Time shown is in Pakistan Standard Time (PST)</div>
-</div>
+      <div class="live-clock" id="liveClock">--:--:--</div>
+
+      <div class="live-date">
+        <span id="gregorianDate">--/--/----</span> |
+        <span id="hijriDate">--/--/----</span>
+      </div>
+
+      <div class="time-note">
+        Time shown is in Pakistan Standard Time (PST)
+      </div>
+    </div>
+
+    <!-- Prayer Times -->
     <h2>Prayer Times</h2>
     <div class="prayer-list">
       <div class="prayer-item">
         <span class="prayer-name">Fajr</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="prayer-item Dhuhr">
+      <div class="prayer-item">
         <span class="prayer-name">Dhuhr</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="prayer-item Asr">
+      <div class="prayer-item">
         <span class="prayer-name">Asr</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="prayer-item Maghrib">
+      <div class="prayer-item">
         <span class="prayer-name">Maghrib</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="prayer-item Isha">
+      <div class="prayer-item">
         <span class="prayer-name">Isha</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="prayer-item Jummah">
+      <div class="prayer-item">
         <span class="prayer-name">Jummah</span>
         <span class="prayer-time">--:--</span>
       </div>
-      <div class="calendar-link">
-  <a href="prayer-calendar.html" class="btn btn-calendar">View Monthly Prayer Calendar</a>
-</div>
     </div>
   </div>
 </section>
+ 
 
 <!-- 📰 News Section -->
 <section class="news-section">
@@ -197,6 +200,57 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') overlay.style.display = 'none';
   });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const liveClock = document.getElementById('liveClock');
+  const gregorianEl = document.getElementById('gregorianDate');
+  const hijriEl = document.getElementById('hijriDate');
+
+  function formatTimeInPK(now) {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Karachi',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(now);
+  }
+
+  function formatGregorianInPK(now) {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Karachi',
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(now);
+  }
+
+  function formatHijriInPK(now) {
+    try {
+      return new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+        timeZone: 'Asia/Karachi',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }).format(now) + ' AH';
+    } catch {
+      return 'Hijri date unavailable';
+    }
+  }
+
+  function updateAll() {
+    const now = new Date();
+    liveClock.textContent = formatTimeInPK(now);
+    gregorianEl.textContent = formatGregorianInPK(now);
+    hijriEl.textContent = formatHijriInPK(now);
+  }
+
+  updateAll();
+  setInterval(updateAll, 1000);
+});
 </script>
 
 
