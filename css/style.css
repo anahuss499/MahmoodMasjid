@@ -28,6 +28,133 @@
   color: #333;
   font-weight: 500;
 }
+/* 💚 Donation Section */
+.donation-section {
+  background: linear-gradient(135deg, #e8f9f1, #c6f6e0);
+  text-align: center;
+  padding: 80px 20px;
+  border-bottom: 1px solid #bdf3d6;
+}
+
+.donation-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.donation-content h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0a8754;
+  margin-bottom: 15px;
+}
+
+.donation-content p {
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.btn-donate {
+  display: inline-block;
+  background: linear-gradient(90deg, #0a8754, #00ffc3);
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-donate:hover {
+  background: linear-gradient(90deg, #00bfa5, #00ffc3);
+  transform: translateY(-3px);
+}
+
+.donation-details {
+  background: #ffffffb3;
+  margin-top: 30px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.donation-details p {
+  margin: 5px 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .donation-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .btn-donate {
+    padding: 10px 25px;
+    font-size: 1rem;
+  }
+}
+/*extra effects for donation section*/
+.donation-section {
+  opacity: 0;
+  transform: translateY(-15px);
+  animation: fadeInDown 1s ease forwards;
+}
+
+@keyframes fadeInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌙 Logo Lightbox Overlay */
+.logo-overlay {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+
+/* 🕌 Enlarged Logo */
+.logo-popup {
+  width: 50%;
+  max-width: 500px;
+  min-width: 250px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  animation: zoomIn 0.4s ease;
+}
+
+/* ✨ Zoom Animation */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .logo-popup {
+    width: 70%;
+  }
+}
+
 
 
 /* 🌟 hover effect */
@@ -224,11 +351,110 @@
 }
 
 .btn-news:hover {
-  background-color: #00ffc3;
-  color: #0a8754;
+  background-color: #02110e;
+  color: #f3faf7;
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0, 255, 195, 0.3);
 }
+/* 🕌 Featured News Section */
+.news-section {
+  background: #f5fdf9;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.news-section h2 {
+  color: #0a8754;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.featured-news {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.btn-news {
+  display: inline-block;
+  background: linear-gradient(90deg, #0a8754, #00ffc3);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-news:hover {
+  background: linear-gradient(90deg, #00bfa5, #00ffc3);
+  transform: translateY(-2px);
+}
+
+/* 🗞️ Latest News Section */
+.news {
+  background: #ffffff;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.news h2 {
+  color: #0a8754;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.news-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.news-item {
+  background: #f8fdfb;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.news-item h3 {
+  color: #0a8754;
+  margin-bottom: 10px;
+}
+
+.news-item p {
+  color: #333;
+  line-height: 1.6;
+}
+
+.news-date {
+  display: block;
+  color: #777;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+/* 🌟 Fade-In Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1.2s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 
 
 /* Live Clock */
@@ -283,13 +509,21 @@
   opacity: 1.00;
 }
 
-/* 🌙 Footer Section containing all of the socials links*/
+/* 🌙 Footer Section */
 .footer {
   background: linear-gradient(135deg, #0a8754, #067a4c);
   color: #fff;
   text-align: center;
-  padding: 60px 20px 20px;
-  margin-top: 60px;
+  padding: 60px 80px 30px;
+  margin-top: 70px;
+}
+.footer {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-color: #0b6623;
+  color: white;
+  text-align: center;
+  padding: 40px 0;
 }
 
 .footer-content {
@@ -343,8 +577,9 @@
   font-size: 0.9rem;
   color: #d8f3e0;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: 15px;
+  padding-top: 10px;
 }
+
 
 
 

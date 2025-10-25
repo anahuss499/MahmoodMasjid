@@ -17,9 +17,14 @@
     <div class="container">
       <div class="logo">
         <a href="index.html">
-          <img src="images/greenlogo.png" alt="logo">
+          <img src="images/greenlogo.png" alt="logo" id="masjidLogo">
         </a> 
       </div>
+      <!-- 🕌 Logo Lightbox -->
+<div id="logoOverlay" class="logo-overlay">
+  <img src="images/greenlogo.png" alt="Mahmood Masjid Logo" class="logo-popup">
+</div>
+
 
       <div class="main-menu">
         <ul>
@@ -31,6 +36,25 @@
       </div>
     </div>
   </nav>
+  <!-- 💚 Donation Section -->
+<section class="donation-section">
+  <div class="container">
+    <div class="donation-content">
+      <h2>Support Mahmood Masjid Reconstruction</h2>
+      <p>
+        Help us rebuild Mahmood Masjid — a beautiful house of worship for our community.  
+        Every contribution counts. May Allah reward you abundantly for your generosity.
+      </p>
+      <a href="#" class="btn-donate">Donate Now</a>
+      <div class="donation-details">
+        <p><strong>Bank Name:</strong> Muslim Community Trust Bank</p>
+        <p><strong>Account Number:</strong> 123456789</p>
+        <p><strong>IBAN:</strong> PK00MCTB0000000123456789</p>
+      </div>
+    </div>
+  </div>
+</section>
+
   <!-- 🕌 Prayer Times Section -->
   <section class="prayer-times">
   <div class="container">
@@ -80,31 +104,39 @@
 <!-- 📰 News Section -->
 <section class="news-section">
   <div class="container">
-    <h2>Latest News</h2>
-    <div class="news-list">
+    <h2>Featured News</h2>
+    <div class="featured-news fade-in">
       <div class="news-item">
-        <h3>Construction Begins</h3>
-        <p>We are excited to announce that the construction of Mahmood Masjid will begin next month. Stay tuned for updates!</p>
-        <span class="news-date">Oct 24, 2025</span>
+        <h3>Masjid Reconstruction Update</h3>
+        <p>
+          Exciting news! Our masjid is being rebuilt to better serve the community.
+          Click below to view the current progress and our beautiful new design plans.
+        </p>
+        <a href="masjid-reconstruction.html" class="btn-news">Read More</a>
       </div>
-      <div class="news-item">
-        <h3>Community Fundraising</h3>
-        <p>Our fundraising campaign is underway! Join us in helping build a place of worship</p>
-        <span class="news-date">Oct 10, 2025</span>
-      </div>
-    <section class="news">
+    </div>
+  </div>
+</section>
+
+<!-- 🗞️ Latest News -->
+<section class="news">
   <div class="container">
     <h2>Latest News</h2>
     <div class="news-list">
       <div class="news-item">
-        <h3>Masjid Reconstruction Update</h3>
-        <p>Exciting news! Our masjid is being rebuilt. Click below to see the current progress and the new design.</p>
-        <a href="masjid-reconstruction.html" class="btn-news">Read More</a>
-      </div>  
+        <h3>Construction Begins</h3>
+        <p>
+          We are excited to announce that the construction of Mahmood Masjid will begin next month. 
+          Stay tuned for regular updates and progress photos!
+        </p>
+        <span class="news-date">Oct 24, 2025</span>
+      </div>
+
       <!-- Add more news items here -->
     </div>
   </div>
 </section>
+
 <!-- 🌙 Footer Section -->
 <footer class="footer">
   <div class="container footer-content">
@@ -140,5 +172,28 @@
 </footer>
 
     <script src="js/main.js"></script>
+    <!--Inlarging logo script-->
+    <script>
+  const logo = document.getElementById('masjidLogo');
+  const overlay = document.getElementById('logoOverlay');
+
+  // When logo is clicked → open overlay
+  logo.addEventListener('click', (e) => {
+    e.preventDefault(); // stop redirect to homepage
+    overlay.style.display = 'flex';
+  });
+
+  // When overlay is clicked → close
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+  });
+
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') overlay.style.display = 'none';
+  });
+</script>
+
+
 </body>
 </html>

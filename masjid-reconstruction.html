@@ -6,6 +6,7 @@
   <title>Masjid Reconstruction - Mahmood Masjid</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/masjid-reconstruction.css"> <!-- optional dedicated CSS -->
+  <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon" />
 </head>
 <body>
   <!-- Navbar (same as homepage) -->
@@ -27,41 +28,131 @@
 
   <!-- Masjid Reconstruction Section -->
   <section class="reconstruction">
-    <div class="container">
-      <h2>Masjid Reconstruction</h2>
-      <p>We are excited to share the reconstruction progress of Mahmood Masjid. Below are images of the current masjid and the new design.</p>
+    <div class="gallery">
+  <div class="gallery-item">
+    <h3>Current Masjid</h3>
+    <img src="images/mahmood1.jpg" alt="Current Masjid" class="lightbox-img">
+    <img src="images/mahmood3.jpg" alt="Current Masjid" class="lightbox-img">
+    
+  </div>
 
-      <div class="gallery">
-        <div class="gallery-item">
-          <h3>Current Masjid</h3>
-          <img src="images/mahmood1.jpg" alt="Current Masjid">
-          <img src="images/mahmood3.jpg" alt="Current Masjid">
-        </div>
-        <div class="gallery-item">
-          <h3>New Design</h3>
-          <img src="images/new-design.jpg" alt="New Masjid Design">
-        </div>
-        <!-- Add more images as needed -->
-      </div>
+  <div class="gallery-item">
+    <h3>New Design</h3>
+    <img src="images/new-design.jpg" alt="New Masjid Design" class="lightbox-img">
+  </div>
+</div>
 
-      <div class="back-home">
-        <a href="index.html" class="btn-home">← Back to Home</a>
-      </div>
+<!-- Lightbox container -->
+<div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <img class="lightbox-content" id="lightboxImage">
+  <a class="prev">&#10094;</a>
+  <a class="next">&#10095;</a>
+  <div id="caption"></div>
+</div>
+
+<!--Home Button-->
+<div class="back-home">
+  <a href="index.html" class="btn-home">← Back to Home</a>
+</div>
     </div>
+
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <p>&copy; 2025 Mahmood Masjid | All Rights Reserved</p>
+  <div class="container footer-content">
+    <div class="footer-logo">
+      <img src="images/greenlogo.png" alt="Mahmood Masjid Logo">
+      <h3>Mahmood Masjid</h3>
+      <p>Building our community, together in faith.</p>
+    </div>
+
+    <div class="footer-socials">
+      <h4>Follow Us</h4>
       <div class="social-links">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+        <!-- socials links -->
+        <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@mahmoodmasjid?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="fa-tiktok">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://youtube.com/@mahmoodmasjid?si=ljr25FbEgr3hByjP" target="_blank" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
       </div>
     </div>
-  </footer>
+  </div>
 
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <!--lightbox javascript-->
+  <script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImage");
+  const captionText = document.getElementById("caption");
+  const closeBtn = document.querySelector(".close");
+  const nextBtn = document.querySelector(".next");
+  const prevBtn = document.querySelector(".prev");
+
+  const images = document.querySelectorAll(".lightbox-img");
+  let currentIndex = 0;
+
+  // Open Lightbox
+  images.forEach((img, index) => {
+    img.addEventListener("click", () => {
+      currentIndex = index;
+      showImage();
+      lightbox.style.display = "block";
+    });
+  });
+
+  // Show selected image
+  function showImage() {
+    lightboxImg.src = images[currentIndex].src;
+    captionText.textContent = images[currentIndex].alt;
+  }
+
+  // Close Lightbox
+  closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+
+  // Next Image
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage();
+  });
+
+  // Previous Image
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage();
+  });
+
+  // Close when clicking outside the image
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = "none";
+    }
+  });
+
+  // Keyboard navigation support
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.style.display === "block") {
+      if (e.key === "ArrowRight") nextBtn.click();
+      if (e.key === "ArrowLeft") prevBtn.click();
+      if (e.key === "Escape") lightbox.style.display = "none";
+    }
+  });
+</script>
+
+
 </body>
 </html>
