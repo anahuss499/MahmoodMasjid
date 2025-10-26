@@ -1,3 +1,67 @@
+/* Navbar adjustments for mobile */
+@media (max-width: 768px) {
+  .navbar .main-menu ul {
+    flex-direction: column;  /* stack links vertically */
+    align-items: center;     /* center the items */
+    gap: 15px;               /* space between items */
+  }
+
+  .navbar .main-menu ul li {
+    width: 100%;             /* make each item full width */
+    text-align: center;
+  }
+
+  .navbar .main-menu ul li a {
+    display: block;
+    padding: 10px 0;
+  }
+
+  .navbar {
+    padding: 10px 15px;
+  }
+}
+/* Hide hamburger on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #0a8754;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Mobile menu */
+@media (max-width: 768px) {
+  .main-menu ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    background-color: #f5fdf9;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .main-menu ul.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+
+
 .reconstruction {
   text-align: center;
   padding: 100px 20px;

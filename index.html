@@ -1,310 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahmood Masjid</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon" />
-    <!-- Socials links-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <!-- ARabic fonts for quran-->
-    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
- 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahmood Masjid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon">
 </head>
 <body>
+
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="container">
       <div class="logo">
         <a href="index.html">
-          <img src="images/greenlogo.png" alt="logo" id="masjidLogo"></a>   
+          <img src="images/greenlogo.png" alt="logo" id="masjidLogo">
+        </a>
       </div>
-   <!--Masjid Qur'an Ayats--> 
-  <section class="daily-verse-banner">
-  <div class="container verse-container">
-    <p class="verse-arabic" id="dailyVerseArabic">Loading...</p>
-    <p class="verse-translation" id="dailyVerseEnglish">Loading verse...</p>
-    <span id="verseReference"></span>
-  </div>
-</section>
-
-
-
-      <!-- 🕌 Logo Lightbox -->
-<div id="logoOverlay" class="logo-overlay">
-  <img src="images/greenlogo.png" alt="Mahmood Masjid Logo" class="logo-popup">
-</div>
-
-
       <div class="main-menu">
-        <ul>
+        <ul id="menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="#">About Us</a></li>
           <li><a href="contact.html">Contact Us</a></li>
-          <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In </a></li>
+          <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In</a></li>
         </ul>
       </div>
     </div>
   </nav>
-  <!-- 💚 Donation Section -->
-<section class="donation-section">
-  <div class="container">
-    <div class="donation-content">
-      <h2>Support Mahmood Masjid Reconstruction</h2>
-      <p>
-        Help us rebuild Mahmood Masjid — a beautiful house of worship for our community.  
-        Every contribution counts. May Allah reward you abundantly for your generosity.
-      </p>
-      <a href="#" class="btn-donate">Donate Now</a>
-      <div class="donation-details">
-        <p><strong>Bank Name:</strong> MCB</p>
-        <!--<p><strong>Account Number:</strong> </p> -->
-        <p><strong>IBAN:</strong> PK80MUCB1442254841013167</p>
-      </div>
-    </div>
-  </div>
-</section>
 
- <!-- 🕌 Prayer Times Section -->
-<section class="prayer-times">
-  <div class="container">
 
-    <!-- Live Clock & Date -->
-    <div class="live-clock-container">
-      <div class="live-clock" id="liveClock">--:--:--</div>
-
-      <div class="live-date">
-        <span id="gregorianDate">--/--/----</span> |
-        <span id="hijriDate">--/--/----</span>
-      </div>
-
-      <div class="time-note">
-        Time shown is in Pakistan Standard Time (PST)
-      </div>
-    </div>
-
-    <!-- Prayer Times -->
-    <h2>Prayer Times</h2>
-    <div class="prayer-list">
-      <div class="prayer-item">
-        <span class="prayer-name">Fajr</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-      <div class="prayer-item">
-        <span class="prayer-name">Dhuhr</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-      <div class="prayer-item">
-        <span class="prayer-name">Asr</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-      <div class="prayer-item">
-        <span class="prayer-name">Maghrib</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-      <div class="prayer-item">
-        <span class="prayer-name">Isha</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-      <div class="prayer-item">
-        <span class="prayer-name">Jummah</span>
-        <span class="prayer-time">--:--</span>
-      </div>
-    </div>
-  </div>
-</section>
- 
-
-<!-- 📰 News Section -->
-<section class="news-section">
-  <div class="container">
-    <h2>Featured News</h2>
-    <div class="featured-news fade-in">
-      <div class="news-item">
-        <h3>Masjid Reconstruction Update</h3>
+  <!-- Donation Section -->
+  <section class="donation-section">
+    <div class="container">
+      <div class="donation-content">
+        <h2>Support Mahmood Masjid Reconstruction</h2>
         <p>
-          Exciting news! Our masjid is being rebuilt to better serve the community.
-          Click below to view the current progress and our beautiful new design plans.
+          Help us rebuild Mahmood Masjid — a beautiful house of worship for our community.  
+          Every contribution counts. May Allah reward you abundantly for your generosity.
         </p>
-        <a href="masjid-reconstruction.html" class="btn-news">Read More</a>
+        <a href="#" class="btn-donate">Donate Now</a>
+        <div class="donation-details">
+          <p><strong>Bank Name:</strong> MCB</p>
+          <p><strong>IBAN:</strong> PK80MUCB1442254841013167</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- 🗞️ Latest News -->
-<section class="news">
-  <div class="container">
-    <h2>Latest News</h2>
-    <div class="news-list">
-      <div class="news-item">
-        <h3>Construction Begins</h3>
-        <p>
-          We are excited to announce that the construction of Mahmood Masjid will begin next month. 
-          Stay tuned for regular updates and progress photos!
-        </p>
-        <span class="news-date">Oct 24, 2025</span>
+  <!-- Prayer Times Section -->
+  <section class="prayer-times">
+    <div class="container">
+      <!-- Live Clock & Date -->
+      <div class="live-clock-container">
+        <div class="live-clock" id="liveClock">--:--:--</div>
+        <div class="live-date">
+          <span id="gregorianDate">--/--/----</span> |
+          <span id="hijriDate">--/--/----</span>
+        </div>
+        <div class="time-note">Time shown is in Pakistan Standard Time (PST)</div>
       </div>
 
-      <!-- Add more news items here -->
-    </div>
-  </div>
-</section>
-
-<!-- 🌙 Footer Section -->
-<footer class="footer">
-  <div class="container footer-content">
-    <div class="footer-logo">
-      <img src="images/greenlogo.png" alt="Mahmood Masjid Logo">
-      <h3>Mahmood Masjid</h3>
-      <p>Building our community, together in faith.</p>
-    </div>
-
-    <div class="footer-socials">
-      <h4>Follow Us</h4>
-      <div class="social-links">
-        <!-- socials links -->
-        <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" aria-label="Facebook">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank" aria-label="Instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.tiktok.com/@mahmoodmasjid?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="fa-tiktok">
-          <i class="fab fa-tiktok"></i>
-        </a>
-        <a href="https://youtube.com/@mahmoodmasjid?si=ljr25FbEgr3hByjP" target="_blank" aria-label="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
+      <!-- Prayer Times -->
+      <h2>Prayer Times</h2>
+      <div class="prayer-list">
+        <div class="prayer-item"><span class="prayer-name">Fajr</span><span class="prayer-time">--:--</span></div>
+        <div class="prayer-item"><span class="prayer-name">Dhuhr</span><span class="prayer-time">--:--</span></div>
+        <div class="prayer-item"><span class="prayer-name">Asr</span><span class="prayer-time">--:--</span></div>
+        <div class="prayer-item"><span class="prayer-name">Maghrib</span><span class="prayer-time">--:--</span></div>
+        <div class="prayer-item"><span class="prayer-name">Isha</span><span class="prayer-time">--:--</span></div>
+        <div class="prayer-item"><span class="prayer-name">Jummah</span><span class="prayer-time">--:--</span></div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="footer-bottom">
-    <p>© 2025 Mahmood Masjid. All rights reserved.</p>
-  </div>
-</footer>
+  <!-- Featured News -->
+  <section class="news-section">
+    <div class="container">
+      <h2>Featured News</h2>
+      <div class="featured-news fade-in">
+        <div class="news-item">
+          <h3>Masjid Reconstruction Update</h3>
+          <p>Exciting news! Our masjid is being rebuilt to better serve the community. Click below to view the current progress and our beautiful new design plans.</p>
+          <a href="masjid-reconstruction.html" class="btn-news">Read More</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="js/main.js"></script>
-    <!--Inlarging logo script-->
-    <script>
-  const logo = document.getElementById('masjidLogo');
-  const overlay = document.getElementById('logoOverlay');
+  <!-- Latest News -->
+  <section class="news">
+    <div class="container">
+      <h2>Latest News</h2>
+      <div class="news-list">
+        <div class="news-item">
+          <h3>Construction Begins</h3>
+          <p>We are excited to announce that the construction of Mahmood Masjid will begin next month. Stay tuned for updates!</p>
+          <span class="news-date">Oct 24, 2025</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  // When logo is clicked → open overlay
-  logo.addEventListener('click', (e) => {
-    e.preventDefault(); // stop redirect to homepage
-    overlay.style.display = 'flex';
-  });
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-logo">
+        <img src="images/greenlogo.png" alt="Mahmood Masjid Logo">
+        <h3>Mahmood Masjid</h3>
+        <p>Building our community, together in faith.</p>
+      </div>
+      <div class="footer-socials">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://youtube.com/@mahmoodmasjid" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+    </div>
+  </footer>
 
-  // When overlay is clicked → close
-  overlay.addEventListener('click', () => {
-    overlay.style.display = 'none';
-  });
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
 
-  // Close on ESC key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') overlay.style.display = 'none';
-  });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const liveClock = document.getElementById('liveClock');
-  const gregorianEl = document.getElementById('gregorianDate');
-  const hijriEl = document.getElementById('hijriDate');
+  <!-- Live Clock & Date Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const liveClock = document.getElementById('liveClock');
+      const gregorianEl = document.getElementById('gregorianDate');
+      const hijriEl = document.getElementById('hijriDate');
 
-  function formatTimeInPK(now) {
-    return new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Asia/Karachi',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).format(now);
-  }
+      function formatTimeInPK(now) {
+        return new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Karachi',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).format(now);
+      }
 
-  function formatGregorianInPK(now) {
-    return new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Asia/Karachi',
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(now);
-  }
+      function formatGregorianInPK(now) {
+        return new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Karachi',
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }).format(now);
+      }
 
-  function formatHijriInPK(now) {
-    try {
-      return new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
-        timeZone: 'Asia/Karachi',
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      }).format(now) + ' AH';
-    } catch {
-      return 'Hijri date unavailable';
-    }
-  }
+      function formatHijriInPK(now) {
+        try {
+          return new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+            timeZone: 'Asia/Karachi',
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }).format(now) + ' AH';
+        } catch {
+          return 'Hijri date unavailable';
+        }
+      }
 
-  function updateAll() {
-    const now = new Date();
-    liveClock.textContent = formatTimeInPK(now);
-    gregorianEl.textContent = formatGregorianInPK(now);
-    hijriEl.textContent = formatHijriInPK(now);
-  }
+      function updateAll() {
+        const now = new Date();
+        liveClock.textContent = formatTimeInPK(now);
+        gregorianEl.textContent = formatGregorianInPK(now);
+        hijriEl.textContent = formatHijriInPK(now);
+      }
 
-  updateAll();
-  setInterval(updateAll, 1000);
-});
-</script>
-<!--Quranic ayats-->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const verseArabic = document.getElementById('dailyVerseArabic');
-  const verseEnglish = document.getElementById('dailyVerseEnglish');
-  const refEl = document.getElementById('verseReference');
-
-  const verses = [
-    {
-      arabic: "إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ",
-      english: "Indeed, prayer prohibits immorality and wrongdoing.",
-      ref: "Surah Al-Ankabut 29:45"
-    },
-    {
-      arabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
-      english: "And whoever puts their trust in Allah – then He will suffice him.",
-      ref: "Surah At-Talaq 65:3"
-    },
-    {
-      arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ",
-      english: "So remember Me; I will remember you.",
-      ref: "Surah Al-Baqarah 2:152"
-    },
-    {
-      arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
-      english: "Indeed, Allah is with the patient.",
-      ref: "Surah Al-Baqarah 2:153"
-    },
-    {
-      arabic: "وَوَجَدَكَ ضَالًّا فَهَدَىٰ",
-      english: "And He found you lost and guided you.",
-      ref: "Surah Ad-Duhaa 93:7"
-    }
-  ];
-
-  const today = new Date();
-  const index = today.getDate() % verses.length;
-  const verse = verses[index];
-
-  verseArabic.textContent = verse.arabic;
-  verseEnglish.textContent = verse.english;
-  refEl.textContent = verse.ref;
-});
-</script>
+      updateAll();
+      setInterval(updateAll, 1000);
+    });
+  </script>
 
 
 
