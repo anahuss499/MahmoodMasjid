@@ -25,13 +25,26 @@
       <div class="main-menu">
         <ul id="menu">
           <li><a href="index.html">Home</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="about.html">About Us</a></li>
           <li><a href="contact.html">Contact Us</a></li>
           <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In</a></li>
         </ul>
       </div>
+       <!-- Hamburger for mobile -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
     </div>
   </nav>
+  <!-- Logo Lightbox Overlay -->
+<div id="logoOverlay" class="logo-overlay">
+  <img src="images/greenlogo.png" alt="Mahmood Masjid Logo" class="logo-popup">
+</div>
+
 
 
   <!-- Donation Section -->
@@ -184,7 +197,24 @@
       setInterval(updateAll, 1000);
     });
   </script>
+<script>
+  const logo = document.getElementById('masjidLogo');
+const overlay = document.getElementById('logoOverlay');
 
+logo.addEventListener('click', (e) => {
+  e.preventDefault();
+  overlay.style.display = 'flex'; // show overlay
+});
+
+overlay.addEventListener('click', () => {
+  overlay.style.display = 'none'; // hide on click outside
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') overlay.style.display = 'none'; // hide on ESC
+});
+
+</script>
 
 
 </body>

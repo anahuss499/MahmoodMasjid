@@ -1,0 +1,314 @@
+/* about.css — About Us page styles (light / cream theme)
+   Place in css/about.css and ensure about.html links to it.
+   Uses RTL and Urdu-friendly fonts.
+*/
+/*logo and navbar*/
+.logo img {
+  width: 80px; /* Adjust this value */
+  height: auto;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.main-menu ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.main-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+/* 🌟 hover effect */
+.main-menu a {
+  position: relative;
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.main-menu a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffc3, #00bfff);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.main-menu a:hover {
+  color: #00ffc3;
+}
+
+.main-menu a:hover::after {
+  width: 60%;
+}
+/* 🌟 Logo Fade-In */
+#masjidLogo {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(-20px); /* slide from left */
+  animation: fadeInLogo 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInLogo {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes fadeInTitle {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* 🕌 Enlarged Logo */
+.logo-popup {
+  width: 50%;
+  max-width: 500px;
+  min-width: 250px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  animation: zoomIn 0.4s ease;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .masjid-title {
+    font-size: 1.2rem;
+  }
+}
+.masjid-title {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0a8754;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateX(20px);
+  animation: fadeInTitle 1s ease forwards;
+  animation-delay: 0.6s;
+}
+
+:root {
+  --green-600: #0a8754;
+  --green-400: #66c9a1;
+  --card-bg: rgba(255,255,255,0.9);
+  --muted: #6b6b6b;
+}
+
+/* Basic page reset & container */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,#f7faf7 0%, #ffffff 100%);
+  color: #222;
+  line-height: 1.6;
+  direction: rtl; /* page-level RTL */
+}
+
+/* simple container */
+.container {
+  width: calc(100% - 40px);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* NAVBAR (simple, consistent with home) */
+.navbar {
+  padding: 18px 0;
+  background: transparent;
+}
+.navbar-inner { display:flex; align-items:center; justify-content:space-between; gap: 20px; }
+.logo { display:flex; align-items:center; gap:12px; }
+.nav-logo { width:72px; height:auto; display:block; }
+.masjid-title { font-family: 'Scheherazade New', serif; color: var(--green-600); font-size:1.1rem; }
+
+/* main hero */
+.about-hero { padding: 36px 0 10px; text-align:center; }
+.about-title {
+  font-family: 'Scheherazade New', serif;
+  font-size: 2.2rem;
+  margin: 0 0 6px;
+  color: var(--green-600);
+}
+.about-sub { color: var(--muted); margin:0; font-size:0.95rem; }
+
+/* main content */
+.about-main { padding: 18px 0 60px; }
+
+/* story card base */
+.story-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 22px;
+  margin: 18px auto;
+  box-shadow: 0 6px 22px rgba(10, 135, 84, 0.06);
+  border: 1px solid rgba(10,135,84,0.06);
+}
+
+.story-content p {
+  margin: 10px 0;
+  text-align: right; /* Urdu reads right-to-left, align right for better flow */
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.05rem;
+  color: #333;
+  line-height: 1.9;
+}
+
+/* headings in story */
+.section-heading {
+  font-family: 'Scheherazade New', serif;
+  color: var(--green-600);
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+  text-align: right;
+}
+.sub-heading {
+  font-family: 'Scheherazade New', serif;
+  color: var(--green-600);
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  text-align: right;
+  font-weight: 600;
+}
+
+/* alert card for current condition */
+.story-card.alert {
+  border-left: 6px solid #ffb86b;
+  background: linear-gradient(180deg, rgba(255,235,215,0.9), var(--card-bg));
+}
+
+/* CTA card styling */
+.story-card.cta-card {
+  background: linear-gradient(180deg, #f1fff6, #ffffff);
+  text-align: center;
+}
+.cta-card .cta-actions { margin-top: 18px; display:flex; gap: 12px; justify-content:center; flex-wrap:wrap; }
+.btn-primary, .btn-outline {
+  display:inline-block; padding: 10px 18px; border-radius:8px; text-decoration:none; font-weight:600;
+}
+.btn-primary { background: linear-gradient(90deg, var(--green-600), var(--green-400)); color:#fff; }
+.btn-outline { border:2px solid var(--green-600); color:var(--green-600); background:transparent; }
+
+/* footer */
+.footer { background: #0b6623; color: #fff; padding: 28px 0 14px; margin-top: 30px; }
+.footer-inner { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
+.footer-logo { width:64px; }
+.footer-inner p { margin:0; color: #d8f3e0; }
+.socials a { color: #fff; margin-left: 10px; text-decoration:none; font-size:1.1rem; }
+
+/* responsive */
+@media (max-width: 900px) {
+  .container { width: calc(100% - 30px); }
+  .about-title { font-size: 1.9rem; }
+  .story-card { padding: 18px; margin: 14px 0; }
+  .story-content p { font-size: 1rem; line-height: 1.7; }
+  .footer-inner { flex-direction: column; align-items:center; text-align:center; gap:12px; }
+}
+
+@media (max-width: 480px) {
+  .about-title { font-size: 1.6rem; }
+  .story-content p { font-size: 0.98rem; line-height: 1.6; }
+  .nav-logo { width: 60px; }
+}
+
+/* 🌙 Footer Section */
+.footer {
+  background: linear-gradient(135deg, #0a8754, #067a4c);
+  color: #fff;
+  text-align: center;
+  padding: 60px 80px 30px;
+  margin-top: 70px;
+}
+.footer {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-color: #0b6623;
+  color: white;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.footer-logo img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.footer-logo h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.footer-logo p {
+  font-size: 1rem;
+  color: #d8f3e0;
+}
+
+.footer-socials h4 {
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #ffffffcc;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.social-links a {
+  color: #fff;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #00ffc3;
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #d8f3e0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 10px;
+}
