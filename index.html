@@ -11,17 +11,26 @@
     <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon" />
     <!-- Socials links-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
+    <!-- ARabic fonts for quran-->
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
+ 
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="logo">
         <a href="index.html">
-          <img src="images/greenlogo.png" alt="logo" id="masjidLogo">
-        
-        </a> 
+          <img src="images/greenlogo.png" alt="logo" id="masjidLogo"></a>   
       </div>
+   <!--Masjid Qur'an Ayats--> 
+  <section class="daily-verse-banner">
+  <div class="container verse-container">
+    <p class="verse-arabic" id="dailyVerseArabic">Loading...</p>
+    <p class="verse-translation" id="dailyVerseEnglish">Loading verse...</p>
+    <span id="verseReference"></span>
+  </div>
+</section>
+
 
 
       <!-- 🕌 Logo Lightbox -->
@@ -252,6 +261,51 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateAll, 1000);
 });
 </script>
+<!--Quranic ayats-->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const verseArabic = document.getElementById('dailyVerseArabic');
+  const verseEnglish = document.getElementById('dailyVerseEnglish');
+  const refEl = document.getElementById('verseReference');
+
+  const verses = [
+    {
+      arabic: "إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ",
+      english: "Indeed, prayer prohibits immorality and wrongdoing.",
+      ref: "Surah Al-Ankabut 29:45"
+    },
+    {
+      arabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
+      english: "And whoever puts their trust in Allah – then He will suffice him.",
+      ref: "Surah At-Talaq 65:3"
+    },
+    {
+      arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ",
+      english: "So remember Me; I will remember you.",
+      ref: "Surah Al-Baqarah 2:152"
+    },
+    {
+      arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+      english: "Indeed, Allah is with the patient.",
+      ref: "Surah Al-Baqarah 2:153"
+    },
+    {
+      arabic: "وَوَجَدَكَ ضَالًّا فَهَدَىٰ",
+      english: "And He found you lost and guided you.",
+      ref: "Surah Ad-Duhaa 93:7"
+    }
+  ];
+
+  const today = new Date();
+  const index = today.getDate() % verses.length;
+  const verse = verses[index];
+
+  verseArabic.textContent = verse.arabic;
+  verseEnglish.textContent = verse.english;
+  refEl.textContent = verse.ref;
+});
+</script>
+
 
 
 </body>
