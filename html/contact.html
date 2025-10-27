@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <link rel="stylesheet" href="../css/style.css">  <!-- Main shared styles -->
+   <link rel="stylesheet" href="../css/contact.css"> <!-- Contact page-specific styles --> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us - Mahmood Masjid</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Socials links-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="shortcut icon" href="../Images/greenlogo.png" type="image/x-icon" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <a href="/html/index.html">
+          <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo" id="masjidLogo"></a>
+      </div>
+      <div class="main-menu">
+        <ul>
+          <li><a href="/html/index.html">Home</a></li>
+          <li><a href="/html/about.html">About Us</a></li>
+          <li><a href="/html/contact.html" class="active">Contact Us</a></li>
+        <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In </a></li> -->
+        </ul>
+      </div>
+      <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    </div>
+  </nav>
+<!--Contact and Map sections below-->
+  <section class="contact-section">
+  <div class="container">
+    <h2>Contact Us</h2>
+    <p>If you have any questions or want to get involved, reach out to us:</p>
+    <ul>
+      <li>Email: contact.mahmoodmasjid.gmail.com</li>
+      <li>Phone: +92 300 1234567</li>
+      <li>Address: Mahmood Abad, Fatehpur, Gujrat, Pakistan</li>
+    </ul>
+
+    <div class="contact-wrapper">
+      <!-- 🌿 Contact Form -->
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <!-- 🗺️ Map -->
+      <div class="contact-map">
+        <h3>Our Location</h3>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1459.0976883364292!2d74.14974976691701!3d32.69881143305644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e1!3m2!1sen!2suk!4v1761320684727!5m2!1sen!2suk"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+    <!-- 🌙 Footer Section -->
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-logo">
+      <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo">
+      <h3>Mahmood Masjid</h3>
+      <p>Building our community, together in faith.</p>
+    </div>
+
+    <div class="footer-socials">
+      <h4>Follow Us</h4>
+      <div class="social-links">
+        <!-- socials links -->
+        <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@mahmoodmasjid?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="fa-tiktok">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://youtube.com/@mahmoodmasjid?si=ZGjz9F8QZAnysBh1" target="_blank" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.main-menu ul');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+  });
+</script>
+
+</body>
+</html>
