@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="ur" dir="rtl"></html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ہمارے بارے میں — محمود مسجد</title>
+  <title>About Us- Mahmood Masjid</title>
 
   <!-- Google fonts: try Noto Nastaliq Urdu, fallback to Scheherazade New & system -->
   <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
   <!-- (Optional: if you have Noto Nastaliq installed/hosted, add it) -->
   <link rel="stylesheet" href="css/about.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+ <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon">
 </head>
 <body>
 
   <!-- Navbar (keep same look as your site; update links if needed) -->
   <nav class="navbar">
   <div class="container">
-    <!-- Logo -->
+  <!-- Logo -->
     <div class="logo">
       <a href="index.html">
         <img src="images/greenlogo.png" alt="Mahmood Masjid Logo" id="masjidLogo">
       </a>
     </div>
-
     <!-- Main menu -->
     <div class="main-menu">
       <ul>
@@ -146,7 +146,7 @@
           </p>
 
           <div class="cta-actions">
-            <a href="prayer-calendar.html" class="btn-outline">مشاہدہ کریں</a>
+        
             <a href="contact.html" class="btn-primary">تعمیر میں حصہ لیں</a>
           </div>
         </div>
@@ -155,28 +155,33 @@
     </div>
   </main>
 
-  <!-- Footer (keeps same look as homepage) -->
+  <!-- Footer -->
   <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-left">
-        <img src="images/greenlogo.png" alt="logo" class="footer-logo">
-        <p>Mahmood Masjid — Building our community, together in faith.</p>
+    <div class="container footer-content">
+      <div class="footer-logo">
+        <img src="images/greenlogo.png" alt="Mahmood Masjid Logo">
+        <h3>Mahmood Masjid</h3>
+        <p>Building our community, together in faith.</p>
       </div>
-      <div class="footer-right">
-        <p>Follow us</p>
-        <div class="socials">
-          <a href="#" aria-label="facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="youtube"><i class="fab fa-youtube"></i></a>
+      <div class="footer-socials">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://youtube.com/@mahmoodmasjid?si=ZGjz9F8QZAnysBh1" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">© 2025 Mahmood Masjid</div>
+    <div class="footer-bottom">
+      <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+    </div>
   </footer>
 
   <!-- Optional small script: nothing required; page is static -->
+
 <script>
-const logo = document.getElementById('masjidLogo');
+  const logo = document.getElementById('masjidLogo');
 const overlay = document.getElementById('logoOverlay');
 
 logo.addEventListener('click', (e) => {
