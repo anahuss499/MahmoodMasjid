@@ -4,7 +4,7 @@
    <link rel="stylesheet" href="css/style.css">  <!-- Main shared styles -->
    <link rel="stylesheet" href="css/contact.css"> <!-- Contact page-specific styles --> 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact Us - Mahmood Masjid</title>
   <link rel="stylesheet" href="css/style.css">
   <!-- Socials links-->
@@ -15,7 +15,8 @@
   <nav class="navbar">
     <div class="container">
       <div class="logo">
-        <a href="index.html"><img src="images/greenlogo.png" alt="logo"></a>
+        <a href="index.html">
+          <img src="images/greenlogo.png" alt="Mahmood Masjid Logo" id="masjidLogo"></a>
       </div>
       <div class="main-menu">
         <ul>
@@ -25,6 +26,11 @@
         <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In </a></li> -->
         </ul>
       </div>
+      <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     </div>
   </nav>
 <!--Contact and Map sections below-->
@@ -35,7 +41,7 @@
     <ul>
       <li>Email: contact.mahmoodmasjid.gmail.com</li>
       <li>Phone: +92 300 1234567</li>
-      <li>Address: [Your Masjid Address], Pakistan</li>
+      <li>Address: Mahmood Abad, Fatehpur, Gujrat, Pakistan</li>
     </ul>
 
     <div class="contact-wrapper">
@@ -93,5 +99,15 @@
     <p>© 2025 Mahmood Masjid. All rights reserved.</p>
   </div>
 </footer>
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.main-menu ul');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+  });
+</script>
+
 </body>
 </html>

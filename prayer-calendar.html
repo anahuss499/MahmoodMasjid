@@ -126,7 +126,17 @@
     <p>© 2025 Mahmood Masjid. All rights reserved.</p>
   </div>
 </footer>
-
+<!--for all screens -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.main-menu ul');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+  });
+</script>
+
 </body>
 </html>

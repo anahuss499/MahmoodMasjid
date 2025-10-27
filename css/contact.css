@@ -1,3 +1,19 @@
+/* Prevent horizontal scroll */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+/* Remove bullets from lists in contact section */
+.contact-section ul {
+  list-style: none; /* removes bullets */
+  padding: 0;
+  margin: 0 0 40px 0; /* keeps spacing at the bottom */
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 
 /* 🌿 Contact Section Layout */
 .contact-section {
@@ -7,46 +23,39 @@
   min-height: 80vh;
 }
 
-/* Contact Details */
+/* Contact Heading */
 .contact-section h2 {
   font-size: 2.2rem;
   font-weight: 700;
   color: #0a8754;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 
-.contact-section ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 40px;
-  color: #333;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-/* 🌐 Contact Wrapper for Side-by-Side Layout */
+/* Contact Wrapper: form + map */
 .contact-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
 }
 
-/* 📝 Form Styling */
+/* 📝 Contact Form */
 .contact-form {
   background: rgba(255, 255, 255, 0.9);
-  padding: 30px 25px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 135, 84, 0.15);
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 135, 84, 0.15);
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; /* reasonable max width */
   display: flex;
   flex-direction: column;
   gap: 15px;
   backdrop-filter: blur(6px);
+  box-sizing: border-box;
 }
 
+/* Inputs & Textarea */
 .contact-form input,
 .contact-form textarea {
   padding: 12px 15px;
@@ -55,6 +64,8 @@
   font-size: 1rem;
   resize: none;
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .contact-form input:focus,
@@ -75,6 +86,7 @@
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .contact-form button:hover {
@@ -84,7 +96,7 @@
   box-shadow: 0 4px 12px rgba(0, 255, 195, 0.3);
 }
 
-/* 🗺️ Map Styling */
+/* 🗺️ Contact Map */
 .contact-map {
   width: 100%;
   max-width: 500px;
@@ -113,8 +125,22 @@
     align-items: center;
   }
 
-  .contact-map,
-  .contact-form {
+  .contact-form,
+  .contact-map {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 60px 15px;
+  }
+
+  .contact-form {
+    padding: 30px 20px;
+  }
+
+  .contact-map iframe {
+    height: 300px;
   }
 }

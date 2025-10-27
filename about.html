@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl"></html>
+<html lang="ur" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,6 +8,7 @@
   <!-- Google fonts: try Noto Nastaliq Urdu, fallback to Scheherazade New & system -->
   <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
   <!-- (Optional: if you have Noto Nastaliq installed/hosted, add it) -->
+   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/about.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
  <link rel="shortcut icon" href="Images/greenlogo.png" type="image/x-icon">
@@ -198,5 +199,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 </script>
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.main-menu ul');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+  });
+</script>
+
 </body>
 </html>
