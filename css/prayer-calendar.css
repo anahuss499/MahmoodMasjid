@@ -42,6 +42,19 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
 }
+#prayerTimesList {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2rem;
+}
+
+#prayerTimesList li {
+  padding: 10px;
+  margin: 5px 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 135, 84, 0.1);
+}
 
 .calendar-item:hover {
   transform: translateY(-2px);

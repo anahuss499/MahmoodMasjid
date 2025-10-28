@@ -1,7 +1,12 @@
 import express from "express";
-import { fetchPrayerTimes } from "../controllers/prayerController.js";
+import { getPrayerTimes } from "../controllers/prayerController.js";
+
 const router = express.Router();
 
-router.get("/", fetchPrayerTimes);
+// GET /api/prayers
+router.get("/", getPrayerTimes);
 
 export default router;
+
+
+

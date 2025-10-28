@@ -1,21 +1,28 @@
-import axios from "axios";
-import * as cheerio from "cheerio"; // npm install cheerio
+import fetch from "node-fetch";
 
-export const fetchPrayerTimes = async (req, res) => {
+export const getPrayerTimes = async (req, res) => {
   try {
-    const url = "https://www.dawateislami.net/prayer-times/world/pakistan/ajnala-(gujrat)-prayer-times";
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
+    const response = await fetch(
+      "https://api.aladhan.com/v1/timingsByCity?city=Gujrat&country=Pakistan&method=1"
+    );
 
-    const times = [];
-    $("table tbody tr").each((_, el) => {
-      const prayer = $(el).find("td:first-child").text().trim();
-      const time = $(el).find("td:nth-child(2)").text().trim();
-      if (prayer && time) times.push({ prayer, time });
-    });
+    const data = await response.json();
+    const timings = data.data.timings;
 
-    res.json({ location: "Ajnala (Gujrat)", times });
-  } catch (error) {
-    res.status(500).json({ error: "Unable to fetch prayer times" });
+    const prayerTimes = {
+      Fajr: timings.Fajr,
+      Sunrise: timings.Sunrise,
+      Dhuhr: timings.Dhuhr,
+      Asr: timings.Asr,
+      Maghrib: timings.Maghrib,
+      Isha: timings.Isha,
+      Jummah: "2:00 PM",
+    };
+
+    res.json(prayerTimes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to load prayer times" });
   }
 };
+

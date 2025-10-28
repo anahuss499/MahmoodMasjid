@@ -1,0 +1,81 @@
+/* Qur’an Section Theme */
+.quran-section {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f5fdf9, #e8f9f1);
+}
+
+.quran-section h2 {
+  color: #0a8754;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+#quranSearch {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid #0a8754;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+#quranSearch:focus {
+  outline: none;
+  border-color: #00ffc3;
+  box-shadow: 0 0 8px rgba(0, 255, 195, 0.3);
+}
+
+.surah {
+  background: #ffffffb3;
+  margin: 10px auto;
+  padding: 15px 20px;
+  border-radius: 8px;
+  max-width: 700px;
+  text-align: right;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.surah:hover {
+  transform: translateY(-2px);
+}
+
+.surah-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0a8754;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ayahs {
+  display: none;
+  margin-top: 15px;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  direction: rtl;
+}
+
+.ayah {
+  margin: 5px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quran-container {
+    font-size: 1rem;
+  }
+
+  #quranSearch {
+    max-width: 100%;
+  }
+}
+
+
+
+
+

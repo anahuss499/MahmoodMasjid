@@ -21,6 +21,7 @@
           <li><a href="/html/index.html">Home</a></li>
           <li><a href="/html/about.html">About Us</a></li>
           <li><a href="/html/contact.html">Contact Us</a></li>
+          <li><a href="/html/quran.html">Qur’an</a></li>
         <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In </a></li> -->
         </ul>
       </div>
@@ -136,6 +137,25 @@
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('show');
   });
+</script>
+
+<script>
+async function loadPrayerTimes() {
+  try {
+    const res = await fetch("http://localhost:5000/api/prayers");
+    const times = await res.json();
+
+    for (const [prayer, time] of Object.entries(times)) {
+      document.getElementById(prayer).innerText = time;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+loadPrayerTimes();
+
+
 </script>
 
 </body>

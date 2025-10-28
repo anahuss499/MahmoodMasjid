@@ -287,22 +287,41 @@
   color: #333;
 }
 /* 🌙 Jummah Prayer Styling */
-.prayer-item.Jummah {
-  background: linear-gradient(90deg, #33cc33, #00ffc3);
+.jummah-highlight {
+  background: #0a8754;
   color: #fff;
-  font-weight: 700;
-  box-shadow: 0 6px 12px rgba(0, 191, 255, 0.3);
+  border: none;
 }
 
-.prayer-item.Jummah .prayer-name,
-.prayer-item.Jummah .prayer-time {
+.jummah-highlight .prayer-name,
+.jummah-highlight .prayer-time {
   color: #fff;
 }
-
 /* Optional: make it slightly bigger */
 .prayer-item.Jummah {
   font-size: 1.1rem;
 }
+
+
+.jummah-highlight::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(10, 135, 84, 0.6);
+  z-index: -1;
+  animation: greenGlow 2s infinite ease-in-out;
+}
+
+@keyframes greenGlow {
+  0% { box-shadow: 0 0 10px rgba(10, 135, 84, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(10, 135, 84, 0.8); }
+  100% { box-shadow: 0 0 10px rgba(10, 135, 84, 0.4); }
+}
+
 /* 📅 Calendar Button below Prayer Times */
 .calendar-link {
   margin-top: 30px;

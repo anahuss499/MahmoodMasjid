@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>القرآن الكريم - Mahmood Masjid</title>
+  <link rel="stylesheet" href="../css/style.css"> <!-- main website CSS -->
+  <link rel="stylesheet" href="../css/quran.css"> <!-- Qur’an CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="../Images/greenlogo.png" type="image/x-icon" />
+</head>
+<body>
+
+  <!-- Navbar (same as main site) -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="../images/greenlogo.png" alt="logo" id="masjidLogo">
+        </a>
+      </div>
+      <div class="main-menu">
+        <ul id="menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="quran.html">Qur’an</a></li>
+        </ul>
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Qur’an Section -->
+  <section class="quran-section">
+    <div class="container">
+      <h2>القرآن الكريم</h2>
+      <input 
+        type="text" 
+        id="quranSearch" 
+        placeholder="سورۃ تلاش کریں / Search Surah (Arabic or English)" 
+      />
+      <div id="quranContainer" class="quran-container">
+        <p>Loading Qur’an...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (same as main site) -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-logo">
+        <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo">
+        <h3>Mahmood Masjid</h3>
+        <p>Building our community, together in faith.</p>
+      </div>
+      <div class="footer-socials">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://youtube.com/@mahmoodmasjid?si=ZGjz9F8QZAnysBh1" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/quran.js"></script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.main-menu ul');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
+
+
