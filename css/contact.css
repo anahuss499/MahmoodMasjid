@@ -96,6 +96,29 @@ html, body {
   box-shadow: 0 4px 12px rgba(0, 255, 195, 0.3);
 }
 
+/* Toast popup */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0a8754;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  display: none; /* hidden by default */
+  z-index: 9999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast.show {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
 /* 🗺️ Contact Map */
 .contact-map {
   width: 100%;
