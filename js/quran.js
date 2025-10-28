@@ -7,7 +7,7 @@ let surahs = [];
 // Load all surahs from JSON
 async function loadQuran() {
   try {
-    const res = await fetch("data/surahs.json");
+    const res = await fetch("..html/data/surahs.json");
     surahs = await res.json();
     displaySurahs(surahs);
   } catch (err) {
