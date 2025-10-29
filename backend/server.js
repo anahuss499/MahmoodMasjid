@@ -6,7 +6,6 @@ import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contact.js";
 import donationRoutes from "./routes/donations.js";
 import prayerRoutes from "./routes/prayers.js";
-import quranRoutes from "./routes/quran.js";
 
 dotenv.config();
 connectDB();
@@ -19,7 +18,6 @@ app.use(express.json());
 app.use("/api/contact", contactRoutes);
 app.use("/api/donations", donationRoutes);
 app.use("/api/prayers", prayerRoutes);
-app.use("/api/quran", quranRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

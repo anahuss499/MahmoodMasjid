@@ -1,68 +1,107 @@
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.getElementById("quranContainer");
+  const searchInput = document.getElementById("quranSearch");
+  const surahSelect = document.getElementById("surah-select");
 
-const quranContainer = document.getElementById("quranContainer");
-const quranSearch = document.getElementById("quranSearch");
-
-let surahs = [];
-
-// Load all surahs from JSON
-async function loadQuran() {
   try {
-    const res = await fetch("..html/data/surahs.json");
-    surahs = await res.json();
-    displaySurahs(surahs);
-  } catch (err) {
-    console.error(err);
-    quranContainer.innerHTML = "<p>Failed to load Qur’an.</p>";
-  }
-}
+    const response = await fetch("../data/full_quran.json");
+    const surahs = await response.json();
 
-// Display surahs
-function displaySurahs(list) {
-  if (list.length === 0) {
-    quranContainer.innerHTML = "<p>No surahs found.</p>";
-    return;
-  }
+    // ✅ Populate dropdown with Arabic + Urdu and English + English translation
+surahs.forEach((surah, i) => {
+  const option = document.createElement("option");
+  option.value = i;
 
-  quranContainer.innerHTML = "";
-  list.forEach(surah => {
-    const surahDiv = document.createElement("div");
-    surahDiv.classList.add("surah");
+  // Arabic + Urdu (right) — English + English translation (left)
+  option.textContent = `${surah.name} (${surah.translationUr}) — ${surah.englishName} (${surah.translationEn})`;
 
-    const title = document.createElement("div");
-    title.classList.add("surah-title");
-    title.innerHTML = `${surah.name_ar} - ${surah.name_en}`;
-    surahDiv.appendChild(title);
+  // Optional: show full name on hover
+  option.title = option.textContent;
 
-    const ayahsDiv = document.createElement("div");
-    ayahsDiv.classList.add("ayahs");
-    surah.ayahs.forEach(ayah => {
-      const p = document.createElement("p");
-      p.classList.add("ayah");
-      p.textContent = ayah.text; // Arabic text
-      ayahsDiv.appendChild(p);
-    });
-
-    surahDiv.appendChild(ayahsDiv);
-
-    // Toggle ayahs on click
-    title.addEventListener("click", () => {
-      ayahsDiv.style.display = ayahsDiv.style.display === "block" ? "none" : "block";
-    });
-
-    quranContainer.appendChild(surahDiv);
-  });
-}
-
-// Search functionality
-quranSearch.addEventListener("input", () => {
-  const query = quranSearch.value.toLowerCase();
-  const filtered = surahs.filter(
-    s => s.name_ar.includes(query) || s.name_en.toLowerCase().includes(query)
-  );
-  displaySurahs(filtered);
+  surahSelect.appendChild(option);
 });
 
-// Initialize
-loadQuran();
 
+    // ✅ Display all Surahs initially
+    displaySurahs(surahs);
 
+    // ✅ Dropdown change
+    surahSelect.addEventListener("change", () => {
+      const selectedIndex = parseInt(surahSelect.value);
+      scrollToSurah(selectedIndex);
+    });
+
+    // ✅ Search filter
+    searchInput.addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = surahs.filter(
+        (s) =>
+          s.name.toLowerCase().includes(term) ||
+          (s.englishName && s.englishName.toLowerCase().includes(term))
+      );
+      displaySurahs(filtered);
+    });
+
+    // ✅ Scroll to specific surah
+    function scrollToSurah(index) {
+      const target = document.querySelector(`[data-surah-index="${index}"]`);
+      if (target) {
+        window.scrollTo({
+          top: target.offsetTop - 100,
+          behavior: "smooth",
+        });
+      }
+    }
+
+    // ✅ Display all surahs
+    function displaySurahs(list) {
+      container.innerHTML = "";
+
+      list.forEach((surah, index) => {
+        const surahBlock = document.createElement("div");
+        surahBlock.classList.add("surah-block");
+        surahBlock.setAttribute("data-surah-index", index);
+
+        // Title
+        const title = document.createElement("h3");
+        title.classList.add("surah-title");
+        title.textContent = `${surah.name} (${surah.englishName})`;
+
+        // Divider line above each surah
+        const divider = document.createElement("hr");
+        divider.classList.add("surah-divider");
+
+        // Bismillah (skip Surah 1 and 9)
+        let bismillah = "";
+        if (index !== 0 && index !== 8) {
+          bismillah = `<div class="bismillah">﷽</div>`;
+        }
+
+        // Ayahs
+        const ayahsHTML = surah.ayahs
+          .map(
+            (a, i) =>
+              `<span class="ayah">${a.text} <span class="ayah-num">۝${i + 1}</span></span>`
+          )
+          .join(" ");
+
+        const ayahContainer = document.createElement("div");
+        ayahContainer.classList.add("ayah-container");
+        ayahContainer.innerHTML = bismillah + ayahsHTML;
+
+        surahBlock.append(title, divider, ayahContainer);
+        container.appendChild(surahBlock);
+      });
+    }
+  } catch (err) {
+    console.error("❌ Failed to load Qur’an:", err);
+    container.innerHTML = "<p>❌ Failed to load Qur’an.</p>";
+  }
+});
+
+const hamburger = document.querySelector('.hamburger');
+const menu = document.getElementById('menu');
+
+hamburger.addEventListener('click', () => {
+  menu.classList.toggle('active'); // show/hide menu on mobile
+});

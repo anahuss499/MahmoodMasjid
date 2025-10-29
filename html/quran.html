@@ -1,59 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>القرآن الكريم - Mahmood Masjid</title>
-  <link rel="stylesheet" href="../css/style.css"> <!-- main website CSS -->
-  <link rel="stylesheet" href="../css/quran.css"> <!-- Qur’an CSS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="../Images/greenlogo.png" type="image/x-icon" />
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/quran.css" />
+  <link rel="shortcut icon" href="../Images/greenlogo.png" type="image/x-icon">
+   <!-- ✅ Fonts: IndoPak Arabic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Scheherazade+New:wght@500&display=swap" rel="stylesheet">
+  <!-- IndoPak Mushaf-style Quran Font -->
+<link href="https://fonts.cdnfonts.com/css/pdms-saleem-quranfont" rel="stylesheet">
 </head>
-<body>
 
-  <!-- Navbar (same as main site) -->
-  <nav class="navbar">
+<body>
+  <!-- ✅ Navbar (keep same style as other pages) -->
+  <header class="main-header">
+    <nav class="navbar">
     <div class="container">
       <div class="logo">
-        <a href="index.html">
+        <a href="../html/index.html">
           <img src="../images/greenlogo.png" alt="logo" id="masjidLogo">
         </a>
       </div>
       <div class="main-menu">
         <ul id="menu">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="quran.html">Qur’an</a></li>
+          <li><a href="html/index.html">Home</a></li>
+          <li><a href="html/about.html">About Us</a></li>
+          <li><a href="html/contact.html">Contact Us</a></li>
+          <li><a href="html/quran.html">Qur’an</a></li>
+        <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In</a></li> -->
         </ul>
       </div>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+       <!-- Hamburger for mobile -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-  </nav>
+      </div>
+</nav>
+  </header>
 
-  <!-- Qur’an Section -->
-  <section class="quran-section">
-    <div class="container">
+<!-- ✅ Qur’an Section -->
+<section class="quran-section">
+  <div class="container">
+
+    <!-- ✅ Sticky Controls (Search + Dropdown + Title) -->
+    <div class="quran-controls">
       <h2>القرآن الكريم</h2>
-      <input 
-        type="text" 
-        id="quranSearch" 
-        placeholder="سورۃ تلاش کریں / Search Surah (Arabic or English)" 
-      />
-      <div id="quranContainer" class="quran-container">
-        <p>Loading Qur’an...</p>
-      </div>
+      <select id="surah-select"></select>
+      <input type="text" id="quranSearch" placeholder="سورۃ تلاش کریں / Search Surah" />
     </div>
-  </section>
 
-  <!-- Footer (same as main site) -->
+    <!-- ✅ Qur’an Display Area -->
+    <div id="quranContainer" class="quran-container">
+      <p>Loading Qur’an...</p>
+    </div>
+
+  </div>
+</section>
+
+    <!-- ✅ Modal for Ayahs -->
+  <div id="ayahModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <div id="modalAyahs" class="ayahs-content"></div>
+    </div>
+  </div>
+
+   <!-- Footer -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-logo">
@@ -76,17 +93,29 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="../js/quran.js"></script>
-  <script>
-    // Hamburger menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.main-menu ul');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('show');
+<script>
+const select = document.getElementById('surah-select');
+fetch('data/full_quran.json')
+  .then(res => res.json())
+  .then(quran => {
+    quran.forEach((surah, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${surah.englishName} (${surah.name})`;
+      select.appendChild(option);
     });
-  </script>
+
+    select.addEventListener('change', () => {
+      displaySurah(quran[select.value]);
+    });
+
+    // Show first Surah by default
+    displaySurah(quran[0]);
+  });
+</script>
+
+
+  <script src="../js/quran.js"></script>
 </body>
 </html>
 

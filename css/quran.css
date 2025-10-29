@@ -1,79 +1,213 @@
-/* Qur’an Section Theme */
-.quran-section {
-  text-align: center;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #f5fdf9, #e8f9f1);
+/* ✅ Sticky Controls Bar (Search + Dropdown + Title) */
+.quran-controls {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 255, 249, 0.85); /* semi-transparent */
+  backdrop-filter: blur(10px); /* soft blur effect */
+  padding: 12px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-bottom: 2px solid #0a8754;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
-.quran-section h2 {
-  color: #0a8754;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
 
+/* 🔍 Search Bar */
 #quranSearch {
-  width: 100%;
-  max-width: 500px;
-  padding: 12px 20px;
+  width: 45%;
+  max-width: 350px;
+  padding: 12px 18px;
   border-radius: 8px;
   border: 2px solid #0a8754;
-  margin-bottom: 30px;
   font-size: 1rem;
+  text-align: right;
+  direction: rtl;
+  transition: 0.3s ease;
 }
-
 #quranSearch:focus {
   outline: none;
   border-color: #00ffc3;
   box-shadow: 0 0 8px rgba(0, 255, 195, 0.3);
 }
 
-.surah {
-  background: #ffffffb3;
-  margin: 10px auto;
-  padding: 15px 20px;
+/* 📜 Dropdown */
+#surah-select {
+  margin: 0;
+  padding: 12px 14px;
   border-radius: 8px;
-  max-width: 700px;
-  text-align: right;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.surah:hover {
-  transform: translateY(-2px);
-}
-
-.surah-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  border: 2px solid #0a8754;
+  background: white;
+  font-size: 1rem;
   color: #0a8754;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  cursor: pointer;
+  font-family: "Amiri", serif;
+}
+#surah-select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(10, 135, 84, 0.5);
 }
 
-.ayahs {
-  display: none;
-  margin-top: 15px;
-  font-size: 1.2rem;
-  line-height: 1.7;
+/* 🔸 Dropdown hover fix for browsers that allow styling */
+#surah-select option:hover {
+  background-color: #0a8754; /* green hover */
+  color: #ffffff;            /* white text */
+}
+
+/* 📖 Main Quran Container */
+.quran-container {
+  max-width: 950px;
+  margin: 0 auto;
+  text-align: right;
   direction: rtl;
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  color: #111;
 }
 
+/* 🌸 Surah Block */
+.surah-block {
+  background: #ffffffc5;
+  padding: 25px;
+  margin-bottom: 80px;
+  border-radius: 15px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+}
+
+/* ✅ Surah Title */
+.surah-title {
+  text-align: center;
+  color: #0a8754;
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* ✅ Divider line between surahs */
+.surah-divider {
+  border: none;
+  height: 2px;
+  width: 65%;
+  margin: 30px auto 25px;
+  background: linear-gradient(to right, transparent, #0a8754, transparent);
+  border-radius: 2px;
+}
+
+/* ✅ Bismillah */
+.bismillah {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #0a8754;
+  margin: 40px 0 25px;
+  font-family: 'Scheherazade New', 'Amiri', serif;
+}
+
+/* 🕋 Ayahs */
+.ayah-container {
+  font-size: 2rem;
+  line-height: 3.2rem;
+  word-spacing: 6px;
+  text-align: justify;
+}
+
+/* 🌿 Each ayah now has a black divider line underneath */
 .ayah {
-  margin: 5px 0;
+  display: block;
+  padding: 12px 0;
+  border-bottom: 1px solid #00000022;
 }
 
-/* Responsive */
+/* Optional: small hover glow on ayah */
+.ayah:hover {
+  background: #eaf8f2;
+  transition: 0.2s;
+}
+
+/* Small ayah number */
+.ayah-num {
+  color: #0a8754;
+  font-size: 1rem;
+  margin: 0 6px;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 992px) {
+  .ayah-container { font-size: 1.7rem; line-height: 2.8rem; }
+}
+
 @media (max-width: 768px) {
-  .quran-container {
-    font-size: 1rem;
+  .ayah-container { font-size: 1.4rem; line-height: 2.6rem; }
+  .surah-title { font-size: 1.6rem; }
+  .bismillah { font-size: 2rem; }
+  #quranSearch, #surah-select { width: 80%; max-width: none; }
+}
+
+@media (max-width: 480px) {
+  .ayah-container { font-size: 1.2rem; line-height: 2.3rem; }
+  .surah-block { padding: 18px; }
+  .bismillah { font-size: 1.8rem; }
+}
+
+@media (max-width: 768px) {
+  #menu {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    background: #f8fff9;
+    padding: 10px 20px;
   }
 
-  #quranSearch {
-    max-width: 100%;
+  #menu.active {
+    display: flex;
   }
 }
+/* Dropdown select styling */
+#surah-select {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #0a8754;
+  font-size: 1rem;
+  color: #0a8754;
+  background: white;
+  font-family: "Amiri", serif;
+  cursor: pointer;
+
+  /* Responsive */
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  white-space: normal; /* allow wrapping for long Surah names */
+}
+
+/* Focus and hover */
+#surah-select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(10, 135, 84, 0.5);
+}
+
+/* Option hover (most browsers) */
+#surah-select option:hover {
+  background-color: #0a8754; /* green hover */
+  color: #ffffff;
+}
+
+/* Smaller screens */
+@media (max-width: 768px) {
+  #surah-select {
+    font-size: 0.95rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  #surah-select {
+    font-size: 0.9rem;
+    max-width: 95%;
+  }
+}
+
+
 
 
 
