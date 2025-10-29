@@ -206,6 +206,38 @@
     max-width: 95%;
   }
 }
+/* ✅ Fix dropdown overflow & improve mobile scroll behavior */
+#surah-select {
+  max-width: 100%;
+  width: 100%;
+  overflow-y: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* ✅ Improve option behavior */
+#surah-select option {
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+/* ✅ Limit height of dropdown list on smaller screens */
+@media (max-height: 700px) {
+  select {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}
+
+/* ✅ Keep theme hover color consistent */
+#surah-select option:hover,
+#surah-select option:focus {
+  background-color: #0a8754 !important;
+  color: #ffffff !important;
+}
+
 
 
 
