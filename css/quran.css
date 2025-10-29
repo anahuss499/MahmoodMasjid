@@ -206,38 +206,216 @@
     max-width: 95%;
   }
 }
-/* ✅ Fix dropdown overflow & improve mobile scroll behavior */
+
+/* ✅ Prevent Surah dropdown from going off-screen */
+.quran-controls {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(248, 255, 249, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 12px 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-bottom: 2px solid #0a8754;
+  display: flex;
+  flex-direction: column; /* stack vertically on smaller screens */
+  align-items: center;
+  gap: 10px;
+}
+
+/* 🟢 Make sure dropdown stays centered and inside screen */
 #surah-select {
-  max-width: 100%;
-  width: 100%;
+  width: 90vw;
+  max-width: 400px;
   overflow-y: auto;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  position: relative;
+  z-index: 1001; /* ensures it's above footer/nav */
 }
 
-/* ✅ Improve option behavior */
-#surah-select option {
-  white-space: normal;
-  word-wrap: break-word;
-  line-height: 1.6;
-}
-
-/* ✅ Limit height of dropdown list on smaller screens */
-@media (max-height: 700px) {
-  select {
-    max-height: 250px;
-    overflow-y: auto;
+/* 🟢 Ensure dropdown list fits inside viewport on small screens */
+@media (max-width: 768px) {
+  #surah-select {
+    font-size: 1rem;
+    max-height: 45vh; /* limit dropdown height */
   }
 }
 
-/* ✅ Keep theme hover color consistent */
-#surah-select option:hover,
-#surah-select option:focus {
-  background-color: #0a8754 !important;
-  color: #ffffff !important;
+/* ✅ iPhone Safari fix: force dropdown within visible area */
+@supports (-webkit-touch-callout: none) {
+  #surah-select {
+    position: relative;
+    transform: translateZ(0);
+  }
+}
+/* 🌙 Base styling for the dropdown */
+.dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
 }
 
+#surah-select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #0a8754;
+  border-radius: 8px;
+  background: #f9fff9;
+  color: #222;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* 🌙 Full-screen popup dropdown for mobile */
+@media (max-width: 768px) {
+  #surah-select {
+    display: none; /* hide default select on mobile */
+  }
+
+  .mobile-dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .mobile-dropdown h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #0a8754;
+  }
+
+  .mobile-dropdown button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    color: #222;
+  }
+
+  .mobile-dropdown button:hover {
+    background: #0a8754;
+    color: white;
+  }
+
+  .mobile-dropdown .close-btn {
+    background: #0a8754;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: none;
+  }
+}
+/* 🌙 Enhanced Surah list for mobile popup */
+.mobile-dropdown {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 9999;
+  overflow-y: auto;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  direction: rtl;
+  font-family: "Amiri", "Scheherazade New", serif;
+}
+
+.mobile-dropdown h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #0a8754;
+}
+
+.mobile-dropdown .close-btn {
+  background: #0a8754;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: none;
+  font-size: 1rem;
+}
+
+.mobile-dropdown .surah-item {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid #0a8754;
+  border-radius: 10px;
+  background: #f8fff9;
+  margin: 5px 0;
+  padding: 12px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.mobile-dropdown .surah-item:hover {
+  background: #0a8754;
+  color: white;
+}
+
+.surah-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.surah-name .arabic {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.surah-name .urdu {
+  font-size: 1.1rem;
+  color: #0a8754;
+}
+
+.surah-name .english {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ✅ Ensure mobile menu appears above all other content */
+#menu {
+  position: relative;
+  z-index: 9999; /* make sure it's on top */
+}
+
+/* Hamburger button styling fix */
+#hamburger {
+  cursor: pointer;
+  z-index: 10000;
+  position: relative;
+}
+
+/* When menu is active (open on mobile) */
+#menu.active {
+  display: flex !important;
+  background: #f8fff9;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 60px; /* adjust based on your header height */
+  right: 0;
+  left: 0;
+  padding: 15px 20px;
+  border-bottom: 2px solid #0a8754;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
 
 

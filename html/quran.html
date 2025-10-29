@@ -25,10 +25,10 @@
       </div>
       <div class="main-menu">
         <ul id="menu">
-          <li><a href="html/index.html">Home</a></li>
-          <li><a href="html/about.html">About Us</a></li>
-          <li><a href="html/contact.html">Contact Us</a></li>
-          <li><a href="html/quran.html">Qur’an</a></li>
+          <li><a href="/html/index.html">Home</a></li>
+          <li><a href="/html/about.html">About Us</a></li>
+          <li><a href="/html/contact.html">Contact Us</a></li>
+          <li><a href="/html/quran.html">Qur’an</a></li>
         <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In</a></li> -->
         </ul>
       </div>
@@ -47,11 +47,13 @@
   <div class="container">
 
     <!-- ✅ Sticky Controls (Search + Dropdown + Title) -->
-    <div class="quran-controls">
-      <h2>القرآن الكريم</h2>
-      <select id="surah-select"></select>
-      <input type="text" id="quranSearch" placeholder="سورۃ تلاش کریں / Search Surah" />
-    </div>
+<div class="quran-controls">
+  <input type="text" id="quranSearch" placeholder="Search Surah" />
+  <div class="dropdown-wrapper">
+    <select id="surah-select"></select>
+  </div>
+</div>
+
 
     <!-- ✅ Qur’an Display Area -->
     <div id="quranContainer" class="quran-container">
@@ -114,8 +116,25 @@ fetch('data/full_quran.json')
   });
 </script>
 
-
   <script src="../js/quran.js"></script>
+
+  <script>
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('menu');
+
+  // Toggle menu open/close
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+
+  // Automatically close menu when a link is clicked
+  const navLinks = menu.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('active');
+    });
+  });
+</script>
 </body>
 </html>
 

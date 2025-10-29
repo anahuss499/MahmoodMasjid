@@ -105,3 +105,169 @@ const menu = document.getElementById('menu');
 hamburger.addEventListener('click', () => {
   menu.classList.toggle('active'); // show/hide menu on mobile
 });
+
+// 📱 Mobile-friendly dropdown popup with Arabic + Urdu + English
+if (window.innerWidth <= 768) {
+  const select = document.getElementById("surah-select");
+
+  // Create open button
+  const openBtn = document.createElement("button");
+  openBtn.textContent = "Select Surah ▼";
+  openBtn.classList.add("mobile-open-btn");
+  select.parentElement.appendChild(openBtn);
+
+  // Popup container
+  const popup = document.createElement("div");
+  popup.classList.add("mobile-dropdown");
+  document.body.appendChild(popup);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "Close ✖";
+  closeBtn.classList.add("close-btn");
+  popup.appendChild(closeBtn);
+
+  const title = document.createElement("h3");
+  title.textContent = "Select a Surah";
+  popup.appendChild(title);
+
+  // ✅ Each Surah option (Arabic | Urdu | English)
+ const surahTranslations = [
+  { arabic: "الفاتحة", urdu: "الفاتحہ", english: "Al-Fatihah (The Opening)" },
+  { arabic: "البقرة", urdu: "البقرہ", english: "Al-Baqarah (The Cow)" },
+  { arabic: "آل عمران", urdu: "آل عمران", english: "Aal-Imran (The Family of Imran)" },
+  { arabic: "النساء", urdu: "النساء", english: "An-Nisa (The Women)" },
+  { arabic: "المائدة", urdu: "المائدہ", english: "Al-Ma’idah (The Table Spread)" },
+  { arabic: "الأنعام", urdu: "الأنعام", english: "Al-An’am (The Cattle)" },
+  { arabic: "الأعراف", urdu: "الأَعْرَاف", english: "Al-A’raf (The Heights)" },
+  { arabic: "الأنفال", urdu: "الأنفال", english: "Al-Anfal (The Spoils of War)" },
+  { arabic: "التوبة", urdu: "التوبہ", english: "At-Tawbah (The Repentance)" },
+  { arabic: "يونس", urdu: "یونس", english: "Yunus (Jonah)" },
+  { arabic: "هود", urdu: "ہود", english: "Hud" },
+  { arabic: "يس", urdu: "یوسف", english: "Yusuf (Joseph)" },
+  { arabic: "الرعد", urdu: "الرعد", english: "Ar-Ra’d (The Thunder)" },
+  { arabic: "إبراهيم", urdu: "ابراہیم", english: "Ibrahim (Abraham)" },
+  { arabic: "الحجر", urdu: "الحجر", english: "Al-Hijr (The Rocky Tract)" },
+  { arabic: "النحل", urdu: "النحل", english: "An-Nahl (The Bee)" },
+  { arabic: "الإسراء", urdu: "الإسراء", english: "Al-Isra’ / Bani Isra’il (The Night Journey)" },
+  { arabic: "الكهف", urdu: "الکهف", english: "Al-Kahf (The Cave)" },
+  { arabic: "مريم", urdu: "مریم", english: "Maryam (Mary)" },
+  { arabic: "طه", urdu: "طہ", english: "Ta-Ha" },
+  { arabic: "الأنبياء", urdu: "الأنبیاء", english: "Al-Anbiya (The Prophets)" },
+  { arabic: "الحج", urdu: "الحج", english: "Al-Hajj (The Pilgrimage)" },
+  { arabic: "المؤمنون", urdu: "المؤمنون", english: "Al-Mu’minun (The Believers)" },
+  { arabic: "النور", urdu: "النور", english: "An-Nur (The Light)" },
+  { arabic: "الفرقان", urdu: "الفرقان", english: "Al-Furqan (The Criterion)" },
+  { arabic: "الشعراء", urdu: "الشعرا", english: "Ash-Shu’ara (The Poets)" },
+  { arabic: "النمل", urdu: "النمل", english: "An-Naml (The Ant)" },
+  { arabic: "القصص", urdu: "القصص", english: "Al-Qasas (The Stories)" },
+  { arabic: "العنكبوت", urdu: "العنکبوت", english: "Al-Ankabut (The Spider)" },
+  { arabic: "الروم", urdu: "الروم", english: "Ar-Rum (The Romans)" },
+  { arabic: "لقمان", urdu: "لقمان", english: "Luqman" },
+  { arabic: "السجدة", urdu: "السجدة", english: "As-Sajdah (The Prostration)" },
+  { arabic: "الأحزاب", urdu: "الأحزاب", english: "Al-Ahzab (The Combined Forces)" },
+  { arabic: "سبأ", urdu: "سبأ", english: "Saba (Sheba)" },
+  { arabic: "فاطر", urdu: "فاطر", english: "Fatir (The Originator)" },
+  { arabic: "يس", urdu: "یس", english: "Ya-Sin" },
+  { arabic: "الصافات", urdu: "الصافات", english: "As-Saffat (Those Ranged in Ranks)" },
+  { arabic: "ص", urdu: "صاد", english: "Sad" },
+  { arabic: "الزمر", urdu: "الزمر", english: "Az-Zumar (The Groups)" },
+  { arabic: "غافر", urdu: "غافر", english: "Ghafir (The Forgiver)" },
+  { arabic: "فصّلت", urdu: "فصّلت", english: "Fussilat (Explained in Detail)" },
+  { arabic: "الشورى", urdu: "الشورى", english: "Ash-Shura (The Consultation)" },
+  { arabic: "الزخرف", urdu: "الزخرف", english: "Az-Zukhruf (The Ornaments of Gold)" },
+  { arabic: "الدخان", urdu: "الدخان", english: "Ad-Dukhan (The Smoke)" },
+  { arabic: "الجاثية", urdu: "الجاثية", english: "Al-Jathiyah (The Crouching)" },
+  { arabic: "الأحقاف", urdu: "الأحقاف", english: "Al-Ahqaf (The Wind-Curved Sandhills)" },
+  { arabic: "محمد", urdu: "محمد", english: "Muhammad" },
+  { arabic: "الفتح", urdu: "الفتح", english: "Al-Fath (The Victory)" },
+  { arabic: "الحجرات", urdu: "الحجرات", english: "Al-Hujurat (The Rooms)" },
+  { arabic: "ق", urdu: "قاف", english: "Qaf" },
+  { arabic: "الذاريات", urdu: "الذاريات", english: "Ad-Dhariyat (The Winnowing Winds)" },
+  { arabic: "الطور", urdu: "الطور", english: "At-Tur (The Mount)" },
+  { arabic: "النجم", urdu: "النجم", english: "An-Najm (The Star)" },
+  { arabic: "القمر", urdu: "القمر", english: "Al-Qamar (The Moon)" },
+  { arabic: "الرحمن", urdu: "الرحمن", english: "Ar-Rahman (The Beneficent)" },
+  { arabic: "الواقعة", urdu: "الواقعة", english: "Al-Waqi’ah (The Inevitable)" },
+  { arabic: "الحديد", urdu: "الحدید", english: "Al-Hadid (The Iron)" },
+  { arabic: "المجادلة", urdu: "المجادلة", english: "Al-Mujadila (The Pleading Woman)" },
+  { arabic: "الحشر", urdu: "الحشر", english: "Al-Hashr (The Exile)" },
+  { arabic: "الممتحنة", urdu: "الممتحنة", english: "Al-Mumtahanah (The Examined One)" },
+  { arabic: "الصف", urdu: "الصف", english: "As-Saff (The Ranks)" },
+  { arabic: "الجمعة", urdu: "الجمعة", english: "Al-Jumu’ah (The Congregation)" },
+  { arabic: "المنافقون", urdu: "المنافقون", english: "Al-Munafiqun (The Hypocrites)" },
+  { arabic: "التغابن", urdu: "التغابن", english: "At-Taghabun (Mutual Loss and Gain)" },
+  { arabic: "الطلاق", urdu: "الطلاق", english: "At-Talaq (Divorce)" },
+  { arabic: "التحريم", urdu: "التحریم", english: "At-Tahrim (The Prohibition)" },
+  { arabic: "الملك", urdu: "الملک", english: "Al-Mulk (The Sovereignty)" },
+  { arabic: "القلم", urdu: "القلم", english: "Al-Qalam (The Pen)" },
+  { arabic: "الحاقة", urdu: "الحاقة", english: "Al-Haqqah (The Reality)" },
+  { arabic: "المعارج", urdu: "المعارج", english: "Al-Ma’arij (The Ascending Stairways)" },
+  { arabic: "نوح", urdu: "نوح", english: "Nuh (Noah)" },
+  { arabic: "الجن", urdu: "الجن", english: "Al-Jinn (The Jinn)" },
+  { arabic: "المزمل", urdu: "المزمل", english: "Al-Muzzammil (The Enshrouded One)" },
+  { arabic: "المدثر", urdu: "المدثر", english: "Al-Muddaththir (The Cloaked One)" },
+  { arabic: "القیامة", urdu: "القیامَة", english: "Al-Qiyamah (The Resurrection)" },
+  { arabic: "الانسان", urdu: "الانسان", english: "Al-Insan (Man)" },
+  { arabic: "المرسلٰت", urdu: "المرسلات", english: "Al-Mursalat (The Emissaries)" },
+  { arabic: "النبأ", urdu: "النبأ", english: "An-Naba (The Tidings)" },
+  { arabic: "النازعات", urdu: "النازعات", english: "An-Nazi’at (Those Who Drag Forth)" },
+  { arabic: "عبس", urdu: "عبس", english: "Abasa (He Frowned)" },
+  { arabic: "التكوير", urdu: "التكویر", english: "At-Takwir (The Overthrowing)" },
+  { arabic: "الانفطار", urdu: "الانفطار", english: "Al-Infitar (The Cleaving)" },
+  { arabic: "المطففين", urdu: "المطفّفین", english: "Al-Mutaffifin (Defrauding)" },
+  { arabic: "الانشقاق", urdu: "الانشقاق", english: "Al-Inshiqaq (The Splitting Open)" },
+  { arabic: "البروج", urdu: "البروج", english: "Al-Buruj (The Mansions of the Stars)" },
+  { arabic: "الطارق", urdu: "الطارق", english: "At-Tariq (The Morning Star)" },
+  { arabic: "الأعلى", urdu: "الأعلى", english: "Al-A'la (The Most High)" },
+  { arabic: "الغاشية", urdu: "الغاشیہ", english: "Al-Ghashiyah (The Overwhelming)" },
+  { arabic: "الفجر", urdu: "الفجر", english: "Al-Fajr (The Dawn)" },
+  { arabic: "البلد", urdu: "البلد", english: "Al-Balad (The City)" },
+  { arabic: "الشمس", urdu: "الشمس", english: "Ash-Shams (The Sun)" },
+  { arabic: "اللیل", urdu: "اللیل", english: "Al-Layl (The Night)" },
+  { arabic: "الضحی", urdu: "الضحی", english: "Ad-Dhuha (The Morning Hours)" },
+  { arabic: "الشرح", urdu: "الشرح", english: "Ash-Sharh / Al-Inshirah (The Relief)" },
+  { arabic: "التین", urdu: "التین", english: "At-Tin (The Fig)" },
+  { arabic: "العلق", urdu: "العلق", english: "Al-Alaq (The Clot)" },
+  { arabic: "القدر", urdu: "القدر", english: "Al-Qadr (The Power)" },
+  { arabic: "البينة", urdu: "البینہ", english: "Al-Bayyinah (The Clear Evidence)" },
+  { arabic: "الزلزلة", urdu: "الزلزلة", english: "Az-Zalzalah (The Earthquake)" },
+  { arabic: "العادیات", urdu: "العادیات", english: "Al-Adiyat (The Courser)" },
+  { arabic: "القارعة", urdu: "القاریعہ", english: "Al-Qari’ah (The Calamity)" },
+  { arabic: "التكاثر", urdu: "التکاثر", english: "At-Takathur (Rivalry in world increase)" },
+  { arabic: "العصر", urdu: "ال-عصر", english: "Al-Asr (Time / The Declining Day)" },
+  { arabic: "الهمزة", urdu: "الهمزة", english: "Al-Humazah (The Traducer)" },
+  { arabic: "الفیل", urdu: "الفیل", english: "Al-Fil (The Elephant)" },
+  { arabic: "قریش", urdu: "قریش", english: "Al-Quraish" },
+  { arabic: "الماعون", urdu: "الماعون", english: "Al-Ma’un (Small Kindnesses)" },
+  { arabic: "الکوثر", urdu: "الکوثر", english: "Al-Kawthar (Abundance)" },
+  { arabic: "الکافرون", urdu: "الکافرون", english: "Al-Kafirun (The Disbelievers)" },
+  { arabic: "النصر", urdu: "النصر", english: "An-Nasr (Divine Support)" },
+  { arabic: "المسد", urdu: "المسد", english: "Al-Masad / Al-Lahab (The Palm Fiber)" },
+  { arabic: "الإخلاص", urdu: "الإخلاص", english: "Al-Ikhlas (Sincerity)" },
+  { arabic: "الفلق", urdu: "الفلق", english: "Al-Falaq (The Daybreak)" },
+  { arabic: "الناس", urdu: "الناس", english: "An-Nas (The Mankind)" }
+];
+
+
+  surahTranslations.forEach((surah, index) => {
+    const item = document.createElement("button");
+    item.classList.add("surah-item");
+    item.innerHTML = `
+      <div class="surah-name">
+        <div class="arabic">${surah.arabic}</div>
+        <div class="urdu">${surah.urdu}</div>
+        <div class="english">${surah.english}</div>
+      </div>
+    `;
+    item.addEventListener("click", () => {
+      select.selectedIndex = index;
+      select.dispatchEvent(new Event("change"));
+      popup.style.display = "none";
+    });
+    popup.appendChild(item);
+  });
+
+  // Button actions
+  openBtn.addEventListener("click", () => (popup.style.display = "flex"));
+  closeBtn.addEventListener("click", () => (popup.style.display = "none"));
+}
