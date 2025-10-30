@@ -271,3 +271,178 @@ if (window.innerWidth <= 768) {
   openBtn.addEventListener("click", () => (popup.style.display = "flex"));
   closeBtn.addEventListener("click", () => (popup.style.display = "none"));
 }
+
+
+// ==== Qur’an Data & Elements ====
+const quranContainer = document.getElementById('quranContainer');
+const surahSelect = document.getElementById('surah-select');
+const searchInput = document.getElementById('quranSearch');
+
+// Mobile dropdown
+const mobileDropdown = document.createElement('div');
+mobileDropdown.className = 'mobile-dropdown';
+document.body.appendChild(mobileDropdown);
+
+const closeBtn = document.createElement('button');
+closeBtn.className = 'close-btn';
+closeBtn.textContent = 'Close';
+mobileDropdown.appendChild(closeBtn);
+
+const mobileTitle = document.createElement('h3');
+mobileTitle.textContent = 'Select Surah';
+mobileDropdown.appendChild(mobileTitle);
+
+const mobileList = document.createElement('div');
+mobileList.className = 'mobile-surah-list';
+mobileDropdown.appendChild(mobileList);
+
+closeBtn.addEventListener('click', () => {
+  mobileDropdown.style.display = 'none';
+});
+
+// ==== Load Qur’an JSON ====
+let quran = [];
+fetch('data/full_quran.json')
+  .then(res => res.json())
+  .then(data => {
+    quran = data;
+
+    // Populate desktop dropdown
+    quran.forEach((surah, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${surah.englishName} (${surah.name})`;
+      surahSelect.appendChild(option);
+
+      // Mobile buttons
+      const btn = document.createElement('button');
+      btn.className = 'surah-item';
+      btn.innerHTML = `
+        <div class="surah-name">
+          <span class="arabic">${surah.name}</span>
+          ${surah.urduName ? `<span class="urdu">${surah.urduName}</span>` : ''}
+          <span class="english">${surah.englishName}</span>
+        </div>`;
+      btn.addEventListener('click', () => {
+        displaySurah(surah);
+        mobileDropdown.style.display = 'none';
+      });
+      mobileList.appendChild(btn);
+    });
+
+    // Show first Surah by default
+    displaySurah(quran[0]);
+  });
+
+// ==== Display Surah Function ====
+function displaySurah(surah) {
+  quranContainer.innerHTML = ''; 
+  const surahBlock = document.createElement('div');
+  surahBlock.className = 'surah-block';
+
+  const title = document.createElement('h2');
+  title.className = 'surah-title';
+  title.textContent = `${surah.englishName} (${surah.name})`;
+  surahBlock.appendChild(title);
+
+  if (surah.number !== 9) {
+    const bismillah = document.createElement('p');
+    bismillah.className = 'bismillah';
+    bismillah.textContent = 'بسم الله الرحمن الرحيم';
+    surahBlock.appendChild(bismillah);
+  }
+
+  const ayahContainer = document.createElement('div');
+  ayahContainer.className = 'ayah-container';
+  surah.ayahs.forEach((ayah, index) => {
+    const ayahElem = document.createElement('span');
+    ayahElem.className = 'ayah';
+    ayahElem.innerHTML = `${ayah.text} <span class="ayah-num">(${index + 1})</span>`;
+    ayahContainer.appendChild(ayahElem);
+  });
+  surahBlock.appendChild(ayahContainer);
+
+  quranContainer.appendChild(surahBlock);
+}
+
+// ==== Desktop Dropdown Change ====
+surahSelect.addEventListener('change', () => {
+  const selectedSurah = quran[surahSelect.value];
+  displaySurah(selectedSurah);
+});
+
+// ==== Mobile Dropdown Trigger ====
+surahSelect.addEventListener('click', (e) => {
+  if (window.innerWidth <= 768) {
+    e.preventDefault();
+    mobileDropdown.style.display = 'flex';
+  }
+});
+
+// ==== Live Multilingual Search ====
+const searchResults = document.createElement('div');
+searchResults.className = 'search-results';
+searchResults.style.position = 'absolute';
+searchResults.style.top = '100%';
+searchResults.style.left = '0';
+searchResults.style.width = '100%';
+searchResults.style.background = '#fff';
+searchResults.style.border = '1px solid #0a8754';
+searchResults.style.maxHeight = '300px';
+searchResults.style.overflowY = 'auto';
+searchResults.style.zIndex = '1002';
+searchResults.style.display = 'none';
+searchInput.parentElement.appendChild(searchResults);
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim().toLowerCase();
+  searchResults.innerHTML = '';
+
+  if (!query) {
+    searchResults.style.display = 'none';
+    return;
+  }
+
+  const matches = quran.filter(surah =>
+    surah.name.includes(query) ||
+    (surah.englishName && surah.englishName.toLowerCase().includes(query)) ||
+    (surah.urduName && surah.urduName.includes(query))
+  );
+
+  if (matches.length === 0) {
+    const noRes = document.createElement('div');
+    noRes.textContent = 'No results found';
+    noRes.style.padding = '10px';
+    searchResults.appendChild(noRes);
+  } else {
+    matches.forEach(surah => {
+      const item = document.createElement('div');
+      item.className = 'search-item';
+      item.style.padding = '10px';
+      item.style.cursor = 'pointer';
+      item.style.borderBottom = '1px solid #0a8754';
+      item.innerHTML = `
+        <div class="surah-name">
+          <span class="arabic">${surah.name}</span>
+          ${surah.urduName ? `<span class="urdu">${surah.urduName}</span>` : ''}
+          <span class="english">${surah.englishName}</span>
+        </div>`;
+      item.addEventListener('click', () => {
+        displaySurah(surah);
+        surahSelect.value = quran.indexOf(surah);
+        searchResults.style.display = 'none';
+        searchInput.value = '';
+      });
+      searchResults.appendChild(item);
+    });
+  }
+
+  searchResults.style.display = 'block';
+});
+
+// Close search results if clicked outside
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+    searchResults.style.display = 'none';
+  }
+});

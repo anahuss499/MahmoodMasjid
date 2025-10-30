@@ -29,6 +29,7 @@
           <li><a href="/html/about.html">About Us</a></li>
           <li><a href="/html/contact.html">Contact Us</a></li>
           <li><a href="/html/quran.html">Qur’an</a></li>
+          <li><a href="/html/azkar.html">Duas</a></li>
         <!--  <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In</a></li> -->
         </ul>
       </div>
@@ -95,7 +96,7 @@
     </div>
   </footer>
 
-<script>
+  <script>
 const select = document.getElementById('surah-select');
 fetch('data/full_quran.json')
   .then(res => res.json())
@@ -115,6 +116,7 @@ fetch('data/full_quran.json')
     displaySurah(quran[0]);
   });
 </script>
+
 
   <script src="../js/quran.js"></script>
 

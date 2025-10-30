@@ -1,78 +1,143 @@
-/* ✅ Sticky Controls Bar (Search + Dropdown + Title) */
+/* =============================== */
+/* ✅ Floating Sticky Controls Bar */
+/* =============================== */
 .quran-controls {
   position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(248, 255, 249, 0.85); /* semi-transparent */
-  backdrop-filter: blur(10px); /* soft blur effect */
-  padding: 12px 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  border-bottom: 2px solid #0a8754;
+  top: 12px; /* small offset to look floating */
+  z-index: 1000;
+  background: rgba(248, 255, 249, 0.98); /* almost solid for clarity */
+  backdrop-filter: blur(12px); /* more blur for premium feel */
+  padding: 12px 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* floating shadow */
+  border-radius: 15px; /* rounded edges */
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
+  transition: all 0.3s ease-in-out;
 }
 
+/* Floating hover effect */
+.quran-controls:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+}
 
 /* 🔍 Search Bar */
 #quranSearch {
-  width: 45%;
-  max-width: 350px;
+  width: 250px;
+  max-width: 45%;
+  min-width: 180px;
   padding: 12px 18px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 2px solid #0a8754;
   font-size: 1rem;
   text-align: right;
   direction: rtl;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
 }
+
 #quranSearch:focus {
   outline: none;
   border-color: #00ffc3;
-  box-shadow: 0 0 8px rgba(0, 255, 195, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 195, 0.35);
 }
 
 /* 📜 Dropdown */
 #surah-select {
-  margin: 0;
-  padding: 12px 14px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
   border: 2px solid #0a8754;
-  background: white;
+  background: #f9fff9;
+  color: #222;
   font-size: 1rem;
-  color: #0a8754;
-  cursor: pointer;
   font-family: "Amiri", serif;
-}
-#surah-select:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(10, 135, 84, 0.5);
+  cursor: pointer;
+  width: 250px;
+  max-width: 45%;
+  min-width: 180px;
+  box-sizing: border-box;
+  white-space: normal;
+  transition: all 0.3s ease;
 }
 
-/* 🔸 Dropdown hover fix for browsers that allow styling */
-#surah-select option:hover {
-  background-color: #0a8754; /* green hover */
-  color: #ffffff;            /* white text */
+#surah-select:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(10, 135, 84, 0.5);
 }
+
+/* Floating effect on hover */
+#surah-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Dropdown wrapper for alignment */
+.dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* =============================== */
+/* Mobile adjustments */
+@media (max-width: 992px) {
+  .quran-controls {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 16px;
+  }
+
+  #quranSearch, #surah-select {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .quran-controls {
+    top: 8px; /* slightly smaller top offset */
+  }
+}
+
+@media (max-width: 480px) {
+  .quran-controls {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  #quranSearch, #surah-select {
+    font-size: 0.95rem;
+  }
+}
+
 
 /* 📖 Main Quran Container */
 .quran-container {
   max-width: 950px;
-  margin: 0 auto;
+  margin: 20px auto;
   text-align: right;
   direction: rtl;
   font-family: 'Scheherazade New', 'Amiri', serif;
   color: #111;
+  padding: 0 10px;
 }
 
 /* 🌸 Surah Block */
 .surah-block {
   background: #ffffffc5;
-  padding: 25px;
+  padding: 30px;
   margin-bottom: 80px;
-  border-radius: 15px;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+  border-radius: 18px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.surah-block:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
 }
 
 /* ✅ Surah Title */
@@ -111,20 +176,17 @@
   text-align: justify;
 }
 
-/* 🌿 Each ayah now has a black divider line underneath */
 .ayah {
   display: block;
   padding: 12px 0;
   border-bottom: 1px solid #00000022;
+  transition: background 0.2s ease;
 }
 
-/* Optional: small hover glow on ayah */
 .ayah:hover {
   background: #eaf8f2;
-  transition: 0.2s;
 }
 
-/* Small ayah number */
 .ayah-num {
   color: #0a8754;
   font-size: 1rem;
@@ -149,127 +211,37 @@
   .bismillah { font-size: 1.8rem; }
 }
 
-@media (max-width: 768px) {
-  #menu {
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    background: #f8fff9;
-    padding: 10px 20px;
-  }
-
-  #menu.active {
-    display: flex;
-  }
+/* =============================== */
+/* Hamburger & Mobile Menu */
+#menu {
+  position: relative;
+  z-index: 9999;
 }
-/* Dropdown select styling */
-#surah-select {
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 2px solid #0a8754;
-  font-size: 1rem;
-  color: #0a8754;
-  background: white;
-  font-family: "Amiri", serif;
+
+#hamburger {
   cursor: pointer;
-
-  /* Responsive */
-  width: 100%;
-  max-width: 500px;
-  box-sizing: border-box;
-  white-space: normal; /* allow wrapping for long Surah names */
+  z-index: 10000;
+  position: relative;
 }
 
-/* Focus and hover */
-#surah-select:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(10, 135, 84, 0.5);
-}
-
-/* Option hover (most browsers) */
-#surah-select option:hover {
-  background-color: #0a8754; /* green hover */
-  color: #ffffff;
-}
-
-/* Smaller screens */
-@media (max-width: 768px) {
-  #surah-select {
-    font-size: 0.95rem;
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  #surah-select {
-    font-size: 0.9rem;
-    max-width: 95%;
-  }
-}
-
-/* ✅ Prevent Surah dropdown from going off-screen */
-.quran-controls {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(248, 255, 249, 0.95);
-  backdrop-filter: blur(8px);
-  padding: 12px 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+#menu.active {
+  display: flex !important;
+  background: #f8fff9;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  left: 0;
+  padding: 15px 20px;
   border-bottom: 2px solid #0a8754;
-  display: flex;
-  flex-direction: column; /* stack vertically on smaller screens */
-  align-items: center;
-  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* 🟢 Make sure dropdown stays centered and inside screen */
-#surah-select {
-  width: 90vw;
-  max-width: 400px;
-  overflow-y: auto;
-  position: relative;
-  z-index: 1001; /* ensures it's above footer/nav */
-}
-
-/* 🟢 Ensure dropdown list fits inside viewport on small screens */
+/* =============================== */
+/* Mobile Full-Screen Dropdown */
 @media (max-width: 768px) {
-  #surah-select {
-    font-size: 1rem;
-    max-height: 45vh; /* limit dropdown height */
-  }
-}
-
-/* ✅ iPhone Safari fix: force dropdown within visible area */
-@supports (-webkit-touch-callout: none) {
-  #surah-select {
-    position: relative;
-    transform: translateZ(0);
-  }
-}
-/* 🌙 Base styling for the dropdown */
-.dropdown-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-}
-
-#surah-select {
-  width: 100%;
-  padding: 10px;
-  border: 2px solid #0a8754;
-  border-radius: 8px;
-  background: #f9fff9;
-  color: #222;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-/* 🌙 Full-screen popup dropdown for mobile */
-@media (max-width: 768px) {
-  #surah-select {
-    display: none; /* hide default select on mobile */
-  }
+  #surah-select { display: none; }
 
   .mobile-dropdown {
     position: fixed;
@@ -277,35 +249,21 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: white;
+    background: #f9fff9;
     z-index: 9999;
     overflow-y: auto;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    direction: rtl;
+    font-family: "Amiri", "Scheherazade New", serif;
   }
 
   .mobile-dropdown h3 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-bottom: 15px;
     color: #0a8754;
-  }
-
-  .mobile-dropdown button {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    padding: 10px 0;
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    color: #222;
-  }
-
-  .mobile-dropdown button:hover {
-    background: #0a8754;
-    color: white;
   }
 
   .mobile-dropdown .close-btn {
@@ -315,111 +273,120 @@
     border-radius: 8px;
     margin-bottom: 15px;
     border: none;
+    font-size: 1rem;
+    cursor: pointer;
   }
+
+  .mobile-dropdown .surah-item {
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid #0a8754;
+    border-radius: 10px;
+    background: #f8fff9;
+    margin: 6px 0;
+    padding: 14px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .mobile-dropdown .surah-item:hover {
+    background: #0a8754;
+    color: white;
+  }
+
+  .surah-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .surah-name .arabic { font-size: 1.3rem; font-weight: bold; }
+  .surah-name .urdu { font-size: 1.1rem; color: #0a8754; }
+  .surah-name .english { font-size: 0.95rem; color: #333; }
 }
-/* 🌙 Enhanced Surah list for mobile popup */
-.mobile-dropdown {
-  position: fixed;
-  top: 0;
+
+/* ✅ Live Search Results Styling */
+.search-results {
+  position: absolute;
+  top: 100%;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: white;
-  z-index: 9999;
+  width: 100%;
+  max-width: 400px;
+  background: #f8fff9;
+  border: 2px solid #0a8754;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  max-height: 300px;
   overflow-y: auto;
+  z-index: 1002;
   display: none;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  direction: rtl;
   font-family: "Amiri", "Scheherazade New", serif;
 }
 
-.mobile-dropdown h3 {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-  color: #0a8754;
-}
-
-.mobile-dropdown .close-btn {
-  background: #0a8754;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  border: none;
-  font-size: 1rem;
-}
-
-.mobile-dropdown .surah-item {
-  width: 100%;
-  max-width: 480px;
-  border: 1px solid #0a8754;
-  border-radius: 10px;
-  background: #f8fff9;
-  margin: 5px 0;
-  padding: 12px;
-  text-align: center;
-  transition: 0.2s;
-}
-
-.mobile-dropdown .surah-item:hover {
-  background: #0a8754;
-  color: white;
-}
-
-.surah-name {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.surah-name .arabic {
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-.surah-name .urdu {
-  font-size: 1.1rem;
-  color: #0a8754;
-}
-
-.surah-name .english {
-  font-size: 0.95rem;
-  color: #333;
-}
-
-/* ✅ Ensure mobile menu appears above all other content */
-#menu {
-  position: relative;
-  z-index: 9999; /* make sure it's on top */
-}
-
-/* Hamburger button styling fix */
-#hamburger {
+/* Each search item */
+.search-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #0a875422;
   cursor: pointer;
-  z-index: 10000;
-  position: relative;
+  transition: 0.2s;
+  text-align: right;
+  direction: rtl;
 }
 
-/* When menu is active (open on mobile) */
-#menu.active {
-  display: flex !important;
-  background: #f8fff9;
-  flex-direction: column;
-  gap: 15px;
-  position: absolute;
-  top: 60px; /* adjust based on your header height */
-  right: 0;
-  left: 0;
-  padding: 15px 20px;
-  border-bottom: 2px solid #0a8754;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* Hover effect */
+.search-item:hover {
+  background: #0a8754;
+  color: white;
 }
 
+/* Surah names inside search item */
+.search-item .arabic {
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: block;
+}
 
+.search-item .urdu {
+  font-size: 1rem;
+  color: #0a8754;
+  display: block;
+}
 
+.search-item .english {
+  font-size: 0.9rem;
+  color: #333;
+  display: block;
+}
 
+/* No results styling */
+.search-results div {
+  padding: 12px 15px;
+  text-align: center;
+  color: #555;
+}
 
+/* Small screen adjustments */
+@media (max-width: 768px) {
+  .search-results {
+    max-width: 90vw;
+    top: calc(100% + 5px);
+  }
 
+  .search-item {
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
+}
 
+@media (max-width: 480px) {
+  .search-results {
+    max-width: 95vw;
+    top: calc(100% + 5px);
+  }
+
+  .search-item {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+}
