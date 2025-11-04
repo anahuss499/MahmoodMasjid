@@ -1,5 +1,3 @@
-
-
 /*logo and navbar*/
 .logo img {
   width: 80px; /* Adjust this value */
@@ -203,6 +201,8 @@
 }
 
 
+
+ /* keep the click animation accessible: show/close handled by JS that sets overlay display:flex */
 
 /* 🌟 hover effect */
 .main-menu a {
@@ -556,6 +556,7 @@
 
 
 
+
 /* Live Clock */
 .live-clock-container {
   display: inline-block;
@@ -609,29 +610,40 @@
 }
 
 /* 🌙 Footer Section */
+/* Footer background now spans full width and has no side gaps */
 .footer {
   background: linear-gradient(135deg, #0a8754, #067a4c);
   color: #fff;
   text-align: center;
-  padding: 60px 80px 30px;
+  padding: 60px 20px 30px;
   margin-top: 70px;
-}
-.footer {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  background-color: #0b6623;
-  color: white;
-  text-align: center;
-  padding: 40px 0;
+  overflow-x: hidden; /* prevents left-right scroll on mobile */
+  width: 100%;
+  margin: 0;
 }
 
+/* keep previous footer-content class (some pages use .footer-content) */
 .footer-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* main inner footer container */
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Logo Section */
 .footer-logo img {
   width: 70px;
   margin-bottom: 10px;
@@ -646,12 +658,35 @@
 .footer-logo p {
   font-size: 1rem;
   color: #d8f3e0;
+  max-width: 250px;
+  margin: 0 auto;
 }
 
+.footer-links h4,
 .footer-socials h4 {
   margin-bottom: 10px;
   font-weight: 500;
   color: #ffffffcc;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #00ffc3;
 }
 
 .social-links {
@@ -678,28 +713,174 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 10px;
 }
-/* 📱 Responsive Hamburger Menu */
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .footer-links ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Basic responsive reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Make images and videos scale */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Make text and containers flexible */
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Containers adjust with screen width */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Responsive typography */
+h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+}
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* Mobile-friendly layout tweaks */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .flex {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 0.9rem;
+    padding: 0 10px;
+  }
+}
+
+
+/* =========================
+   🌙 NAVBAR - Modern & Responsive
+========================= */
+.navbar {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Logo */
+.logo img {
+  width: 70px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Menu links */
+.main-menu ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  transition: all 0.3s ease;
+}
+
+.main-menu a {
+  text-decoration: none;
+  color: #0a8754;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.main-menu a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0a8754, #00ffc3);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.main-menu a:hover {
+  color: #00bfa5;
+}
+.main-menu a:hover::after {
+  width: 60%;
+}
+
+/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
-  width: 30px;
-  height: 25px;
-  gap: 5px;
+  width: 25px;
+  height: 20px;
+  justify-content: space-between;
 }
-
 .hamburger span {
-  display: block;
-  width: 100%;
-  height: 3px;
   background: #0a8754;
+  height: 3px;
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
-/* Active hamburger animation */
+/* When active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -707,24 +888,28 @@
   opacity: 0;
 }
 .hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Hide menu on mobile by default */
-@media (max-width: 768px) {
+/* Responsive Menu */
+@media (max-width: 900px) {
+  .hamburger {
+    display: flex;
+  }
+
   .main-menu ul {
     position: absolute;
     top: 70px;
     right: 0;
-    background: white;
-    flex-direction: column;
+    background: #fff;
     width: 100%;
-    text-align: center;
-    display: none;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
     padding: 20px 0;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    z-index: 1000;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    border-top: 2px solid #0a8754;
+    display: none;
   }
 
   .main-menu ul.show {
@@ -732,24 +917,133 @@
     animation: slideDown 0.3s ease forwards;
   }
 
-  .hamburger {
-    display: flex;
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
-
-/* Small slide-down animation */
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =========================
+   🌙 FOOTER - Modern & Responsive
+========================= */
+/* (kept earlier footer styles above; this block reinforces container behavior) */
+.footer {
+  background: linear-gradient(135deg, #0a8754, #067a4c);
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
 }
 
+.footer-container {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: auto;
+  align-items: start;
+}
 
+/* Logo Section */
+.footer-logo img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+.footer-logo h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.footer-logo p {
+  color: #d8f3e0;
+  font-size: 0.95rem;
+}
 
+/* Links */
+.footer-links h4,
+.footer-socials h4 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #ffffffcc;
+}
 
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-links ul li {
+  margin-bottom: 8px;
+}
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-links a:hover {
+  color: #00ffc3;
+}
 
+/* Socials */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.social-links a {
+  color: #fff;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+}
+.social-links a:hover {
+  color: #00ffc3;
+  transform: translateY(-4px);
+}
 
+/* Footer Bottom */
+.footer-bottom {
+  margin-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  padding-top: 10px;
+  font-size: 0.9rem;
+  color: #d8f3e0;
+}
 
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
 
+  .social-links {
+    justify-content: center;
+  }
+}
+/* 🌙 FIXES - Footer Full Width + Logo Click Animation */
 
+/* Force footer background to truly span edge-to-edge */
+.footer {
+  position: relative;
+  width: 100vw; /* use viewport width to eliminate side gaps */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow-x: hidden;
+}
+
+/* Smooth click bounce animation for logo */
+@keyframes logoBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Apply animation when clicked */
+.footer-logo img:active {
+  animation: logoBounce 0.4s ease;
+}
 
 

@@ -123,31 +123,52 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-content">
-      <div class="footer-logo">
-        <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo">
-        <h3>Mahmood Masjid</h3>
-        <p>Building our community, together in faith.</p>
-      </div>
-      <div class="footer-socials">
-        <h4>Follow Us</h4>
-        <div class="social-links">
-          <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank"><i class="fab fa-tiktok"></i></a>
-          <a href="https://youtube.com/@mahmoodmasjid?si=ZGjz9F8QZAnysBh1" target="_blank"><i class="fab fa-youtube"></i></a>
-        </div>
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section footer-logo">
+      <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo">
+      <h3>Mahmood Masjid</h3>
+    </div>
+
+    <div class="footer-section footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="duas.html">Daily Duas</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section footer-socials">
+      <h4>Follow Us</h4>
+      <div class="social-links">
+        <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://youtube.com/@mahmoodmasjid?si=ZGjz9F8QZAnysBh1" target="_blank"><i class="fab fa-youtube"></i></a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2025 Mahmood Masjid. All rights reserved.</p>
-    </div>
-  </footer>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+  </div>
+</footer>
+
+
 
   <!-- Scripts -->
   <script src="../js/main.js"></script>
+  <!--for all screens -->
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.main-menu ul');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+  });
+</script>
 
   <!-- Live Clock & Date Script -->
   <script>
@@ -221,16 +242,6 @@ document.addEventListener('keydown', (e) => {
 
 </script>
 
-<!--for all screens -->
-<script>
-  const hamburger = document.querySelector('.hamburger');
-  const navMenu = document.querySelector('.main-menu ul');
-
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('show');
-  });
-</script>
 
 <!--Prayers Times-->
 

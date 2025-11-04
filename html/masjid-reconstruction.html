@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Masjid Reconstruction - Mahmood Masjid</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="css/masjid-reconstruction.css"> <!-- optional dedicated CSS -->
+  <link rel="stylesheet" href="css/masjid-reconstruction.css">
   <link rel="shortcut icon" href="../Images/greenlogo.png" type="image/x-icon" />
 </head>
 <body>
-  <!-- Navbar (same as homepage) -->
+  <!-- Navbar -->
   <nav class="navbar">
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="container">
       <div class="logo">
         <a href="/html/index.html"><img src="../Images/greenlogo.png" alt="logo"></a>
@@ -22,27 +27,32 @@
           <li><a href="/html/contact.html">Contact Us</a></li>
           <li><a href="/html/quran.html">Qur’an</a></li>
           <li><a href="/html/azkar.html">Duas</a></li>
-          <li><a class="btn btn-light" href="#"><i class="fas fa-user"></i> Log In </a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Masjid Reconstruction Section -->
+  <!-- Reconstruction Section -->
   <section class="reconstruction">
     <div class="gallery">
-  <div class="gallery-item">
-    <h3>Current Masjid</h3>
-    <img src="../Images/mahmood1.jpg" alt="Current Masjid" class="lightbox-img">
-    <img src="../Images/mahmood3.jpg" alt="Current Masjid" class="lightbox-img">
-    
-  </div>
+      <div class="gallery-item">
+        <h3>Current Masjid</h3>
+        <img src="../Images/mahmood1.jpg" alt="Current Masjid" class="lightbox-img">
+        <img src="../Images/mahmood3.jpg" alt="Current Masjid" class="lightbox-img">
+      </div>
 
-  <div class="gallery-item">
-    <h3>New Design</h3>
-    <img src="images/new-design.jpg" alt="New Masjid Design" class="lightbox-img">
-  </div>
-</div>
+      <div class="gallery-item">
+        <h3>New Design</h3>
+        <img src="images/new-design.jpg" alt="New Masjid Design" class="lightbox-img">
+      </div>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="back-home">
+      <a href="/html/index.html" class="btn-home">← Back to Home</a>
+    </div>
+  
+
 
 <!-- Lightbox container -->
 <div id="lightbox" class="lightbox">
@@ -52,48 +62,42 @@
   <a class="next">&#10095;</a>
   <div id="caption"></div>
 </div>
-
-<!--Home Button-->
-<div class="back-home">
-  <a href="/html/index.html" class="btn-home">← Back to Home</a>
-</div>
-    </div>
-
-  </section>
+</section>
 
   <!-- Footer -->
   <footer class="footer">
-  <div class="container footer-content">
-    <div class="footer-logo">
-      <img src="/Images/greenlogo.png" alt="Mahmood Masjid Logo">
-      <h3>Mahmood Masjid</h3>
-      <p>Building our community, together in faith.</p>
-    </div>
-
-    <div class="footer-socials">
-      <h4>Follow Us</h4>
-      <div class="social-links">
-        <!-- socials links -->
-        <a href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" aria-label="Facebook">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.instagram.com/mahmoodmasjid/" target="_blank" aria-label="Instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.tiktok.com/@mahmoodmasjid?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="fa-tiktok">
-          <i class="fab fa-tiktok"></i>
-        </a>
-        <a href="https://youtube.com/@mahmoodmasjid?si=ljr25FbEgr3hByjP" target="_blank" aria-label="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
+    <div class="footer-container">
+      <div class="footer-section footer-logo">
+        <img src="../Images/greenlogo.png" alt="Mahmood Masjid Logo">
+        <h3>Mahmood Masjid</h3>
+      </div>
+      <div class="footer-section footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="duas.html">Daily Duas</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section footer-socials">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="footer-bottom">
+      <p>© 2025 Mahmood Masjid. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  
-  <!--lightbox javascript-->
-  <script>
+
+  <!-- Lightbox JS -->
+<script>
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImage");
   const captionText = document.getElementById("caption");
@@ -153,18 +157,13 @@
       if (e.key === "Escape") lightbox.style.display = "none";
     }
   });
-</script>
-<!--for all screens -->
-<script>
-  const hamburger = document.querySelector('.hamburger');
-  const navMenu = document.querySelector('.main-menu ul');
-
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('show');
-  });
-</script>
-
-
+    // Hamburger toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.main-menu ul');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('show');
+    });
+  </script>
 </body>
 </html>
