@@ -395,4 +395,72 @@ body {
   box-shadow: 0 0 20px rgba(10, 135, 84, 0.5); /* greenish glow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+/* 🌙 Responsive Navbar Fix (same as index) */
+
+/* Hide hamburger by default (desktop) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #0a8754;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* When hamburger is active (clicked) */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+/* Mobile menu hidden initially */
+.main-menu ul {
+  transition: all 0.3s ease;
+}
+
+/* Responsive navbar for small screens */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .main-menu ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .main-menu ul.show {
+    display: flex;
+  }
+
+  .main-menu ul li {
+    margin: 10px 0;
+  }
+
+  .main-menu a {
+    color: #0a8754;
+    font-size: 1.1rem;
+  }
+}
+
 
