@@ -9,6 +9,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Firebase (shared cloud storage for donations, photos, videos, etc.) -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script>
+    // ===== PASTE YOUR FIREBASE PROJECT CONFIG HERE =====
+    // Firebase console → Project settings → General → "Your apps" → SDK setup and configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDYm7_GkKIGXrcpbECCoq4HMTGoPkiOEmU",
+        authDomain: "mahmood-masjid.firebaseapp.com",
+        projectId: "mahmood-masjid",
+        storageBucket: "mahmood-masjid.firebasestorage.app",
+        messagingSenderId: "183934260968",
+        appId: "1:183934260968:web:61939c32355e60f8091b5d"
+      };
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <style>
     :root {
       --green-dark: #0F291F;
@@ -1012,7 +1029,7 @@
         field_image_url: "Image URL",
         field_upload_photo: "Or upload from device",
         field_caption: "Caption", ph_caption: "e.g. Main hall carpet, July 2026",
-        hint_photo: "Paste a link to an image already hosted online, or upload a photo directly from your phone or computer. Click any photo to view it full size.",
+        hint_photo: "Paste a link to an image already hosted online (e.g. Google Drive, Imgur, Google Photos). Click any photo to view it full size.",
         empty_photos_title: "No photos yet",
         empty_photos_text: "Add a photo link or upload one above to start building the gallery.",
         untitled: "Untitled",
@@ -1067,14 +1084,14 @@
         field_current_passcode: "Current passcode", field_new_passcode: "New passcode",
         btn_update_passcode: "Update passcode",
         card_reset_title: "Reset all data",
-        reset_warning: "Clears donations, expenses, photos, videos, infrastructure notes and prayer times from this browser. This can't be undone.",
+        reset_warning: "Clears donations, expenses, photos, videos, infrastructure notes and prayer times for everyone, everywhere. This can't be undone.",
         btn_reset_everything: "Reset everything",
         confirm_reset: "This will permanently clear all data in this panel. Continue?",
-        storage_note: "Data here is stored only in this browser (localStorage). Clearing your browser data, or opening this page on a different device, will not show the same records. Large photos and videos use up storage quickly — for a lot of media, linking to files hosted online works better than uploading. Your passcode is stored as a one-way hash on this device, and is never sent anywhere.",
+        storage_note: "Data here is stored in the cloud (Firebase) and shared by everyone who logs in with the passcode, on any device. Your passcode is stored as a one-way hash, never as plain text.",
         msg_current_incorrect: "Current passcode is incorrect.",
         msg_new_min: "New passcode must be at least 4 characters.",
         msg_updated: "Passcode updated.",
-        storage_full_warning: "Couldn't save — this browser's storage is full. Try removing some large photos/videos, or link to files hosted online instead.",
+        storage_full_warning: "Couldn't save to the cloud database. Check your internet connection and try again.",
         btn_delete: "Delete", btn_remove: "Remove",
         confirm_yes: "Yes, delete", confirm_no: "Cancel",
       },
@@ -1142,7 +1159,7 @@
         field_image_url: "تصویر کا لنک",
         field_upload_photo: "یا ڈیوائس سے اپ لوڈ کریں",
         field_caption: "کیپشن", ph_caption: "مثلاً مرکزی ہال کا قالین، جولائی 2026",
-        hint_photo: "آن لائن پہلے سے موجود تصویر کا لنک لگائیں، یا اپنے فون یا کمپیوٹر سے براہ راست تصویر اپ لوڈ کریں۔ مکمل سائز میں دیکھنے کے لیے کسی بھی تصویر پر کلک کریں۔",
+        hint_photo: "آن لائن پہلے سے موجود تصویر کا لنک لگائیں (مثلاً Google Drive، Imgur، Google Photos)۔ مکمل سائز میں دیکھنے کے لیے کسی بھی تصویر پر کلک کریں۔",
         empty_photos_title: "ابھی تک کوئی تصویر نہیں",
         empty_photos_text: "گیلری بنانے کے لیے اوپر تصویر کا لنک شامل کریں یا اپ لوڈ کریں۔",
         untitled: "بلا عنوان",
@@ -1197,14 +1214,14 @@
         field_current_passcode: "موجودہ پاس کوڈ", field_new_passcode: "نیا پاس کوڈ",
         btn_update_passcode: "پاس کوڈ اپ ڈیٹ کریں",
         card_reset_title: "تمام ڈیٹا دوبارہ ترتیب دیں",
-        reset_warning: "اس براؤزر سے عطیات، اخراجات، تصاویر، ویڈیوز، بنیادی ڈھانچے کے نوٹس اور اوقاتِ نماز حذف کر دیتا ہے۔ اسے واپس نہیں لیا جا سکتا۔",
+        reset_warning: "ہر جگہ، سب کے لیے عطیات، اخراجات، تصاویر، ویڈیوز، بنیادی ڈھانچے کے نوٹس اور اوقاتِ نماز حذف کر دیتا ہے۔ اسے واپس نہیں لیا جا سکتا۔",
         btn_reset_everything: "سب کچھ ری سیٹ کریں",
         confirm_reset: "یہ اس پینل کا تمام ڈیٹا مستقل طور پر حذف کر دے گا۔ جاری رکھیں؟",
-        storage_note: "یہ ڈیٹا صرف اسی براؤزر (لوکل سٹوریج) میں محفوظ ہوتا ہے۔ براؤزر کا ڈیٹا صاف کرنے یا کسی دوسری ڈیوائس پر یہ صفحہ کھولنے سے وہی ریکارڈ نظر نہیں آئیں گے۔ بڑی تصاویر اور ویڈیوز جلدی سٹوریج ختم کر دیتی ہیں — زیادہ میڈیا کے لیے آن لائن ہوسٹ شدہ لنک استعمال کرنا اپ لوڈ کرنے سے بہتر ہے۔ آپ کا پاس کوڈ اس ڈیوائس پر ون وے ہیش کی شکل میں محفوظ ہوتا ہے اور کہیں بھی نہیں بھیجا جاتا۔",
+        storage_note: "یہ ڈیٹا کلاؤڈ (Firebase) میں محفوظ ہوتا ہے اور پاس کوڈ سے لاگ ان ہونے والے ہر شخص کو، ہر ڈیوائس پر، ایک جیسا نظر آتا ہے۔ آپ کا پاس کوڈ ون وے ہیش کی شکل میں محفوظ ہوتا ہے، سادہ متن میں کبھی نہیں۔",
         msg_current_incorrect: "موجودہ پاس کوڈ غلط ہے۔",
         msg_new_min: "نیا پاس کوڈ کم از کم 4 حروف کا ہونا چاہیے۔",
         msg_updated: "پاس کوڈ اپ ڈیٹ ہو گیا۔",
-        storage_full_warning: "محفوظ نہیں ہو سکا — اس براؤزر کا سٹوریج بھر گیا ہے۔ کچھ بڑی تصاویر/ویڈیوز ہٹائیں، یا اس کے بجائے آن لائن لنک استعمال کریں۔",
+        storage_full_warning: "کلاؤڈ ڈیٹا بیس میں محفوظ نہیں ہو سکا۔ اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں۔",
         btn_delete: "حذف کریں", btn_remove: "ہٹائیں",
         confirm_yes: "ہاں، حذف کریں", confirm_no: "منسوخ کریں",
       }
@@ -1299,14 +1316,6 @@
       return "";
     }
     function emptyMonthlyTimes() { return { fajr: "", sunrise: "", dhuhr: "", asr: "", maghrib: "", isha: "", jumma: "" }; }
-    function readFileAsDataURL(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error("read failed"));
-        reader.readAsDataURL(file);
-      });
-    }
     function optionsFor(list, map, selected) {
       return list.map(v => `<option value="${escapeHtml(v)}" ${selected === v ? "selected" : ""}>${escapeHtml(t(map[v]))}</option>`).join("");
     }
@@ -1358,7 +1367,7 @@
       }
     }
 
-    /* ---------- storage (localStorage) ---------- */
+    /* ---------- local-only storage (device preferences, lock rate-limit) ---------- */
     const store = {
       get(key, fallback) {
         try {
@@ -1372,6 +1381,30 @@
         catch (e) { console.error("Storage save failed", key, e); return false; }
       }
     };
+
+    /* ---------- shared cloud storage (Firestore + Storage) ---------- */
+    // Everyone who logs in with the passcode reads and writes the SAME
+    // document, so donors, photos, videos etc. are visible on every device.
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const CLOUD_DOC = db.collection("masjid").doc("main");
+    const CLOUD_FIELDS = ["passcodeHash", "logo", "donations", "expenses", "photos", "videos", "infra", "layout", "prayer"];
+
+    async function loadCloudState() {
+      const snap = await CLOUD_DOC.get();
+      return snap.exists ? snap.data() : {};
+    }
+
+    function saveCloudField(field, value) {
+      CLOUD_DOC.set({ [field]: value }, { merge: true }).catch(err => {
+        console.error("Cloud save failed:", field, err);
+        alert(t("storage_full_warning"));
+      });
+    }
+
+    /* Uploads are disabled — Firebase Storage requires the paid Blaze plan.
+       Photos/videos/logo are added by pasting a link (Google Drive, Imgur,
+       YouTube, etc.) instead. */
 
     /* ---------- passcode hashing (SHA-256, one-way, local only) ---------- */
     async function hashPasscode(pass) {
@@ -1388,20 +1421,24 @@
     const SEED_DONATIONS = [{ "id": "seed-d1", "name": "حمزہ صابر", "city": "محمود آباد", "amount": 110000.0, "date": "" }, { "id": "seed-d2", "name": "ذولفقار بانیاں", "city": "فتح پور", "amount": 10000.0, "date": "" }, { "id": "seed-d3", "name": "مسجد کے پرانے دروازے بھچے تھے", "city": "محمود آباد", "amount": 147000.0, "date": "" }, { "id": "seed-d4", "name": "محمد سفیان", "city": "محمود آباد", "amount": 100000.0, "date": "" }, { "id": "seed-d5", "name": "شبیر احمد  سوتھ افریکہ", "city": "", "amount": 10000.0, "date": "" }, { "id": "seed-d6", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 600000.0, "date": "" }, { "id": "seed-d7", "name": "محمد سفیان", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d8", "name": "محمد صدیق", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d9", "name": "چھوٹی عید چوبیس", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d10", "name": "محمد عادل", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d11", "name": "چھوٹی عید پچیس", "city": "محمود آباد", "amount": 32000.0, "date": "" }, { "id": "seed-d12", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 15000.0, "date": "" }, { "id": "seed-d13", "name": "محمد عادل", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d14", "name": "خدیجہ بی بی", "city": "", "amount": 12000.0, "date": "" }, { "id": "seed-d15", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 300000.0, "date": "" }, { "id": "seed-d16", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 203000.0, "date": "" }, { "id": "seed-d17", "name": "محمد خالد", "city": "محمود آباد", "amount": 400000.0, "date": "" }, { "id": "seed-d18", "name": "ناصر پٹھان", "city": "فتح پور", "amount": 1000.0, "date": "" }, { "id": "seed-d19", "name": "کالے خاں", "city": "فتح پور", "amount": 5000.0, "date": "" }, { "id": "seed-d20", "name": "علی", "city": "باجو", "amount": 45000.0, "date": "" }, { "id": "seed-d21", "name": "مبشر علی", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d22", "name": "اورنگزیب", "city": "عالمگڑہھ", "amount": 5000.0, "date": "" }, { "id": "seed-d23", "name": "مہندی خاں کالس", "city": "خرادیاں", "amount": 1050.0, "date": "" }, { "id": "seed-d24", "name": "اقبال عارف", "city": "بارواں", "amount": 100000.0, "date": "" }, { "id": "seed-d25", "name": "خالد مئر", "city": "فتح پور", "amount": 166000.0, "date": "" }, { "id": "seed-d26", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 52000.0, "date": "" }, { "id": "seed-d27", "name": "شہزاد", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d28", "name": "فضل والد ناصر", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d29", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 367300.0, "date": "" }, { "id": "seed-d30", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d31", "name": "نعیم افظال", "city": "رانیوال", "amount": 100000.0, "date": "" }, { "id": "seed-d32", "name": "محمد عادل", "city": "محمود آباد", "amount": 25000.0, "date": "" }, { "id": "seed-d33", "name": "احسان", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d34", "name": "ارسلان", "city": "لاہور", "amount": 25000.0, "date": "" }, { "id": "seed-d35", "name": "نبیل", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d36", "name": "عبدللہ", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d37", "name": "مبشر علی", "city": "باجو", "amount": 50000.0, "date": "" }, { "id": "seed-d38", "name": "اسماعیل", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d39", "name": "محبوب", "city": "محمود آباد", "amount": 40000.0, "date": "" }, { "id": "seed-d40", "name": "اسماعیل", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d41", "name": "علی والد عظیم", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d42", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 521.0, "date": "" }, { "id": "seed-d43", "name": "کاشف بھائئ", "city": "یوکے", "amount": 166000.0, "date": "" }, { "id": "seed-d44", "name": "ماسٹ ظفر", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d45", "name": "بہن ماسٹر ظفر", "city": "یوکے", "amount": 29600.0, "date": "" }, { "id": "seed-d46", "name": "طارق کشمیری بازار", "city": "یوکے", "amount": 185000.0, "date": "" }, { "id": "seed-d47", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 70000.0, "date": "" }, { "id": "seed-d48", "name": "میجر امجد مرحوم", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d49", "name": "احمد بھائئ", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d50", "name": "الیاس عرف نومی", "city": "یوکے", "amount": 7400.0, "date": "" }, { "id": "seed-d51", "name": "بہن اشفاق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d52", "name": "اسد علی جمیل", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d53", "name": "محمد سفیان", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d54", "name": "حافظ مزکر", "city": "میراں چک", "amount": 5000.0, "date": "" }, { "id": "seed-d55", "name": "خلیل مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d56", "name": "مسرت", "city": "میانی چیچیاں", "amount": 10000.0, "date": "" }, { "id": "seed-d57", "name": "یاسر", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d58", "name": "عاصم", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d59", "name": "محمد صدیق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d60", "name": "حسین", "city": "بنگلہ دیش", "amount": 74000.0, "date": "" }, { "id": "seed-d61", "name": "عبدل باری", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d62", "name": "والی وال", "city": "یوکے", "amount": 149850.0, "date": "" }, { "id": "seed-d63", "name": "عبدللہ دوست", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d64", "name": "محمد راشد", "city": "میانہ چک", "amount": 200.0, "date": "" }, { "id": "seed-d65", "name": "عبدلروف", "city": "باجو", "amount": 23000.0, "date": "" }, { "id": "seed-d66", "name": "ہاشم والد قاسم", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d67", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 500000.0, "date": "" }, { "id": "seed-d68", "name": "نواب ابراہیم", "city": "ابو ظبی", "amount": 40000.0, "date": "" }, { "id": "seed-d69", "name": "علامہ ساجدالرحمن", "city": "گجرات", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d70", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-05" }, { "id": "seed-d71", "name": "محمد سفیان", "city": "محمود آباد", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d72", "name": "حامد علی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d73", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d74", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-13" }, { "id": "seed-d75", "name": "مہر عامر", "city": "محمود آباد", "amount": 125000.0, "date": "2026-03-14" }, { "id": "seed-d76", "name": "ڈاکڑ اللہ دتہ", "city": "جلاپور جٹاں", "amount": 100000.0, "date": "2026-03-14" }, { "id": "seed-d77", "name": "قمر عباس", "city": "کائنتہ", "amount": 50000.0, "date": "2026-03-15" }, { "id": "seed-d78", "name": "زمان", "city": "میر حسین", "amount": 20000.0, "date": "2026-03-15" }, { "id": "seed-d79", "name": "اسلم مرحوم", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-d80", "name": "افضال چیچی", "city": "فتح پور", "amount": 100000.0, "date": "2026-03-17" }, { "id": "seed-d81", "name": "ثاقب چوہدری", "city": "فتح پور", "amount": 200000.0, "date": "2026-03-19" }, { "id": "seed-d82", "name": "چوھدری لیاقت گجر", "city": "جالپوال", "amount": 50000.0, "date": "" }, { "id": "seed-d83", "name": "راہی مسافر", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-19" }, { "id": "seed-d84", "name": "افتخارچیجی", "city": "فتح پور", "amount": 100729.0, "date": "2026-03-19" }, { "id": "seed-d85", "name": "راہی مسافر", "city": "محمود آباد", "amount": 1500.0, "date": "2026-03-19" }, { "id": "seed-d86", "name": "فیضان علی", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-d87", "name": "فیضان علی", "city": "محمود آباد", "amount": 20000.0, "date": "2026-03-23" }, { "id": "seed-d88", "name": "محمد صدیق", "city": "محمود آباد", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-d89", "name": "نواز مرحوم", "city": "بانٹھ", "amount": 50000.0, "date": "2026-03-26" }, { "id": "seed-d90", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "2026-03-26" }, { "id": "seed-d91", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-28" }, { "id": "seed-d92", "name": "اشفاق", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-28" }, { "id": "seed-d93", "name": "مہر علی پرویز", "city": "محمود آباد", "amount": 50500.0, "date": "2026-03-29" }, { "id": "seed-d94", "name": "حماد علی", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-31" }, { "id": "seed-d95", "name": "محمد سفیان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-02" }, { "id": "seed-d96", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 600000.0, "date": "2026-04-04" }, { "id": "seed-d97", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 20000.0, "date": "2026-04-05" }, { "id": "seed-d98", "name": "طارق فوجی", "city": "خرادیاں", "amount": 1000.0, "date": "2026-04-05" }, { "id": "seed-d99", "name": "زمان", "city": "میر حسین", "amount": 5000.0, "date": "2026-04-06" }, { "id": "seed-d100", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-09" }, { "id": "seed-d101", "name": "عمران زمان", "city": "فتح پور", "amount": 50000.0, "date": "2026-04-14" }, { "id": "seed-d102", "name": "احسان الہی", "city": "بامتہ", "amount": 10000.0, "date": "2026-04-14" }, { "id": "seed-d103", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-16" }, { "id": "seed-d104", "name": "عدنان علی", "city": "", "amount": 10000.0, "date": "2026-04-18" }, { "id": "seed-d105", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 2010.0, "date": "2026-04-20" }, { "id": "seed-d106", "name": "قاسم  علی", "city": "محمود آباد", "amount": 130000.0, "date": "2026-04-20" }, { "id": "seed-d107", "name": "حافظ طاہر", "city": "لاہور", "amount": 166000.0, "date": "2026-04-20" }, { "id": "seed-d108", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-21" }, { "id": "seed-d109", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d110", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d111", "name": "محمد سفیان", "city": "محمود آباد", "amount": 3000.0, "date": "2026-04-22" }, { "id": "seed-d112", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-23" }, { "id": "seed-d113", "name": "عادل", "city": "محمود آباد", "amount": 1000.0, "date": "2026-04-23" }, { "id": "seed-d114", "name": "قاسم  علی", "city": "محمود آباد", "amount": 1500000.0, "date": "2026-04-27" }, { "id": "seed-d115", "name": "اصغر", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-04-28" }, { "id": "seed-d116", "name": "اکرم", "city": "خرادیاں", "amount": 500.0, "date": "2026-04-30" }, { "id": "seed-d117", "name": "حاجی مختار", "city": "بولٹن", "amount": 37000.0, "date": "2026-05-05" }, { "id": "seed-d118", "name": "چوہدری سجاد", "city": "بولٹن", "amount": 18500.0, "date": "2026-05-07" }, { "id": "seed-d119", "name": "زاھد", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-07" }, { "id": "seed-d120", "name": "حاجی ندیم", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-11" }, { "id": "seed-d121", "name": "قاری اختر", "city": "بولٹن", "amount": 100000.0, "date": "2026-05-14" }, { "id": "seed-d122", "name": "حافظ شفیق", "city": "بولٹن", "amount": 55500.0, "date": "2026-05-16" }, { "id": "seed-d123", "name": "شہزاد امین", "city": "بولٹن", "amount": 22200.0, "date": "2026-05-20" }, { "id": "seed-d124", "name": "مرزا زبیر", "city": "بولٹن", "amount": 30000.0, "date": "2026-05-21" }, { "id": "seed-d125", "name": "جاوید اختر", "city": "ابو ظبی", "amount": 25092.0, "date": "2026-05-21" }, { "id": "seed-d126", "name": "محمد مقصود", "city": "فتح پور", "amount": 7000.0, "date": "2026-05-21" }, { "id": "seed-d127", "name": "محمد اشفاق", "city": "محمود آباد", "amount": 1000.0, "date": "2026-05-24" }, { "id": "seed-d128", "name": "عبدالمجید", "city": "جلاپور جٹاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d129", "name": "عباس", "city": "خرادیاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d130", "name": "راہی مسافر", "city": "", "amount": 500.0, "date": "2026-05-26" }, { "id": "seed-d131", "name": "امجد ابرار", "city": "محمود آباد", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-d132", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-06-04" }, { "id": "seed-d133", "name": "سفیان", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-05" }, { "id": "seed-d134", "name": "احسن والد بشیر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-06" }, { "id": "seed-d135", "name": "شہباز", "city": "جھنڈے وال", "amount": 5000.0, "date": "2026-06-11" }, { "id": "seed-d136", "name": "قاسم  علی", "city": "محمود آباد", "amount": 5500.0, "date": "" }, { "id": "seed-d137", "name": "امیر حیسن", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d138", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d139", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d140", "name": "محمد شفیق", "city": "محمود آباد", "amount": 7000.0, "date": "" }, { "id": "seed-d141", "name": "محمد ناظم", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d142", "name": "نور محمد", "city": "بھٹہ", "amount": 500.0, "date": "" }, { "id": "seed-d143", "name": "عارل الیاس مرحوم", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d144", "name": "محبوب غنی", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d145", "name": "محمد عافان", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d146", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d147", "name": "مایوں", "city": "یوکے", "amount": 18500.0, "date": "" }, { "id": "seed-d148", "name": "عمران", "city": "یوکے", "amount": 18500.0, "date": "" }, { "id": "seed-d149", "name": "حاجی سداگر", "city": "یوکے", "amount": 379540.0, "date": "" }, { "id": "seed-d150", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "" }, { "id": "seed-d151", "name": "پرویز", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d152", "name": "راہی مسافر", "city": "محمود آباد", "amount": 500.0, "date": "" }, { "id": "seed-d153", "name": "انور", "city": "بانیاں دا ڈیرہ", "amount": 10000.0, "date": "" }];
     const SEED_EXPENSES = [{ "id": "seed-e1", "description": "مسجد شہد", "category": "Other", "amount": 150000.0, "date": "" }, { "id": "seed-e2", "description": "کچرا مزدوری", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e3", "description": "سیڑی کی مزدوری", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e4", "description": "لاءیٹ", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e5", "description": "مٹی مزدری", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e6", "description": "ٹریکڑ", "category": "Other", "amount": 23000.0, "date": "" }, { "id": "seed-e7", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e8", "description": "ٹھکیدار", "category": "Other", "amount": 25000.0, "date": "" }, { "id": "seed-e9", "description": "بنیاد", "category": "Other", "amount": 35000.0, "date": "" }, { "id": "seed-e10", "description": "پاءیپ", "category": "Other", "amount": 7800.0, "date": "" }, { "id": "seed-e11", "description": "جرنیٹر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e12", "description": "مزدور کا کھانا", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e13", "description": "تار", "category": "Other", "amount": 9200.0, "date": "" }, { "id": "seed-e14", "description": "دانش مزدوری", "category": "Other", "amount": 600.0, "date": "" }, { "id": "seed-e15", "description": "ٹھیکدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e16", "description": "سریا", "category": "Other", "amount": 325029.0, "date": "" }, { "id": "seed-e17", "description": "ٹھیکدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e18", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e19", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e20", "description": "سریا مزدوری", "category": "Other", "amount": 415451.0, "date": "" }, { "id": "seed-e21", "description": "شٹرینگ", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e22", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "" }, { "id": "seed-e23", "description": "لیبر کا کھانا", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e24", "description": "اینٹ", "category": "Other", "amount": 503000.0, "date": "" }, { "id": "seed-e25", "description": "ارسلان مزدوری", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e26", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e27", "description": "سریا مزدوری", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e28", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "" }, { "id": "seed-e29", "description": "بھرتی", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e30", "description": "ٹھکیدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e31", "description": "ٹھکیدار", "category": "Other", "amount": 30000.0, "date": "" }, { "id": "seed-e32", "description": "جرنیٹر", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e33", "description": "تار", "category": "Other", "amount": 14000.0, "date": "" }, { "id": "seed-e34", "description": "لیبر کا کھانا", "category": "Other", "amount": 4650.0, "date": "" }, { "id": "seed-e35", "description": "ڈیزل", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e36", "description": "اینٹ", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e37", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e38", "description": "ماربل", "category": "Other", "amount": 56550.0, "date": "" }, { "id": "seed-e39", "description": "مار بل کا کرایہ", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e40", "description": "انجیر", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e41", "description": "ٹھکیدار", "category": "Other", "amount": 27000.0, "date": "" }, { "id": "seed-e42", "description": "چوگھاٹ", "category": "Other", "amount": 139600.0, "date": "" }, { "id": "seed-e43", "description": "ٹھکیدار", "category": "Other", "amount": 47500.0, "date": "" }, { "id": "seed-e44", "description": "ماربل", "category": "Other", "amount": 5450.0, "date": "" }, { "id": "seed-e45", "description": "کرایہ ماربل", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e46", "description": "برش", "category": "Other", "amount": 300.0, "date": "" }, { "id": "seed-e47", "description": "اینٹ", "category": "Other", "amount": 101750.0, "date": "" }, { "id": "seed-e48", "description": "پاءیپ", "category": "Other", "amount": 18000.0, "date": "" }, { "id": "seed-e49", "description": "ٹھکیدار", "category": "Other", "amount": 72000.0, "date": "" }, { "id": "seed-e50", "description": "ٹھکیدار", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e51", "description": "سریا", "category": "Other", "amount": 314498.0, "date": "" }, { "id": "seed-e52", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e53", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e54", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e55", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e56", "description": "انجیر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e57", "description": "ویلڈنگ", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e58", "description": "ٹھکیدار", "category": "Other", "amount": 58000.0, "date": "" }, { "id": "seed-e59", "description": "ٹھکیدار", "category": "Other", "amount": 65000.0, "date": "" }, { "id": "seed-e60", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e61", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "" }, { "id": "seed-e62", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e63", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e64", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e65", "description": "فرماں", "category": "Other", "amount": 2100.0, "date": "" }, { "id": "seed-e66", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e67", "description": "چوگھاٹ", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e68", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e69", "description": "ٹھکیدار", "category": "Other", "amount": 40000.0, "date": "" }, { "id": "seed-e70", "description": "ٹھکیدار", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e71", "description": "انجیر", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e72", "description": "سٹینٹ", "category": "Other", "amount": 3500.0, "date": "2026-03-05" }, { "id": "seed-e73", "description": "پاءیپ", "category": "Other", "amount": 3200.0, "date": "2026-03-12" }, { "id": "seed-e74", "description": "سریا", "category": "Other", "amount": 58264.0, "date": "2026-03-12" }, { "id": "seed-e75", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "2026-03-13" }, { "id": "seed-e76", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-03-14" }, { "id": "seed-e77", "description": "ٹھیکدار", "category": "Other", "amount": 52000.0, "date": "2026-03-14" }, { "id": "seed-e78", "description": "مٹی مزدوری", "category": "Other", "amount": 8850.0, "date": "2026-03-15" }, { "id": "seed-e79", "description": "واپٹا", "category": "Other", "amount": 1500.0, "date": "2026-03-15" }, { "id": "seed-e80", "description": "ٹھیکدار", "category": "Other", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-e81", "description": "بجلی کا سامان", "category": "Other", "amount": 54360.0, "date": "2026-03-17" }, { "id": "seed-e82", "description": "کرایہ", "category": "Other", "amount": 1000.0, "date": "2026-03-19" }, { "id": "seed-e83", "description": "سریا", "category": "Other", "amount": 2152941.0, "date": "" }, { "id": "seed-e84", "description": "ٹھیکدار", "category": "Other", "amount": 73000.0, "date": "2026-03-19" }, { "id": "seed-e85", "description": "پا ءیپ", "category": "Other", "amount": 1300.0, "date": "2026-03-19" }, { "id": "seed-e86", "description": "ٹھیکدار", "category": "Other", "amount": 150000.0, "date": "2026-03-19" }, { "id": "seed-e87", "description": "بجلی مزدوری", "category": "Other", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-e88", "description": "باکٹ", "category": "Other", "amount": 10000.0, "date": "2026-03-23" }, { "id": "seed-e89", "description": "جرنٹر", "category": "Other", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-e90", "description": "پا ءیپ", "category": "Other", "amount": 500.0, "date": "2026-03-26" }, { "id": "seed-e91", "description": "مٹی مزدوری", "category": "Other", "amount": 2000.0, "date": "2026-03-26" }, { "id": "seed-e92", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "2026-03-28" }, { "id": "seed-e93", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "2026-03-28" }, { "id": "seed-e94", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 58000.0, "date": "2026-03-29" }, { "id": "seed-e95", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-03-31" }, { "id": "seed-e96", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-04-02" }, { "id": "seed-e97", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "2026-04-04" }, { "id": "seed-e98", "description": "اینٹ", "category": "Other", "amount": 74400.0, "date": "2026-04-05" }, { "id": "seed-e99", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 11500.0, "date": "2026-04-05" }, { "id": "seed-e100", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "2026-04-06" }, { "id": "seed-e101", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-09" }, { "id": "seed-e102", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-14" }, { "id": "seed-e103", "description": "اینٹ", "category": "Other", "amount": 48750.0, "date": "2026-04-14" }, { "id": "seed-e104", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-04-16" }, { "id": "seed-e105", "description": "ٹھیکدار", "category": "Other", "amount": 90000.0, "date": "2026-04-18" }, { "id": "seed-e106", "description": "اینٹ", "category": "Other", "amount": 68250.0, "date": "2026-04-20" }, { "id": "seed-e107", "description": "ریت", "category": "Other", "amount": 27000.0, "date": "2026-04-20" }, { "id": "seed-e108", "description": "ٹھیکدار", "category": "Other", "amount": 80000.0, "date": "2026-04-20" }, { "id": "seed-e109", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e110", "description": "جرنٹر", "category": "Other", "amount": 3500.0, "date": "2026-04-21" }, { "id": "seed-e111", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e112", "description": "ویلڈنگ", "category": "Other", "amount": 1000.0, "date": "2026-04-22" }, { "id": "seed-e113", "description": "کرایہ", "category": "Other", "amount": 1200.0, "date": "2026-04-23" }, { "id": "seed-e114", "description": "بجلی", "category": "Other", "amount": 9250.0, "date": "2026-04-23" }, { "id": "seed-e115", "description": "ٹھیکدار", "category": "Other", "amount": 55000.0, "date": "2026-04-27" }, { "id": "seed-e116", "description": "تار", "category": "Other", "amount": 90000.0, "date": "2026-04-28" }, { "id": "seed-e117", "description": "ٹھیکدار", "category": "Other", "amount": 63000.0, "date": "2026-04-30" }, { "id": "seed-e118", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-05" }, { "id": "seed-e119", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-07" }, { "id": "seed-e120", "description": "پی ٹرپ", "category": "Other", "amount": 1300.0, "date": "2026-05-07" }, { "id": "seed-e121", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-11" }, { "id": "seed-e122", "description": "اینٹ", "category": "Other", "amount": 12500.0, "date": "2026-05-14" }, { "id": "seed-e123", "description": "یو پی اس", "category": "Other", "amount": 1000.0, "date": "2026-05-16" }, { "id": "seed-e124", "description": "ٹھیکدار", "category": "Other", "amount": 140000.0, "date": "2026-05-20" }, { "id": "seed-e125", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-21" }, { "id": "seed-e126", "description": "بجلی", "category": "Other", "amount": 90000.0, "date": "2026-05-21" }, { "id": "seed-e127", "description": "شاپر", "category": "Other", "amount": 5500.0, "date": "2026-05-21" }, { "id": "seed-e128", "description": "بجلی", "category": "Other", "amount": 10000.0, "date": "2026-05-24" }, { "id": "seed-e129", "description": "ٹھیکدار", "category": "Other", "amount": 240000.0, "date": "2026-05-26" }, { "id": "seed-e130", "description": "اینٹ", "category": "Other", "amount": 99200.0, "date": "2026-05-26" }, { "id": "seed-e131", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-05-26" }, { "id": "seed-e132", "description": "اینٹ", "category": "Other", "amount": 50700.0, "date": "2026-06-04" }, { "id": "seed-e133", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-e134", "description": "سریا", "category": "Other", "amount": 827029.0, "date": "2026-06-05" }, { "id": "seed-e135", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-06-06" }, { "id": "seed-e136", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-06-11" }];
 
-    /* ---------- app state ---------- */
+    /* ---------- app state ----------
+       passcodeHash, logo, donations, expenses, photos, videos, infra,
+       layout and prayer all live in Firestore (CLOUD_DOC) and are filled
+       in by boot() below, once the cloud data has loaded. `lang` stays a
+       per-device preference in localStorage. */
     const state = {
-      passcodeHash: store.get("mm_passcode_hash", null),
+      passcodeHash: null,
       unlocked: false,
       lang: store.get("mm_lang", "en"),
-      logo: store.get("mm_logo", null),
+      logo: null,
       tab: "dashboard",
-      donations: store.get("mm_donations", SEED_DONATIONS),
-      expenses: store.get("mm_expenses", SEED_EXPENSES),
-      photos: store.get("mm_photos", []),
-      videos: store.get("mm_videos", []),
-      infra: store.get("mm_infra", []),
-      layout: store.get("mm_layout", []),
-      prayer: store.get("mm_prayer", { monthly: Array.from({ length: 12 }, emptyMonthlyTimes), overrides: [] }),
+      donations: SEED_DONATIONS,
+      expenses: SEED_EXPENSES,
+      photos: [],
+      videos: [],
+      infra: [],
+      layout: [],
+      prayer: { monthly: Array.from({ length: 12 }, emptyMonthlyTimes), overrides: [] },
       prayerMode: "calendar",
       prayerYear: new Date().getFullYear(),
       prayerMonthIdx: new Date().getMonth(),
@@ -1409,23 +1446,11 @@
       donationQuery: "",
     };
 
-    /* migrate legacy plaintext passcode (older versions of this panel) to a hash */
-    (function migrateLegacyPasscode() {
-      const legacy = store.get("mm_passcode", null);
-      if (legacy && !state.passcodeHash) {
-        hashPasscode(legacy).then(h => {
-          state.passcodeHash = h;
-          store.set("mm_passcode_hash", h);
-          localStorage.removeItem("mm_passcode");
-        });
-      } else if (legacy) {
-        localStorage.removeItem("mm_passcode");
-      }
-    })();
-
     function persist(key) {
-      const map = { donations: "mm_donations", expenses: "mm_expenses", photos: "mm_photos", videos: "mm_videos", infra: "mm_infra", layout: "mm_layout", prayer: "mm_prayer" };
-      return store.set(map[key], state[key]);
+      const map = { donations: "donations", expenses: "expenses", photos: "photos", videos: "videos", infra: "infra", layout: "layout", prayer: "prayer" };
+      const field = map[key];
+      if (field) saveCloudField(field, state[key]);
+      return true;
     }
     function applyLangToDocument() {
       document.documentElement.lang = state.lang === "ur" ? "ur" : "en";
@@ -1509,7 +1534,7 @@
           if (val !== confirmVal) { errorEl.textContent = t("err_mismatch"); return; }
           const h = await hashPasscode(val);
           state.passcodeHash = h;
-          store.set("mm_passcode_hash", h);
+          saveCloudField("passcodeHash", h);
           setLockInfo({ attempts: 0, lockUntil: 0 });
           state.unlocked = true;
           render();
@@ -1831,10 +1856,8 @@
     function viewPhotos() {
       return `
     ${sectionHeader(t("nav_photos"), t("photos_sub", { n: state.photos.length }))}
-    <form id="photo-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1.2fr 1fr auto;">
-      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="p-url" placeholder="https://..." /></label>
-      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
-      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="p-file" accept="image/*" /></label>
+    <form id="photo-form" class="card form-card" style="grid-template-columns:1.6fr 1.2fr 1fr auto;">
+      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="p-url" placeholder="https://..." required /></label>
       <label class="field"><span>${t('field_caption')}</span><input type="text" id="p-caption" placeholder="${t('ph_caption')}" /></label>
       <label class="field"><span>${t('field_category')}</span>
         <select id="p-cat">${optionsFor(PHOTO_CATEGORIES, PCAT_KEY_MAP)}</select>
@@ -1863,13 +1886,7 @@
     function bindPhotos() {
       document.getElementById("photo-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const fileInput = document.getElementById("p-file");
-        const urlVal = document.getElementById("p-url").value.trim();
-        let url = urlVal;
-        if (fileInput.files && fileInput.files[0]) {
-          try { url = await readFileAsDataURL(fileInput.files[0]); }
-          catch (err) { alert("Could not read that file."); return; }
-        }
+        const url = document.getElementById("p-url").value.trim();
         if (!url) return;
         const entry = { id: uid(), url, caption: document.getElementById("p-caption").value.trim(), category: document.getElementById("p-cat").value };
         state.photos = [entry, ...state.photos];
@@ -1893,6 +1910,9 @@
     }
 
     /* ================= VIDEOS ================= */
+    function isDirectVideoUrl(url) {
+      return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(String(url || "").trim());
+    }
     function toEmbedUrl(url) {
       try {
         const u = new URL(url);
@@ -1908,10 +1928,8 @@
     function viewVideos() {
       return `
     ${sectionHeader(t("nav_videos"), t("videos_sub", { n: state.videos.length }))}
-    <form id="video-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1.2fr auto;">
-      <label class="field"><span>${t('field_youtube_link')}</span><input type="url" id="v-url" placeholder="https://youtu.be/..." /></label>
-      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
-      <label class="field"><span>${t('field_upload_video')}</span><input type="file" id="v-file" accept="video/*" /></label>
+    <form id="video-form" class="card form-card" style="grid-template-columns:1.6fr 1.2fr auto;">
+      <label class="field"><span>${t('field_youtube_link')}</span><input type="url" id="v-url" placeholder="https://youtu.be/... or a direct .mp4 link" required /></label>
       <label class="field"><span>${t('field_title')}</span><input type="text" id="v-title" placeholder="${t('ph_video_title')}" /></label>
       <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
     </form>
@@ -1919,12 +1937,12 @@
       <div class="grid-videos">
         ${state.videos.map(v => `
           <div class="card" style="overflow:hidden;">
-            <div class="video-frame">${v.sourceType === 'upload'
+            <div class="video-frame">${isDirectVideoUrl(v.url)
           ? `<video controls src="${safeUrl(v.url)}"></video>`
           : `<iframe src="${safeUrl(toEmbedUrl(v.url))}" title="${escapeHtml(v.title || 'video')}" allowfullscreen></iframe>`}
               <button class="expand-btn" title="${state.lang === 'ur' ? 'بڑا کریں' : 'Enlarge'}"
-                data-lightbox-video="${escapeHtml(v.sourceType === 'upload' ? safeUrl(v.url) : safeUrl(toEmbedUrl(v.url)))}"
-                data-video-type="${v.sourceType === 'upload' ? 'upload' : 'embed'}"
+                data-lightbox-video="${escapeHtml(isDirectVideoUrl(v.url) ? safeUrl(v.url) : safeUrl(toEmbedUrl(v.url)))}"
+                data-video-type="${isDirectVideoUrl(v.url) ? 'upload' : 'embed'}"
                 data-video-title="${escapeHtml(v.title || '')}">${ICONS.expand}</button>
             </div>
             <div style="padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
@@ -1940,16 +1958,9 @@
     function bindVideos() {
       document.getElementById("video-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const fileInput = document.getElementById("v-file");
-        const urlVal = document.getElementById("v-url").value.trim();
-        let url = urlVal;
-        let sourceType = "link";
-        if (fileInput.files && fileInput.files[0]) {
-          try { url = await readFileAsDataURL(fileInput.files[0]); sourceType = "upload"; }
-          catch (err) { alert("Could not read that file."); return; }
-        }
+        const url = document.getElementById("v-url").value.trim();
         if (!url) return;
-        const entry = { id: uid(), url, sourceType, title: document.getElementById("v-title").value.trim() };
+        const entry = { id: uid(), url, sourceType: "link", title: document.getElementById("v-title").value.trim() };
         state.videos = [entry, ...state.videos];
         if (!persist("videos")) {
           state.videos = state.videos.filter(v => v.id !== entry.id);
@@ -1980,9 +1991,7 @@
       <label class="field field-full"><span>${t('field_location')}</span><input type="text" id="i-loc" placeholder="${t('ph_location')}" required /></label>
       <label class="field field-full"><span>${t('field_notes')}</span><textarea id="i-notes" placeholder="${t('ph_notes')}"></textarea></label>
       <label class="field"><span>${t('field_ref_photo')}</span><input type="url" id="i-photo-url" placeholder="https://..." /></label>
-      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="i-photo-file" accept="image/*" /></label>
       <label class="field"><span>${t('field_ref_video')}</span><input type="url" id="i-video-url" placeholder="https://..." /></label>
-      <label class="field"><span>${t('field_upload_video')}</span><input type="file" id="i-video-file" accept="video/*" /></label>
       <label class="field"><span>${t('field_date_logged')}</span><input type="date" id="i-date" value="${todayISO()}" /></label>
       <div class="field-full"><button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_log_item')}</button></div>
     </form>
@@ -2007,7 +2016,7 @@
               ${(i.photoUrl || i.videoUrl) ? `
                 <div class="infra-media">
                   ${i.photoUrl ? `<img src="${safeUrl(i.photoUrl)}" alt="" data-lightbox-img="${escapeHtml(safeUrl(i.photoUrl))}" />` : ""}
-                  ${i.videoUrl ? `<div class="infra-video-wrap"><video controls src="${safeUrl(i.videoUrl)}"></video><button class="expand-btn" title="${state.lang === 'ur' ? 'بڑا کریں' : 'Enlarge'}" data-lightbox-video="${escapeHtml(safeUrl(i.videoUrl))}" data-video-type="upload">${ICONS.expand}</button></div>` : ""}
+                  ${i.videoUrl ? `<div class="infra-video-wrap">${isDirectVideoUrl(i.videoUrl) ? `<video controls src="${safeUrl(i.videoUrl)}"></video>` : `<iframe src="${safeUrl(toEmbedUrl(i.videoUrl))}" allowfullscreen></iframe>`}<button class="expand-btn" title="${state.lang === 'ur' ? 'بڑا کریں' : 'Enlarge'}" data-lightbox-video="${escapeHtml(isDirectVideoUrl(i.videoUrl) ? safeUrl(i.videoUrl) : safeUrl(toEmbedUrl(i.videoUrl)))}" data-video-type="${isDirectVideoUrl(i.videoUrl) ? 'upload' : 'embed'}">${ICONS.expand}</button></div>` : ""}
                 </div>
               ` : ""}
               <div class="infra-date">${t("logged_on", { date: escapeHtml(i.date) })}</div>
@@ -2023,14 +2032,8 @@
         e.preventDefault();
         const location = document.getElementById("i-loc").value.trim();
         if (!location) return;
-        let photoUrl = document.getElementById("i-photo-url").value.trim();
-        let videoUrl = document.getElementById("i-video-url").value.trim();
-        const photoFile = document.getElementById("i-photo-file");
-        const videoFile = document.getElementById("i-video-file");
-        try {
-          if (photoFile.files && photoFile.files[0]) photoUrl = await readFileAsDataURL(photoFile.files[0]);
-          if (videoFile.files && videoFile.files[0]) videoUrl = await readFileAsDataURL(videoFile.files[0]);
-        } catch (err) { alert("Could not read that file."); return; }
+        const photoUrl = document.getElementById("i-photo-url").value.trim();
+        const videoUrl = document.getElementById("i-video-url").value.trim();
         const entry = {
           id: uid(), type: document.getElementById("i-type").value, floor: document.getElementById("i-floor").value,
           location, notes: document.getElementById("i-notes").value.trim(),
@@ -2062,10 +2065,8 @@
     function viewLayout() {
       return `
     ${sectionHeader(t("layout_title"), t("layout_sub"))}
-    <form id="layout-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1fr 1fr auto;">
-      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="l-url" placeholder="https://..." /></label>
-      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
-      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="l-file" accept="image/*" /></label>
+    <form id="layout-form" class="card form-card" style="grid-template-columns:1.6fr 1fr 1fr auto;">
+      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="l-url" placeholder="https://..." required /></label>
       <label class="field"><span>${t('field_layout_title')}</span><input type="text" id="l-title" placeholder="${t('ph_layout_title')}" /></label>
       <label class="field"><span>${t('field_floor')}</span><select id="l-floor">${optionsFor(FLOORS, FLOOR_KEY_MAP)}</select></label>
       <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
@@ -2092,13 +2093,7 @@
     function bindLayout() {
       document.getElementById("layout-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const fileInput = document.getElementById("l-file");
-        const urlVal = document.getElementById("l-url").value.trim();
-        let url = urlVal;
-        if (fileInput.files && fileInput.files[0]) {
-          try { url = await readFileAsDataURL(fileInput.files[0]); }
-          catch (err) { alert("Could not read that file."); return; }
-        }
+        const url = document.getElementById("l-url").value.trim();
         if (!url) return;
         const entry = { id: uid(), url, title: document.getElementById("l-title").value.trim(), floor: document.getElementById("l-floor").value };
         state.layout = [entry, ...state.layout];
@@ -2240,8 +2235,7 @@
       <div style="font-size:12.5px;color:var(--muted-light);margin-bottom:10px;">${t('logo_hint')}</div>
       ${state.logo ? `<img class="logo-preview" src="${state.logo}" />` : ""}
       <form id="logo-form" style="display:grid;gap:10px;">
-        <label class="field"><span>${t('field_image_url')}</span><input type="url" id="logo-url" placeholder="https://..." value="${state.logo && !String(state.logo).startsWith('data:') ? escapeHtml(state.logo) : ''}" /></label>
-        <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="logo-file" accept="image/*" /></label>
+        <label class="field"><span>${t('field_image_url')}</span><input type="url" id="logo-url" placeholder="https://..." value="${state.logo ? escapeHtml(state.logo) : ''}" required /></label>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="submit" class="btn-primary">${t('btn_save_logo')}</button>
           ${state.logo ? `<button type="button" id="logo-remove" class="btn-danger-outline">${t('btn_remove_logo')}</button>` : ""}
@@ -2272,26 +2266,16 @@
     function bindSettings() {
       document.getElementById("logo-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const fileInput = document.getElementById("logo-file");
-        let url = document.getElementById("logo-url").value.trim();
-        if (fileInput.files && fileInput.files[0]) {
-          try { url = await readFileAsDataURL(fileInput.files[0]); }
-          catch (err) { alert("Could not read that file."); return; }
-        }
+        const url = document.getElementById("logo-url").value.trim();
         if (!url) return;
-        const prevLogo = state.logo;
         state.logo = url;
-        if (!store.set("mm_logo", url)) {
-          state.logo = prevLogo;
-          alert(t("storage_full_warning"));
-          return;
-        }
+        saveCloudField("logo", url);
         renderShell();
       });
       const removeBtn = document.getElementById("logo-remove");
       if (removeBtn) removeBtn.addEventListener("click", () => {
         state.logo = null;
-        store.set("mm_logo", null);
+        saveCloudField("logo", null);
         renderShell();
       });
       document.getElementById("passcode-form").addEventListener("submit", async (e) => {
@@ -2304,7 +2288,7 @@
         if (!newP || newP.length < 4) { msg.style.color = "var(--danger)"; msg.textContent = t("msg_new_min"); return; }
         const newHash = await hashPasscode(newP);
         state.passcodeHash = newHash;
-        store.set("mm_passcode_hash", newHash);
+        saveCloudField("passcodeHash", newHash);
         msg.style.color = "var(--green-mid)";
         msg.textContent = t("msg_updated");
         document.getElementById("s-old").value = "";
@@ -2320,7 +2304,80 @@
     }
 
     /* ---------- boot ---------- */
-    render();
+    async function boot() {
+      app.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(circle at 50% 0%, #1E4636, #0F2A22 70%);color:#F4D98A;font-size:14px;">
+      Loading…
+    </div>`;
+      // Sign in anonymously so Firestore/Storage security rules can require
+      // request.auth != null — this keeps the database from being wide open
+      // to anyone who happens to see your Firebase config, while still
+      // letting everyone share one simple passcode inside the app itself.
+      try {
+        await auth.signInAnonymously();
+      } catch (err) {
+        console.error("Could not sign in to Firebase", err);
+        app.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+        background:#2a1414;color:#F4D98A;font-size:14px;padding:24px;text-align:center;">
+        Could not connect to Firebase Authentication. Make sure "Anonymous"
+        sign-in is enabled for this project (Firebase console → Authentication
+        → Sign-in method), then reload.
+      </div>`;
+        return;
+      }
+      let cloud;
+      try {
+        cloud = await loadCloudState();
+      } catch (err) {
+        console.error("Could not reach Firebase", err);
+        app.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+        background:#2a1414;color:#F4D98A;font-size:14px;padding:24px;text-align:center;">
+        Could not connect to the cloud database. Check your internet connection and the
+        Firebase config at the top of this page, then reload.
+      </div>`;
+        return;
+      }
+      state.passcodeHash = cloud.passcodeHash ?? null;
+      state.logo = cloud.logo ?? null;
+      state.donations = cloud.donations ?? SEED_DONATIONS;
+      state.expenses = cloud.expenses ?? SEED_EXPENSES;
+      state.photos = cloud.photos ?? [];
+      state.videos = cloud.videos ?? [];
+      state.infra = cloud.infra ?? [];
+      state.layout = cloud.layout ?? [];
+      state.prayer = cloud.prayer ?? { monthly: Array.from({ length: 12 }, emptyMonthlyTimes), overrides: [] };
+      // First-ever run: seed the shared document with the starter data so
+      // every device starts from the same donations/expenses list.
+      if (!("donations" in cloud)) saveCloudField("donations", state.donations);
+      if (!("expenses" in cloud)) saveCloudField("expenses", state.expenses);
+      render();
+      listenForCloudUpdates();
+    }
+
+    /* Keeps every open device in sync: when someone else adds a donation,
+       photo, video, etc. this tab picks it up automatically. Skips
+       re-rendering while the person is actively typing in a form. */
+    function listenForCloudUpdates() {
+      CLOUD_DOC.onSnapshot(snap => {
+        if (!snap.exists) return;
+        const data = snap.data();
+        const active = document.activeElement;
+        const isTyping = active && ["INPUT", "TEXTAREA", "SELECT"].includes(active.tagName);
+        let changed = false;
+        CLOUD_FIELDS.forEach(f => {
+          if (f in data && JSON.stringify(data[f]) !== JSON.stringify(state[f])) {
+            state[f] = data[f];
+            changed = true;
+          }
+        });
+        if (changed && state.unlocked && !isTyping) renderMain();
+      }, err => console.error("Cloud sync error:", err));
+    }
+
+    boot();
   </script>
 </body>
 
