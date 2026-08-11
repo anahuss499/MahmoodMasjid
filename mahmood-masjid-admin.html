@@ -27,6 +27,8 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
       --green-dark: #0F291F;
@@ -1423,7 +1425,391 @@
     /* ---------- seed data imported from Mahmood Masjid donations sheet ---------- */
     const SEED_DONATIONS = [{ "id": "seed-d1", "name": "حمزہ صابر", "city": "محمود آباد", "amount": 110000.0, "date": "" }, { "id": "seed-d2", "name": "ذولفقار بانیاں", "city": "فتح پور", "amount": 10000.0, "date": "" }, { "id": "seed-d3", "name": "مسجد کے پرانے دروازے بھچے تھے", "city": "محمود آباد", "amount": 147000.0, "date": "" }, { "id": "seed-d4", "name": "محمد سفیان", "city": "محمود آباد", "amount": 100000.0, "date": "" }, { "id": "seed-d5", "name": "شبیر احمد  سوتھ افریکہ", "city": "", "amount": 10000.0, "date": "" }, { "id": "seed-d6", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 600000.0, "date": "" }, { "id": "seed-d7", "name": "محمد سفیان", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d8", "name": "محمد صدیق", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d9", "name": "چھوٹی عید چوبیس", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d10", "name": "محمد عادل", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d11", "name": "چھوٹی عید پچیس", "city": "محمود آباد", "amount": 32000.0, "date": "" }, { "id": "seed-d12", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 15000.0, "date": "" }, { "id": "seed-d13", "name": "محمد عادل", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d14", "name": "خدیجہ بی بی", "city": "", "amount": 12000.0, "date": "" }, { "id": "seed-d15", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 300000.0, "date": "" }, { "id": "seed-d16", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 203000.0, "date": "" }, { "id": "seed-d17", "name": "محمد خالد", "city": "محمود آباد", "amount": 400000.0, "date": "" }, { "id": "seed-d18", "name": "ناصر پٹھان", "city": "فتح پور", "amount": 1000.0, "date": "" }, { "id": "seed-d19", "name": "کالے خاں", "city": "فتح پور", "amount": 5000.0, "date": "" }, { "id": "seed-d20", "name": "علی", "city": "باجو", "amount": 45000.0, "date": "" }, { "id": "seed-d21", "name": "مبشر علی", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d22", "name": "اورنگزیب", "city": "عالمگڑہھ", "amount": 5000.0, "date": "" }, { "id": "seed-d23", "name": "مہندی خاں کالس", "city": "خرادیاں", "amount": 1050.0, "date": "" }, { "id": "seed-d24", "name": "اقبال عارف", "city": "بارواں", "amount": 100000.0, "date": "" }, { "id": "seed-d25", "name": "خالد مئر", "city": "فتح پور", "amount": 166000.0, "date": "" }, { "id": "seed-d26", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 52000.0, "date": "" }, { "id": "seed-d27", "name": "شہزاد", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d28", "name": "فضل والد ناصر", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d29", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 367300.0, "date": "" }, { "id": "seed-d30", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d31", "name": "نعیم افظال", "city": "رانیوال", "amount": 100000.0, "date": "" }, { "id": "seed-d32", "name": "محمد عادل", "city": "محمود آباد", "amount": 25000.0, "date": "" }, { "id": "seed-d33", "name": "احسان", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d34", "name": "ارسلان", "city": "لاہور", "amount": 25000.0, "date": "" }, { "id": "seed-d35", "name": "نبیل", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d36", "name": "عبدللہ", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d37", "name": "مبشر علی", "city": "باجو", "amount": 50000.0, "date": "" }, { "id": "seed-d38", "name": "اسماعیل", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d39", "name": "محبوب", "city": "محمود آباد", "amount": 40000.0, "date": "" }, { "id": "seed-d40", "name": "اسماعیل", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d41", "name": "علی والد عظیم", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d42", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 521.0, "date": "" }, { "id": "seed-d43", "name": "کاشف بھائئ", "city": "یوکے", "amount": 166000.0, "date": "" }, { "id": "seed-d44", "name": "ماسٹ ظفر", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d45", "name": "بہن ماسٹر ظفر", "city": "یوکے", "amount": 29600.0, "date": "" }, { "id": "seed-d46", "name": "طارق کشمیری بازار", "city": "یوکے", "amount": 185000.0, "date": "" }, { "id": "seed-d47", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 70000.0, "date": "" }, { "id": "seed-d48", "name": "میجر امجد مرحوم", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d49", "name": "احمد بھائئ", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d50", "name": "الیاس عرف نومی", "city": "یوکے", "amount": 7400.0, "date": "" }, { "id": "seed-d51", "name": "بہن اشفاق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d52", "name": "اسد علی جمیل", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d53", "name": "محمد سفیان", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d54", "name": "حافظ مزکر", "city": "میراں چک", "amount": 5000.0, "date": "" }, { "id": "seed-d55", "name": "خلیل مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d56", "name": "مسرت", "city": "میانی چیچیاں", "amount": 10000.0, "date": "" }, { "id": "seed-d57", "name": "یاسر", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d58", "name": "عاصم", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d59", "name": "محمد صدیق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d60", "name": "حسین", "city": "بنگلہ دیش", "amount": 74000.0, "date": "" }, { "id": "seed-d61", "name": "عبدل باری", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d62", "name": "والی وال", "city": "یوکے", "amount": 149850.0, "date": "" }, { "id": "seed-d63", "name": "عبدللہ دوست", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d64", "name": "محمد راشد", "city": "میانہ چک", "amount": 200.0, "date": "" }, { "id": "seed-d65", "name": "عبدلروف", "city": "باجو", "amount": 23000.0, "date": "" }, { "id": "seed-d66", "name": "ہاشم والد قاسم", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d67", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 500000.0, "date": "" }, { "id": "seed-d68", "name": "نواب ابراہیم", "city": "ابو ظبی", "amount": 40000.0, "date": "" }, { "id": "seed-d69", "name": "علامہ ساجدالرحمن", "city": "گجرات", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d70", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-05" }, { "id": "seed-d71", "name": "محمد سفیان", "city": "محمود آباد", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d72", "name": "حامد علی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d73", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d74", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-13" }, { "id": "seed-d75", "name": "مہر عامر", "city": "محمود آباد", "amount": 125000.0, "date": "2026-03-14" }, { "id": "seed-d76", "name": "ڈاکڑ اللہ دتہ", "city": "جلاپور جٹاں", "amount": 100000.0, "date": "2026-03-14" }, { "id": "seed-d77", "name": "قمر عباس", "city": "کائنتہ", "amount": 50000.0, "date": "2026-03-15" }, { "id": "seed-d78", "name": "زمان", "city": "میر حسین", "amount": 20000.0, "date": "2026-03-15" }, { "id": "seed-d79", "name": "اسلم مرحوم", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-d80", "name": "افضال چیچی", "city": "فتح پور", "amount": 100000.0, "date": "2026-03-17" }, { "id": "seed-d81", "name": "ثاقب چوہدری", "city": "فتح پور", "amount": 200000.0, "date": "2026-03-19" }, { "id": "seed-d82", "name": "چوھدری لیاقت گجر", "city": "جالپوال", "amount": 50000.0, "date": "" }, { "id": "seed-d83", "name": "راہی مسافر", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-19" }, { "id": "seed-d84", "name": "افتخارچیجی", "city": "فتح پور", "amount": 100729.0, "date": "2026-03-19" }, { "id": "seed-d85", "name": "راہی مسافر", "city": "محمود آباد", "amount": 1500.0, "date": "2026-03-19" }, { "id": "seed-d86", "name": "فیضان علی", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-d87", "name": "فیضان علی", "city": "محمود آباد", "amount": 20000.0, "date": "2026-03-23" }, { "id": "seed-d88", "name": "محمد صدیق", "city": "محمود آباد", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-d89", "name": "نواز مرحوم", "city": "بانٹھ", "amount": 50000.0, "date": "2026-03-26" }, { "id": "seed-d90", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "2026-03-26" }, { "id": "seed-d91", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-28" }, { "id": "seed-d92", "name": "اشفاق", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-28" }, { "id": "seed-d93", "name": "مہر علی پرویز", "city": "محمود آباد", "amount": 50500.0, "date": "2026-03-29" }, { "id": "seed-d94", "name": "حماد علی", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-31" }, { "id": "seed-d95", "name": "محمد سفیان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-02" }, { "id": "seed-d96", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 600000.0, "date": "2026-04-04" }, { "id": "seed-d97", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 20000.0, "date": "2026-04-05" }, { "id": "seed-d98", "name": "طارق فوجی", "city": "خرادیاں", "amount": 1000.0, "date": "2026-04-05" }, { "id": "seed-d99", "name": "زمان", "city": "میر حسین", "amount": 5000.0, "date": "2026-04-06" }, { "id": "seed-d100", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-09" }, { "id": "seed-d101", "name": "عمران زمان", "city": "فتح پور", "amount": 50000.0, "date": "2026-04-14" }, { "id": "seed-d102", "name": "احسان الہی", "city": "بامتہ", "amount": 10000.0, "date": "2026-04-14" }, { "id": "seed-d103", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-16" }, { "id": "seed-d104", "name": "عدنان علی", "city": "", "amount": 10000.0, "date": "2026-04-18" }, { "id": "seed-d105", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 2010.0, "date": "2026-04-20" }, { "id": "seed-d106", "name": "قاسم  علی", "city": "محمود آباد", "amount": 130000.0, "date": "" }, { "id": "seed-d107", "name": "حافظ طاہر", "city": "لاہور", "amount": 166000.0, "date": "2026-04-20" }, { "id": "seed-d108", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-21" }, { "id": "seed-d109", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d110", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d111", "name": "محمد سفیان", "city": "محمود آباد", "amount": 3000.0, "date": "2026-04-22" }, { "id": "seed-d112", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-23" }, { "id": "seed-d113", "name": "عادل", "city": "محمود آباد", "amount": 1000.0, "date": "2026-04-23" }, { "id": "seed-d114", "name": "قاسم  علی", "city": "محمود آباد", "amount": 1500000.0, "date": "2026-04-27" }, { "id": "seed-d115", "name": "اصغر", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-04-28" }, { "id": "seed-d116", "name": "اکرم", "city": "خرادیاں", "amount": 500.0, "date": "2026-04-30" }, { "id": "seed-d117", "name": "حاجی مختار", "city": "بولٹن", "amount": 37000.0, "date": "2026-05-05" }, { "id": "seed-d118", "name": "چوہدری سجاد", "city": "بولٹن", "amount": 18500.0, "date": "2026-05-07" }, { "id": "seed-d119", "name": "زاھد", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-07" }, { "id": "seed-d120", "name": "حاجی ندیم", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-11" }, { "id": "seed-d121", "name": "قاری اختر", "city": "بولٹن", "amount": 100000.0, "date": "2026-05-14" }, { "id": "seed-d122", "name": "حافظ شفیق", "city": "بولٹن", "amount": 55500.0, "date": "2026-05-16" }, { "id": "seed-d123", "name": "شہزاد امین", "city": "بولٹن", "amount": 22200.0, "date": "2026-05-20" }, { "id": "seed-d124", "name": "مرزا زبیر", "city": "بولٹن", "amount": 30000.0, "date": "2026-05-21" }, { "id": "seed-d125", "name": "جاوید اختر", "city": "ابو ظبی", "amount": 25092.0, "date": "2026-05-21" }, { "id": "seed-d126", "name": "محمد مقصود", "city": "فتح پور", "amount": 7000.0, "date": "2026-05-21" }, { "id": "seed-d127", "name": "محمد اشفاق", "city": "محمود آباد", "amount": 1000.0, "date": "2026-05-24" }, { "id": "seed-d128", "name": "عبدالمجید", "city": "جلاپور جٹاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d129", "name": "عباس", "city": "خرادیاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d130", "name": "راہی مسافر", "city": "", "amount": 500.0, "date": "2026-05-26" }, { "id": "seed-d131", "name": "امجد ابرار", "city": "محمود آباد", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-d132", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-06-04" }, { "id": "seed-d133", "name": "سفیان", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-05" }, { "id": "seed-d134", "name": "احسن والد بشیر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-06" }, { "id": "seed-d135", "name": "شہباز", "city": "جھنڈے وال", "amount": 5000.0, "date": "2026-06-11" }, { "id": "seed-d136", "name": "قاسم  علی", "city": "محمود آباد", "amount": 5500.0, "date": "2026-06-18" }, { "id": "seed-d137", "name": "امیر حیسن", "city": "محمود آباد", "amount": 2000.0, "date": "2026-06-21" }, { "id": "seed-d138", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-06-22" }, { "id": "seed-d139", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 1000.0, "date": "2026-06-02" }, { "id": "seed-d140", "name": "محمد شفیق", "city": "محمود آباد", "amount": 7000.0, "date": "2026-07-02" }, { "id": "seed-d141", "name": "محمد ناظم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-06-25" }, { "id": "seed-d142", "name": "نور محمد", "city": "بھٹہ", "amount": 500.0, "date": "2026-06-26" }, { "id": "seed-d143", "name": "عارل الیاس مرحوم", "city": "محمود آباد", "amount": 2000.0, "date": "2026-07-09" }, { "id": "seed-d144", "name": "محبوب غنی", "city": "محمود آباد", "amount": 2000.0, "date": "2026-07-16" }, { "id": "seed-d145", "name": "محمد عافان", "city": "محمود آباد", "amount": 10000.0, "date": "2026-07-23" }, { "id": "seed-d146", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "2026-07-30" }, { "id": "seed-d147", "name": "مایوں", "city": "یوکے", "amount": 18500.0, "date": "2026-08-02" }, { "id": "seed-d148", "name": "عمران", "city": "یوکے", "amount": 18500.0, "date": "2026-04-27" }, { "id": "seed-d149", "name": "حاجی سداگر", "city": "یوکے", "amount": 379540.0, "date": "2026-04-28" }, { "id": "seed-d150", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "2026-04-28" }, { "id": "seed-d151", "name": "پرویز", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d152", "name": "راہی مسافر", "city": "محمود آباد", "amount": 500.0, "date": "" }, { "id": "seed-d153", "name": "انور", "city": "بانیاں دا ڈیرہ", "amount": 10000.0, "date": "" }, { "id": "seed-d154", "name": "محمد اسلم", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d155", "name": "ذلفقار", "city": "بانیاں دا ڈیرہ", "amount": 3000.0, "date": "" }, { "id": "seed-d156", "name": "میر حسن", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d157", "name": "محمداسلم", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d158", "name": "سکریپ", "city": "محمود آباد", "amount": 8000.0, "date": "" }, { "id": "seed-d159", "name": "قمر عباس", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d160", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d161", "name": "سکریپ", "city": "محمود آباد", "amount": 5600.0, "date": "" }, { "id": "seed-d162", "name": "محمد عمر", "city": "بانیاں دا ڈیرہ", "amount": 10000.0, "date": "" }, { "id": "seed-d163", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 40000.0, "date": "" }];
     const SEED_EXPENSES = [{ "id": "seed-e1", "description": "مسجد شہد", "category": "Other", "amount": 150000.0, "date": "" }, { "id": "seed-e2", "description": "کچرا مزدوری", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e3", "description": "سیڑی کی مزدوری", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e4", "description": "لاءیٹ", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e5", "description": "مٹی مزدری", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e6", "description": "ٹریکڑ", "category": "Other", "amount": 23000.0, "date": "" }, { "id": "seed-e7", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e8", "description": "ٹھکیدار", "category": "Other", "amount": 25000.0, "date": "" }, { "id": "seed-e9", "description": "بنیاد", "category": "Other", "amount": 35000.0, "date": "" }, { "id": "seed-e10", "description": "پاءیپ", "category": "Other", "amount": 7800.0, "date": "" }, { "id": "seed-e11", "description": "جرنیٹر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e12", "description": "مزدور کا کھانا", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e13", "description": "تار", "category": "Other", "amount": 9200.0, "date": "" }, { "id": "seed-e14", "description": "دانش مزدوری", "category": "Other", "amount": 600.0, "date": "" }, { "id": "seed-e15", "description": "ٹھیکدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e16", "description": "سریا", "category": "Other", "amount": 325029.0, "date": "" }, { "id": "seed-e17", "description": "ٹھیکدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e18", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e19", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e20", "description": "سریا مزدوری", "category": "Other", "amount": 415451.0, "date": "" }, { "id": "seed-e21", "description": "شٹرینگ", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e22", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "" }, { "id": "seed-e23", "description": "لیبر کا کھانا", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e24", "description": "اینٹ", "category": "Other", "amount": 503000.0, "date": "" }, { "id": "seed-e25", "description": "ارسلان مزدوری", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e26", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e27", "description": "سریا مزدوری", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e28", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "" }, { "id": "seed-e29", "description": "بھرتی", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e30", "description": "ٹھکیدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e31", "description": "ٹھکیدار", "category": "Other", "amount": 30000.0, "date": "" }, { "id": "seed-e32", "description": "جرنیٹر", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e33", "description": "تار", "category": "Other", "amount": 14000.0, "date": "" }, { "id": "seed-e34", "description": "لیبر کا کھانا", "category": "Other", "amount": 4650.0, "date": "" }, { "id": "seed-e35", "description": "ڈیزل", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e36", "description": "اینٹ", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e37", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e38", "description": "ماربل", "category": "Other", "amount": 56550.0, "date": "" }, { "id": "seed-e39", "description": "مار بل کا کرایہ", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e40", "description": "انجیر", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e41", "description": "ٹھکیدار", "category": "Other", "amount": 27000.0, "date": "" }, { "id": "seed-e42", "description": "چوگھاٹ", "category": "Other", "amount": 139600.0, "date": "" }, { "id": "seed-e43", "description": "ٹھکیدار", "category": "Other", "amount": 47500.0, "date": "" }, { "id": "seed-e44", "description": "ماربل", "category": "Other", "amount": 5450.0, "date": "" }, { "id": "seed-e45", "description": "کرایہ ماربل", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e46", "description": "برش", "category": "Other", "amount": 300.0, "date": "" }, { "id": "seed-e47", "description": "اینٹ", "category": "Other", "amount": 101750.0, "date": "" }, { "id": "seed-e48", "description": "پاءیپ", "category": "Other", "amount": 18000.0, "date": "" }, { "id": "seed-e49", "description": "ٹھکیدار", "category": "Other", "amount": 72000.0, "date": "" }, { "id": "seed-e50", "description": "ٹھکیدار", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e51", "description": "سریا", "category": "Other", "amount": 314498.0, "date": "" }, { "id": "seed-e52", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e53", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e54", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e55", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e56", "description": "انجیر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e57", "description": "ویلڈنگ", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e58", "description": "ٹھکیدار", "category": "Other", "amount": 58000.0, "date": "" }, { "id": "seed-e59", "description": "ٹھکیدار", "category": "Other", "amount": 65000.0, "date": "" }, { "id": "seed-e60", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e61", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "" }, { "id": "seed-e62", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e63", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e64", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e65", "description": "فرماں", "category": "Other", "amount": 2100.0, "date": "" }, { "id": "seed-e66", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e67", "description": "چوگھاٹ", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e68", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e69", "description": "ٹھکیدار", "category": "Other", "amount": 40000.0, "date": "" }, { "id": "seed-e70", "description": "ٹھکیدار", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e71", "description": "انجیر", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e72", "description": "سٹینٹ", "category": "Other", "amount": 3500.0, "date": "2026-03-05" }, { "id": "seed-e73", "description": "پاءیپ", "category": "Other", "amount": 3200.0, "date": "2026-03-12" }, { "id": "seed-e74", "description": "سریا", "category": "Other", "amount": 58264.0, "date": "2026-03-12" }, { "id": "seed-e75", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "2026-03-13" }, { "id": "seed-e76", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-03-14" }, { "id": "seed-e77", "description": "ٹھیکدار", "category": "Other", "amount": 52000.0, "date": "2026-03-14" }, { "id": "seed-e78", "description": "مٹی مزدوری", "category": "Other", "amount": 8850.0, "date": "2026-03-15" }, { "id": "seed-e79", "description": "واپٹا", "category": "Other", "amount": 1500.0, "date": "2026-03-15" }, { "id": "seed-e80", "description": "ٹھیکدار", "category": "Other", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-e81", "description": "بجلی کا سامان", "category": "Other", "amount": 54360.0, "date": "2026-03-17" }, { "id": "seed-e82", "description": "کرایہ", "category": "Other", "amount": 1000.0, "date": "2026-03-19" }, { "id": "seed-e83", "description": "سریا", "category": "Other", "amount": 2152941.0, "date": "" }, { "id": "seed-e84", "description": "ٹھیکدار", "category": "Other", "amount": 73000.0, "date": "2026-03-19" }, { "id": "seed-e85", "description": "پا ءیپ", "category": "Other", "amount": 1300.0, "date": "2026-03-19" }, { "id": "seed-e86", "description": "ٹھیکدار", "category": "Other", "amount": 150000.0, "date": "2026-03-19" }, { "id": "seed-e87", "description": "بجلی مزدوری", "category": "Other", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-e88", "description": "باکٹ", "category": "Other", "amount": 10000.0, "date": "2026-03-23" }, { "id": "seed-e89", "description": "جرنٹر", "category": "Other", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-e90", "description": "پا ءیپ", "category": "Other", "amount": 500.0, "date": "2026-03-26" }, { "id": "seed-e91", "description": "مٹی مزدوری", "category": "Other", "amount": 2000.0, "date": "2026-03-26" }, { "id": "seed-e92", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "2026-03-28" }, { "id": "seed-e93", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "2026-03-28" }, { "id": "seed-e94", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 58000.0, "date": "2026-03-29" }, { "id": "seed-e95", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-03-31" }, { "id": "seed-e96", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-04-02" }, { "id": "seed-e97", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "2026-04-04" }, { "id": "seed-e98", "description": "اینٹ", "category": "Other", "amount": 74400.0, "date": "2026-04-05" }, { "id": "seed-e99", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 11500.0, "date": "2026-04-05" }, { "id": "seed-e100", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "2026-04-06" }, { "id": "seed-e101", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-09" }, { "id": "seed-e102", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-14" }, { "id": "seed-e103", "description": "اینٹ", "category": "Other", "amount": 48750.0, "date": "2026-04-14" }, { "id": "seed-e104", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-04-16" }, { "id": "seed-e105", "description": "ٹھیکدار", "category": "Other", "amount": 90000.0, "date": "2026-04-18" }, { "id": "seed-e106", "description": "اینٹ", "category": "Other", "amount": 68250.0, "date": "2026-04-20" }, { "id": "seed-e107", "description": "ریت", "category": "Other", "amount": 27000.0, "date": "" }, { "id": "seed-e108", "description": "ٹھیکدار", "category": "Other", "amount": 80000.0, "date": "2026-04-20" }, { "id": "seed-e109", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e110", "description": "جرنٹر", "category": "Other", "amount": 3500.0, "date": "2026-04-21" }, { "id": "seed-e111", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e112", "description": "ویلڈنگ", "category": "Other", "amount": 1000.0, "date": "2026-04-22" }, { "id": "seed-e113", "description": "کرایہ", "category": "Other", "amount": 1200.0, "date": "2026-04-23" }, { "id": "seed-e114", "description": "بجلی", "category": "Other", "amount": 9250.0, "date": "2026-04-23" }, { "id": "seed-e115", "description": "ٹھیکدار", "category": "Other", "amount": 55000.0, "date": "2026-04-27" }, { "id": "seed-e116", "description": "تار", "category": "Other", "amount": 9000.0, "date": "2026-04-28" }, { "id": "seed-e117", "description": "ٹھیکدار", "category": "Other", "amount": 63000.0, "date": "2026-04-30" }, { "id": "seed-e118", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-05" }, { "id": "seed-e119", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-07" }, { "id": "seed-e120", "description": "پی ٹرپ", "category": "Other", "amount": 1300.0, "date": "2026-05-07" }, { "id": "seed-e121", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-11" }, { "id": "seed-e122", "description": "اینٹ", "category": "Other", "amount": 12500.0, "date": "2026-05-14" }, { "id": "seed-e123", "description": "یو پی اس", "category": "Other", "amount": 1000.0, "date": "2026-05-16" }, { "id": "seed-e124", "description": "ٹھیکدار", "category": "Other", "amount": 140000.0, "date": "2026-05-20" }, { "id": "seed-e125", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-21" }, { "id": "seed-e126", "description": "بجلی", "category": "Other", "amount": 90000.0, "date": "2026-05-21" }, { "id": "seed-e127", "description": "شاپر", "category": "Other", "amount": 5500.0, "date": "2026-05-21" }, { "id": "seed-e128", "description": "بجلی", "category": "Other", "amount": 10000.0, "date": "2026-05-24" }, { "id": "seed-e129", "description": "ٹھیکدار", "category": "Other", "amount": 240000.0, "date": "2026-05-26" }, { "id": "seed-e130", "description": "اینٹ", "category": "Other", "amount": 99200.0, "date": "2026-05-26" }, { "id": "seed-e131", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-05-26" }, { "id": "seed-e132", "description": "اینٹ", "category": "Other", "amount": 50700.0, "date": "2026-06-04" }, { "id": "seed-e133", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-e134", "description": "سریا", "category": "Other", "amount": 827029.0, "date": "2026-06-05" }, { "id": "seed-e135", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-06-06" }, { "id": "seed-e136", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-06-11" }, { "id": "seed-e137", "description": "ٹھیکدار", "category": "Other", "amount": 43000.0, "date": "2026-06-18" }, { "id": "seed-e138", "description": "اینٹ", "category": "Other", "amount": 70000.0, "date": "2026-06-21" }, { "id": "seed-e139", "description": "اینٹ", "category": "Other", "amount": 30000.0, "date": "2026-06-22" }, { "id": "seed-e140", "description": "بجلی سامان", "category": "Other", "amount": 26850.0, "date": "2026-06-02" }, { "id": "seed-e141", "description": "ٹھیکدار", "category": "Other", "amount": 60000.0, "date": "2026-07-02" }, { "id": "seed-e142", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-06-25" }, { "id": "seed-e143", "description": "ویلڈنگ", "category": "Other", "amount": 15000.0, "date": "2026-06-26" }, { "id": "seed-e144", "description": "ٹھیکدار", "category": "Other", "amount": 60000.0, "date": "2026-07-09" }, { "id": "seed-e145", "description": "ٹھیکدار", "category": "Other", "amount": 60000.0, "date": "2026-07-16" }, { "id": "seed-e146", "description": "ٹھیکدار", "category": "Other", "amount": 55000.0, "date": "2026-07-23" }, { "id": "seed-e147", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-07-30" }, { "id": "seed-e148", "description": "اینٹ", "category": "Other", "amount": 20000.0, "date": "2026-08-02" }, { "id": "seed-e149", "description": "موٹر", "category": "Other", "amount": 12200.0, "date": "2026-04-27" }, { "id": "seed-e150", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-04-28" }, { "id": "seed-e151", "description": "ذیزل", "category": "Other", "amount": 4500.0, "date": "2026-04-28" }];
+  /* ============================================================
+     OFFLINE DAILY PRAYER TIMES — Gujrat, Pakistan (Hanafi)
+     Transcribed from the mosque's printed yearly calendar.
+     Keyed by "M-D" (no leading zeros, e.g. "3-5" = March 5),
+     so the same table is reused every year (times drift by
+     under a minute year to year, which is fine for mosque use).
+     Jumu'ah is a constant 14:00 every Friday, all year.
+     ============================================================ */
+  const DAILY_PRAYER_TIMES = {
+    "1-1": { fajr: "05:38", sunrise: "07:06", dhuhr: "12:07", asr: "15:31", maghrib: "17:09", isha: "18:37" },
+    "1-2": { fajr: "05:38", sunrise: "07:06", dhuhr: "12:08", asr: "15:32", maghrib: "17:10", isha: "18:37" },
+    "1-3": { fajr: "05:38", sunrise: "07:06", dhuhr: "12:08", asr: "15:33", maghrib: "17:10", isha: "18:38" },
+    "1-4": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:09", asr: "15:33", maghrib: "17:11", isha: "18:39" },
+    "1-5": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:09", asr: "15:34", maghrib: "17:12", isha: "18:39" },
+    "1-6": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:09", asr: "15:35", maghrib: "17:13", isha: "18:40" },
+    "1-7": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:10", asr: "15:36", maghrib: "17:14", isha: "18:41" },
+    "1-8": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:10", asr: "15:36", maghrib: "17:14", isha: "18:42" },
+    "1-9": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:11", asr: "15:37", maghrib: "17:15", isha: "18:42" },
+    "1-10": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:11", asr: "15:38", maghrib: "17:16", isha: "18:43" },
+    "1-11": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:12", asr: "15:39", maghrib: "17:17", isha: "18:44" },
+    "1-12": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:12", asr: "15:40", maghrib: "17:18", isha: "18:45" },
+    "1-13": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:12", asr: "15:41", maghrib: "17:19", isha: "18:45" },
+    "1-14": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:13", asr: "15:42", maghrib: "17:20", isha: "18:46" },
+    "1-15": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:13", asr: "15:43", maghrib: "17:20", isha: "18:47" },
+    "1-16": { fajr: "05:39", sunrise: "07:06", dhuhr: "12:13", asr: "15:43", maghrib: "17:21", isha: "18:48" },
+    "1-17": { fajr: "05:39", sunrise: "07:05", dhuhr: "12:14", asr: "15:44", maghrib: "17:22", isha: "18:48" },
+    "1-18": { fajr: "05:39", sunrise: "07:05", dhuhr: "12:14", asr: "15:45", maghrib: "17:23", isha: "18:49" },
+    "1-19": { fajr: "05:39", sunrise: "07:05", dhuhr: "12:14", asr: "15:46", maghrib: "17:24", isha: "18:50" },
+    "1-20": { fajr: "05:39", sunrise: "07:05", dhuhr: "12:15", asr: "15:47", maghrib: "17:25", isha: "18:51" },
+    "1-21": { fajr: "05:38", sunrise: "07:04", dhuhr: "12:15", asr: "15:48", maghrib: "17:26", isha: "18:52" },
+    "1-22": { fajr: "05:38", sunrise: "07:04", dhuhr: "12:15", asr: "15:49", maghrib: "17:27", isha: "18:53" },
+    "1-23": { fajr: "05:38", sunrise: "07:03", dhuhr: "12:15", asr: "15:50", maghrib: "17:28", isha: "18:53" },
+    "1-24": { fajr: "05:37", sunrise: "07:02", dhuhr: "12:16", asr: "15:51", maghrib: "17:29", isha: "18:54" },
+    "1-25": { fajr: "05:37", sunrise: "07:02", dhuhr: "12:16", asr: "15:52", maghrib: "17:30", isha: "18:55" },
+    "1-26": { fajr: "05:37", sunrise: "07:02", dhuhr: "12:16", asr: "15:53", maghrib: "17:31", isha: "18:56" },
+    "1-27": { fajr: "05:37", sunrise: "07:01", dhuhr: "12:16", asr: "15:53", maghrib: "17:32", isha: "18:57" },
+    "1-28": { fajr: "05:36", sunrise: "07:01", dhuhr: "12:17", asr: "15:54", maghrib: "17:33", isha: "18:57" },
+    "1-29": { fajr: "05:36", sunrise: "07:00", dhuhr: "12:17", asr: "15:55", maghrib: "17:34", isha: "18:58" },
+    "1-30": { fajr: "05:35", sunrise: "07:00", dhuhr: "12:17", asr: "15:56", maghrib: "17:35", isha: "18:59" },
+    "1-31": { fajr: "05:35", sunrise: "06:59", dhuhr: "12:17", asr: "15:57", maghrib: "17:35", isha: "19:00" },
+    "2-1": { fajr: "05:34", sunrise: "06:58", dhuhr: "12:17", asr: "15:58", maghrib: "17:36", isha: "19:01" },
+    "2-2": { fajr: "05:34", sunrise: "06:58", dhuhr: "12:17", asr: "15:59", maghrib: "17:37", isha: "19:01" },
+    "2-3": { fajr: "05:33", sunrise: "06:57", dhuhr: "12:17", asr: "16:00", maghrib: "17:38", isha: "19:02" },
+    "2-4": { fajr: "05:32", sunrise: "06:56", dhuhr: "12:18", asr: "16:01", maghrib: "17:39", isha: "19:03" },
+    "2-5": { fajr: "05:32", sunrise: "06:56", dhuhr: "12:18", asr: "16:02", maghrib: "17:40", isha: "19:04" },
+    "2-6": { fajr: "05:31", sunrise: "06:55", dhuhr: "12:18", asr: "16:02", maghrib: "17:41", isha: "19:05" },
+    "2-7": { fajr: "05:30", sunrise: "06:54", dhuhr: "12:18", asr: "16:03", maghrib: "17:42", isha: "19:05" },
+    "2-8": { fajr: "05:30", sunrise: "06:53", dhuhr: "12:18", asr: "16:04", maghrib: "17:43", isha: "19:06" },
+    "2-9": { fajr: "05:29", sunrise: "06:52", dhuhr: "12:18", asr: "16:05", maghrib: "17:44", isha: "19:07" },
+    "2-10": { fajr: "05:28", sunrise: "06:52", dhuhr: "12:18", asr: "16:06", maghrib: "17:45", isha: "19:08" },
+    "2-11": { fajr: "05:28", sunrise: "06:51", dhuhr: "12:18", asr: "16:07", maghrib: "17:46", isha: "19:09" },
+    "2-12": { fajr: "05:27", sunrise: "06:50", dhuhr: "12:18", asr: "16:08", maghrib: "17:46", isha: "19:09" },
+    "2-13": { fajr: "05:26", sunrise: "06:49", dhuhr: "12:18", asr: "16:08", maghrib: "17:47", isha: "19:10" },
+    "2-14": { fajr: "05:25", sunrise: "06:48", dhuhr: "12:18", asr: "16:09", maghrib: "17:48", isha: "19:11" },
+    "2-15": { fajr: "05:24", sunrise: "06:47", dhuhr: "12:18", asr: "16:10", maghrib: "17:49", isha: "19:12" },
+    "2-16": { fajr: "05:23", sunrise: "06:46", dhuhr: "12:18", asr: "16:11", maghrib: "17:50", isha: "19:13" },
+    "2-17": { fajr: "05:23", sunrise: "06:45", dhuhr: "12:18", asr: "16:12", maghrib: "17:51", isha: "19:13" },
+    "2-18": { fajr: "05:22", sunrise: "06:44", dhuhr: "12:18", asr: "16:12", maghrib: "17:52", isha: "19:14" },
+    "2-19": { fajr: "05:21", sunrise: "06:43", dhuhr: "12:17", asr: "16:13", maghrib: "17:53", isha: "19:15" },
+    "2-20": { fajr: "05:20", sunrise: "06:42", dhuhr: "12:17", asr: "16:14", maghrib: "17:53", isha: "19:16" },
+    "2-21": { fajr: "05:19", sunrise: "06:41", dhuhr: "12:17", asr: "16:15", maghrib: "17:54", isha: "19:16" },
+    "2-22": { fajr: "05:18", sunrise: "06:40", dhuhr: "12:17", asr: "16:15", maghrib: "17:55", isha: "19:17" },
+    "2-23": { fajr: "05:17", sunrise: "06:39", dhuhr: "12:17", asr: "16:16", maghrib: "17:56", isha: "19:18" },
+    "2-24": { fajr: "05:16", sunrise: "06:38", dhuhr: "12:17", asr: "16:17", maghrib: "17:57", isha: "19:19" },
+    "2-25": { fajr: "05:15", sunrise: "06:36", dhuhr: "12:17", asr: "16:18", maghrib: "17:58", isha: "19:19" },
+    "2-26": { fajr: "05:13", sunrise: "06:35", dhuhr: "12:17", asr: "16:18", maghrib: "17:58", isha: "19:20" },
+    "2-27": { fajr: "05:12", sunrise: "06:34", dhuhr: "12:16", asr: "16:19", maghrib: "17:59", isha: "19:21" },
+    "2-28": { fajr: "05:11", sunrise: "06:33", dhuhr: "12:16", asr: "16:20", maghrib: "18:00", isha: "19:22" },
+    "3-1": { fajr: "05:10", sunrise: "06:32", dhuhr: "12:16", asr: "16:20", maghrib: "18:01", isha: "19:23" },
+    "3-2": { fajr: "05:09", sunrise: "06:31", dhuhr: "12:16", asr: "16:21", maghrib: "18:02", isha: "19:23" },
+    "3-3": { fajr: "05:08", sunrise: "06:29", dhuhr: "12:16", asr: "16:22", maghrib: "18:02", isha: "19:24" },
+    "3-4": { fajr: "05:07", sunrise: "06:28", dhuhr: "12:15", asr: "16:22", maghrib: "18:03", isha: "19:25" },
+    "3-5": { fajr: "05:05", sunrise: "06:27", dhuhr: "12:15", asr: "16:23", maghrib: "18:04", isha: "19:26" },
+    "3-6": { fajr: "05:04", sunrise: "06:26", dhuhr: "12:15", asr: "16:23", maghrib: "18:05", isha: "19:26" },
+    "3-7": { fajr: "05:03", sunrise: "06:25", dhuhr: "12:15", asr: "16:24", maghrib: "18:05", isha: "19:27" },
+    "3-8": { fajr: "05:02", sunrise: "06:23", dhuhr: "12:15", asr: "16:25", maghrib: "18:06", isha: "19:28" },
+    "3-9": { fajr: "05:00", sunrise: "06:22", dhuhr: "12:14", asr: "16:25", maghrib: "18:07", isha: "19:29" },
+    "3-10": { fajr: "04:59", sunrise: "06:21", dhuhr: "12:14", asr: "16:26", maghrib: "18:08", isha: "19:29" },
+    "3-11": { fajr: "04:58", sunrise: "06:20", dhuhr: "12:14", asr: "16:26", maghrib: "18:09", isha: "19:30" },
+    "3-12": { fajr: "04:57", sunrise: "06:18", dhuhr: "12:13", asr: "16:27", maghrib: "18:09", isha: "19:31" },
+    "3-13": { fajr: "04:55", sunrise: "06:17", dhuhr: "12:13", asr: "16:27", maghrib: "18:10", isha: "19:32" },
+    "3-14": { fajr: "04:54", sunrise: "06:16", dhuhr: "12:13", asr: "16:28", maghrib: "18:11", isha: "19:32" },
+    "3-15": { fajr: "04:53", sunrise: "06:14", dhuhr: "12:12", asr: "16:29", maghrib: "18:11", isha: "19:33" },
+    "3-16": { fajr: "04:51", sunrise: "06:13", dhuhr: "12:12", asr: "16:29", maghrib: "18:12", isha: "19:34" },
+    "3-17": { fajr: "04:50", sunrise: "06:12", dhuhr: "12:12", asr: "16:30", maghrib: "18:13", isha: "19:35" },
+    "3-18": { fajr: "04:49", sunrise: "06:11", dhuhr: "12:12", asr: "16:30", maghrib: "18:14", isha: "19:36" },
+    "3-19": { fajr: "04:47", sunrise: "06:09", dhuhr: "12:11", asr: "16:31", maghrib: "18:14", isha: "19:36" },
+    "3-20": { fajr: "04:46", sunrise: "06:08", dhuhr: "12:11", asr: "16:31", maghrib: "18:15", isha: "19:37" },
+    "3-21": { fajr: "04:45", sunrise: "06:07", dhuhr: "12:11", asr: "16:32", maghrib: "18:16", isha: "19:38" },
+    "3-22": { fajr: "04:43", sunrise: "06:05", dhuhr: "12:11", asr: "16:32", maghrib: "18:16", isha: "19:39" },
+    "3-23": { fajr: "04:42", sunrise: "06:04", dhuhr: "12:10", asr: "16:32", maghrib: "18:17", isha: "19:40" },
+    "3-24": { fajr: "04:40", sunrise: "06:03", dhuhr: "12:10", asr: "16:33", maghrib: "18:18", isha: "19:40" },
+    "3-25": { fajr: "04:39", sunrise: "06:01", dhuhr: "12:10", asr: "16:33", maghrib: "18:19", isha: "19:41" },
+    "3-26": { fajr: "04:38", sunrise: "06:00", dhuhr: "12:09", asr: "16:34", maghrib: "18:19", isha: "19:42" },
+    "3-27": { fajr: "04:36", sunrise: "05:59", dhuhr: "12:09", asr: "16:34", maghrib: "18:20", isha: "19:43" },
+    "3-28": { fajr: "04:35", sunrise: "05:57", dhuhr: "12:09", asr: "16:35", maghrib: "18:21", isha: "19:44" },
+    "3-29": { fajr: "04:34", sunrise: "05:56", dhuhr: "12:09", asr: "16:35", maghrib: "18:21", isha: "19:44" },
+    "3-30": { fajr: "04:33", sunrise: "05:55", dhuhr: "12:08", asr: "16:36", maghrib: "18:22", isha: "19:45" },
+    "3-31": { fajr: "04:32", sunrise: "05:54", dhuhr: "12:08", asr: "16:36", maghrib: "18:23", isha: "19:46" },
+    "4-1": { fajr: "04:29", sunrise: "05:52", dhuhr: "12:08", asr: "16:36", maghrib: "18:24", isha: "19:47" },
+    "4-2": { fajr: "04:28", sunrise: "05:51", dhuhr: "12:07", asr: "16:37", maghrib: "18:25", isha: "19:48" },
+    "4-3": { fajr: "04:26", sunrise: "05:50", dhuhr: "12:07", asr: "16:37", maghrib: "18:25", isha: "19:49" },
+    "4-4": { fajr: "04:25", sunrise: "05:48", dhuhr: "12:07", asr: "16:38", maghrib: "18:26", isha: "19:50" },
+    "4-5": { fajr: "04:23", sunrise: "05:47", dhuhr: "12:06", asr: "16:38", maghrib: "18:27", isha: "19:50" },
+    "4-6": { fajr: "04:22", sunrise: "05:46", dhuhr: "12:06", asr: "16:38", maghrib: "18:27", isha: "19:51" },
+    "4-7": { fajr: "04:20", sunrise: "05:45", dhuhr: "12:06", asr: "16:39", maghrib: "18:28", isha: "19:52" },
+    "4-8": { fajr: "04:19", sunrise: "05:43", dhuhr: "12:05", asr: "16:39", maghrib: "18:28", isha: "19:53" },
+    "4-9": { fajr: "04:17", sunrise: "05:42", dhuhr: "12:05", asr: "16:39", maghrib: "18:29", isha: "19:54" },
+    "4-10": { fajr: "04:16", sunrise: "05:41", dhuhr: "12:05", asr: "16:40", maghrib: "18:30", isha: "19:55" },
+    "4-11": { fajr: "04:15", sunrise: "05:40", dhuhr: "12:05", asr: "16:40", maghrib: "18:30", isha: "19:56" },
+    "4-12": { fajr: "04:13", sunrise: "05:38", dhuhr: "12:05", asr: "16:40", maghrib: "18:31", isha: "19:57" },
+    "4-13": { fajr: "04:12", sunrise: "05:37", dhuhr: "12:04", asr: "16:41", maghrib: "18:32", isha: "19:58" },
+    "4-14": { fajr: "04:10", sunrise: "05:36", dhuhr: "12:04", asr: "16:41", maghrib: "18:33", isha: "19:58" },
+    "4-15": { fajr: "04:09", sunrise: "05:35", dhuhr: "12:04", asr: "16:42", maghrib: "18:33", isha: "19:59" },
+    "4-16": { fajr: "04:07", sunrise: "05:34", dhuhr: "12:04", asr: "16:42", maghrib: "18:34", isha: "20:00" },
+    "4-17": { fajr: "04:06", sunrise: "05:32", dhuhr: "12:03", asr: "16:42", maghrib: "18:35", isha: "20:01" },
+    "4-18": { fajr: "04:03", sunrise: "05:31", dhuhr: "12:03", asr: "16:43", maghrib: "18:36", isha: "20:02" },
+    "4-19": { fajr: "04:03", sunrise: "05:30", dhuhr: "12:03", asr: "16:43", maghrib: "18:36", isha: "20:03" },
+    "4-20": { fajr: "04:02", sunrise: "05:29", dhuhr: "12:03", asr: "16:43", maghrib: "18:37", isha: "20:04" },
+    "4-21": { fajr: "04:00", sunrise: "05:28", dhuhr: "12:02", asr: "16:44", maghrib: "18:38", isha: "20:05" },
+    "4-22": { fajr: "03:59", sunrise: "05:27", dhuhr: "12:02", asr: "16:44", maghrib: "18:38", isha: "20:06" },
+    "4-23": { fajr: "03:58", sunrise: "05:25", dhuhr: "12:02", asr: "16:44", maghrib: "18:39", isha: "20:07" },
+    "4-24": { fajr: "03:56", sunrise: "05:24", dhuhr: "12:02", asr: "16:45", maghrib: "18:40", isha: "20:08" },
+    "4-25": { fajr: "03:55", sunrise: "05:23", dhuhr: "12:01", asr: "16:45", maghrib: "18:41", isha: "20:09" },
+    "4-26": { fajr: "03:54", sunrise: "05:22", dhuhr: "12:02", asr: "16:45", maghrib: "18:41", isha: "20:10" },
+    "4-27": { fajr: "03:52", sunrise: "05:21", dhuhr: "12:01", asr: "16:46", maghrib: "18:42", isha: "20:11" },
+    "4-28": { fajr: "03:51", sunrise: "05:20", dhuhr: "12:01", asr: "16:46", maghrib: "18:42", isha: "20:12" },
+    "4-29": { fajr: "03:50", sunrise: "05:19", dhuhr: "12:01", asr: "16:46", maghrib: "18:43", isha: "20:12" },
+    "4-30": { fajr: "03:48", sunrise: "05:18", dhuhr: "12:01", asr: "16:47", maghrib: "18:44", isha: "20:14" },
+    "5-1": { fajr: "03:47", sunrise: "05:17", dhuhr: "12:01", asr: "16:47", maghrib: "18:45", isha: "20:15" },
+    "5-2": { fajr: "03:46", sunrise: "05:16", dhuhr: "12:01", asr: "16:47", maghrib: "18:46", isha: "20:16" },
+    "5-3": { fajr: "03:45", sunrise: "05:15", dhuhr: "12:01", asr: "16:48", maghrib: "18:46", isha: "20:17" },
+    "5-4": { fajr: "03:43", sunrise: "05:14", dhuhr: "12:00", asr: "16:48", maghrib: "18:47", isha: "20:18" },
+    "5-5": { fajr: "03:42", sunrise: "05:13", dhuhr: "12:00", asr: "16:48", maghrib: "18:47", isha: "20:19" },
+    "5-6": { fajr: "03:41", sunrise: "05:13", dhuhr: "12:00", asr: "16:49", maghrib: "18:48", isha: "20:20" },
+    "5-7": { fajr: "03:40", sunrise: "05:12", dhuhr: "12:00", asr: "16:49", maghrib: "18:48", isha: "20:21" },
+    "5-8": { fajr: "03:39", sunrise: "05:11", dhuhr: "12:00", asr: "16:49", maghrib: "18:49", isha: "20:22" },
+    "5-9": { fajr: "03:37", sunrise: "05:10", dhuhr: "12:00", asr: "16:50", maghrib: "18:50", isha: "20:23" },
+    "5-10": { fajr: "03:36", sunrise: "05:09", dhuhr: "12:00", asr: "16:50", maghrib: "18:51", isha: "20:24" },
+    "5-11": { fajr: "03:35", sunrise: "05:08", dhuhr: "12:00", asr: "16:51", maghrib: "18:51", isha: "20:26" },
+    "5-12": { fajr: "03:34", sunrise: "05:07", dhuhr: "12:00", asr: "16:51", maghrib: "18:52", isha: "20:27" },
+    "5-13": { fajr: "03:33", sunrise: "05:07", dhuhr: "12:00", asr: "16:51", maghrib: "18:53", isha: "20:28" },
+    "5-14": { fajr: "03:32", sunrise: "05:06", dhuhr: "12:00", asr: "16:52", maghrib: "18:53", isha: "20:29" },
+    "5-15": { fajr: "03:31", sunrise: "05:05", dhuhr: "12:00", asr: "16:52", maghrib: "18:55", isha: "20:30" },
+    "5-16": { fajr: "03:30", sunrise: "05:05", dhuhr: "12:00", asr: "16:53", maghrib: "18:56", isha: "20:31" },
+    "5-17": { fajr: "03:29", sunrise: "05:04", dhuhr: "12:00", asr: "16:53", maghrib: "18:56", isha: "20:32" },
+    "5-18": { fajr: "03:28", sunrise: "05:03", dhuhr: "12:00", asr: "16:53", maghrib: "18:57", isha: "20:33" },
+    "5-19": { fajr: "03:27", sunrise: "05:02", dhuhr: "12:00", asr: "16:53", maghrib: "18:58", isha: "20:34" },
+    "5-20": { fajr: "03:26", sunrise: "05:02", dhuhr: "12:00", asr: "16:54", maghrib: "18:59", isha: "20:35" },
+    "5-21": { fajr: "03:26", sunrise: "05:02", dhuhr: "12:01", asr: "16:54", maghrib: "18:59", isha: "20:36" },
+    "5-22": { fajr: "03:25", sunrise: "05:01", dhuhr: "12:00", asr: "16:54", maghrib: "19:00", isha: "20:37" },
+    "5-23": { fajr: "03:24", sunrise: "05:01", dhuhr: "12:00", asr: "16:55", maghrib: "19:01", isha: "20:37" },
+    "5-24": { fajr: "03:23", sunrise: "05:00", dhuhr: "12:01", asr: "16:55", maghrib: "19:01", isha: "20:38" },
+    "5-25": { fajr: "03:22", sunrise: "05:00", dhuhr: "12:01", asr: "16:55", maghrib: "19:02", isha: "20:39" },
+    "5-26": { fajr: "03:22", sunrise: "04:59", dhuhr: "12:01", asr: "16:56", maghrib: "19:03", isha: "20:40" },
+    "5-27": { fajr: "03:21", sunrise: "04:59", dhuhr: "12:01", asr: "16:56", maghrib: "19:03", isha: "20:41" },
+    "5-28": { fajr: "03:20", sunrise: "04:59", dhuhr: "12:01", asr: "16:56", maghrib: "19:04", isha: "20:42" },
+    "5-29": { fajr: "03:20", sunrise: "04:58", dhuhr: "12:01", asr: "16:57", maghrib: "19:04", isha: "20:43" },
+    "5-30": { fajr: "03:19", sunrise: "04:58", dhuhr: "12:01", asr: "16:57", maghrib: "19:05", isha: "20:44" },
+    "5-31": { fajr: "03:19", sunrise: "04:57", dhuhr: "12:01", asr: "16:58", maghrib: "19:06", isha: "20:45" },
+    "6-1": { fajr: "03:18", sunrise: "04:57", dhuhr: "12:02", asr: "16:58", maghrib: "19:06", isha: "20:45" },
+    "6-2": { fajr: "03:18", sunrise: "04:57", dhuhr: "12:02", asr: "16:58", maghrib: "19:07", isha: "20:46" },
+    "6-3": { fajr: "03:17", sunrise: "04:57", dhuhr: "12:02", asr: "16:59", maghrib: "19:07", isha: "20:47" },
+    "6-4": { fajr: "03:17", sunrise: "04:56", dhuhr: "12:02", asr: "16:59", maghrib: "19:08", isha: "20:48" },
+    "6-5": { fajr: "03:16", sunrise: "04:56", dhuhr: "12:02", asr: "16:59", maghrib: "19:08", isha: "20:48" },
+    "6-6": { fajr: "03:16", sunrise: "04:56", dhuhr: "12:02", asr: "17:00", maghrib: "19:09", isha: "20:49" },
+    "6-7": { fajr: "03:16", sunrise: "04:56", dhuhr: "12:03", asr: "17:00", maghrib: "19:10", isha: "20:50" },
+    "6-8": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:03", asr: "17:00", maghrib: "19:10", isha: "20:50" },
+    "6-9": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:03", asr: "17:00", maghrib: "19:11", isha: "20:51" },
+    "6-10": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:03", asr: "17:01", maghrib: "19:11", isha: "20:52" },
+    "6-11": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:04", asr: "17:01", maghrib: "19:12", isha: "20:53" },
+    "6-12": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:04", asr: "17:02", maghrib: "19:12", isha: "20:53" },
+    "6-13": { fajr: "03:14", sunrise: "04:56", dhuhr: "12:04", asr: "17:02", maghrib: "19:13", isha: "20:54" },
+    "6-14": { fajr: "03:14", sunrise: "04:56", dhuhr: "12:04", asr: "17:03", maghrib: "19:13", isha: "20:54" },
+    "6-15": { fajr: "03:14", sunrise: "04:56", dhuhr: "12:04", asr: "17:03", maghrib: "19:13", isha: "20:54" },
+    "6-16": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:05", asr: "17:03", maghrib: "19:14", isha: "20:55" },
+    "6-17": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:05", asr: "17:03", maghrib: "19:14", isha: "20:55" },
+    "6-18": { fajr: "03:15", sunrise: "04:56", dhuhr: "12:05", asr: "17:04", maghrib: "19:14", isha: "20:56" },
+    "6-19": { fajr: "03:15", sunrise: "04:57", dhuhr: "12:06", asr: "17:04", maghrib: "19:15", isha: "20:56" },
+    "6-20": { fajr: "03:16", sunrise: "04:57", dhuhr: "12:06", asr: "17:05", maghrib: "19:15", isha: "20:57" },
+    "6-21": { fajr: "03:16", sunrise: "04:57", dhuhr: "12:07", asr: "17:05", maghrib: "19:15", isha: "20:56" },
+    "6-22": { fajr: "03:16", sunrise: "04:58", dhuhr: "12:06", asr: "17:05", maghrib: "19:15", isha: "20:57" },
+    "6-23": { fajr: "03:16", sunrise: "04:58", dhuhr: "12:06", asr: "17:04", maghrib: "19:15", isha: "20:56" },
+    "6-24": { fajr: "03:17", sunrise: "04:59", dhuhr: "12:06", asr: "17:04", maghrib: "19:15", isha: "20:56" },
+    "6-25": { fajr: "03:17", sunrise: "04:59", dhuhr: "12:06", asr: "17:04", maghrib: "19:15", isha: "20:56" },
+    "6-26": { fajr: "03:17", sunrise: "05:00", dhuhr: "12:07", asr: "17:04", maghrib: "19:14", isha: "20:55" },
+    "6-27": { fajr: "03:18", sunrise: "05:00", dhuhr: "12:07", asr: "17:04", maghrib: "19:14", isha: "20:55" },
+    "6-28": { fajr: "03:18", sunrise: "05:01", dhuhr: "12:07", asr: "17:04", maghrib: "19:14", isha: "20:54" },
+    "6-29": { fajr: "03:19", sunrise: "05:01", dhuhr: "12:07", asr: "17:04", maghrib: "19:13", isha: "20:54" },
+    "6-30": { fajr: "03:19", sunrise: "05:02", dhuhr: "12:07", asr: "17:03", maghrib: "19:13", isha: "20:53" },
+    "7-1": { fajr: "03:19", sunrise: "05:00", dhuhr: "12:08", asr: "17:05", maghrib: "19:15", isha: "20:56" },
+    "7-2": { fajr: "03:19", sunrise: "05:00", dhuhr: "12:08", asr: "17:06", maghrib: "19:15", isha: "20:56" },
+    "7-3": { fajr: "03:20", sunrise: "05:01", dhuhr: "12:08", asr: "17:06", maghrib: "19:15", isha: "20:56" },
+    "7-4": { fajr: "03:20", sunrise: "05:01", dhuhr: "12:08", asr: "17:06", maghrib: "19:15", isha: "20:56" },
+    "7-5": { fajr: "03:21", sunrise: "05:01", dhuhr: "12:08", asr: "17:06", maghrib: "19:15", isha: "20:55" },
+    "7-6": { fajr: "03:22", sunrise: "05:02", dhuhr: "12:09", asr: "17:06", maghrib: "19:15", isha: "20:55" },
+    "7-7": { fajr: "03:22", sunrise: "05:02", dhuhr: "12:09", asr: "17:06", maghrib: "19:15", isha: "20:55" },
+    "7-8": { fajr: "03:23", sunrise: "05:03", dhuhr: "12:09", asr: "17:06", maghrib: "19:14", isha: "20:54" },
+    "7-9": { fajr: "03:24", sunrise: "05:03", dhuhr: "12:09", asr: "17:06", maghrib: "19:14", isha: "20:53" },
+    "7-10": { fajr: "03:25", sunrise: "05:04", dhuhr: "12:09", asr: "17:06", maghrib: "19:14", isha: "20:53" },
+    "7-11": { fajr: "03:26", sunrise: "05:05", dhuhr: "12:09", asr: "17:06", maghrib: "19:13", isha: "20:52" },
+    "7-12": { fajr: "03:27", sunrise: "05:05", dhuhr: "12:09", asr: "17:06", maghrib: "19:13", isha: "20:52" },
+    "7-13": { fajr: "03:28", sunrise: "05:06", dhuhr: "12:10", asr: "17:06", maghrib: "19:13", isha: "20:51" },
+    "7-14": { fajr: "03:28", sunrise: "05:07", dhuhr: "12:10", asr: "17:06", maghrib: "19:12", isha: "20:50" },
+    "7-15": { fajr: "03:29", sunrise: "05:07", dhuhr: "12:10", asr: "17:05", maghrib: "19:12", isha: "20:50" },
+    "7-16": { fajr: "03:30", sunrise: "05:08", dhuhr: "12:10", asr: "17:05", maghrib: "19:11", isha: "20:49" },
+    "7-17": { fajr: "03:31", sunrise: "05:09", dhuhr: "12:10", asr: "17:05", maghrib: "19:11", isha: "20:48" },
+    "7-18": { fajr: "03:32", sunrise: "05:09", dhuhr: "12:10", asr: "17:05", maghrib: "19:10", isha: "20:48" },
+    "7-19": { fajr: "03:33", sunrise: "05:10", dhuhr: "12:10", asr: "17:05", maghrib: "19:10", isha: "20:47" },
+    "7-20": { fajr: "03:34", sunrise: "05:11", dhuhr: "12:10", asr: "17:04", maghrib: "19:09", isha: "20:46" },
+    "7-21": { fajr: "03:35", sunrise: "05:11", dhuhr: "12:10", asr: "17:04", maghrib: "19:09", isha: "20:45" },
+    "7-22": { fajr: "03:36", sunrise: "05:12", dhuhr: "12:09", asr: "17:04", maghrib: "19:08", isha: "20:44" },
+    "7-23": { fajr: "03:36", sunrise: "05:12", dhuhr: "12:09", asr: "17:04", maghrib: "19:08", isha: "20:43" },
+    "7-24": { fajr: "03:37", sunrise: "05:13", dhuhr: "12:09", asr: "17:03", maghrib: "19:07", isha: "20:42" },
+    "7-25": { fajr: "03:38", sunrise: "05:13", dhuhr: "12:09", asr: "17:03", maghrib: "19:06", isha: "20:42" },
+    "7-26": { fajr: "03:39", sunrise: "05:14", dhuhr: "12:09", asr: "17:03", maghrib: "19:06", isha: "20:41" },
+    "7-27": { fajr: "03:40", sunrise: "05:15", dhuhr: "12:08", asr: "17:02", maghrib: "19:05", isha: "20:40" },
+    "7-28": { fajr: "03:41", sunrise: "05:15", dhuhr: "12:08", asr: "17:02", maghrib: "19:05", isha: "20:39" },
+    "7-29": { fajr: "03:41", sunrise: "05:16", dhuhr: "12:08", asr: "17:02", maghrib: "19:04", isha: "20:39" },
+    "7-30": { fajr: "03:42", sunrise: "05:16", dhuhr: "12:08", asr: "17:02", maghrib: "19:04", isha: "20:38" },
+    "7-31": { fajr: "03:43", sunrise: "05:17", dhuhr: "12:08", asr: "17:01", maghrib: "19:03", isha: "20:37" },
+    "8-1": { fajr: "03:44", sunrise: "05:18", dhuhr: "12:10", asr: "17:01", maghrib: "19:02", isha: "20:35" },
+    "8-2": { fajr: "03:45", sunrise: "05:18", dhuhr: "12:10", asr: "17:01", maghrib: "19:01", isha: "20:34" },
+    "8-3": { fajr: "03:46", sunrise: "05:19", dhuhr: "12:10", asr: "17:00", maghrib: "19:00", isha: "20:33" },
+    "8-4": { fajr: "03:47", sunrise: "05:20", dhuhr: "12:10", asr: "17:00", maghrib: "18:59", isha: "20:32" },
+    "8-5": { fajr: "03:48", sunrise: "05:20", dhuhr: "12:10", asr: "16:59", maghrib: "18:59", isha: "20:31" },
+    "8-6": { fajr: "03:49", sunrise: "05:21", dhuhr: "12:10", asr: "16:59", maghrib: "18:58", isha: "20:29" },
+    "8-7": { fajr: "03:50", sunrise: "05:22", dhuhr: "12:10", asr: "16:58", maghrib: "18:57", isha: "20:28" },
+    "8-8": { fajr: "03:51", sunrise: "05:22", dhuhr: "12:09", asr: "16:58", maghrib: "18:56", isha: "20:27" },
+    "8-9": { fajr: "03:52", sunrise: "05:23", dhuhr: "12:09", asr: "16:57", maghrib: "18:55", isha: "20:26" },
+    "8-10": { fajr: "03:53", sunrise: "05:24", dhuhr: "12:09", asr: "16:57", maghrib: "18:54", isha: "20:25" },
+    "8-11": { fajr: "03:54", sunrise: "05:25", dhuhr: "12:09", asr: "16:56", maghrib: "18:53", isha: "20:23" },
+    "8-12": { fajr: "03:55", sunrise: "05:25", dhuhr: "12:09", asr: "16:55", maghrib: "18:52", isha: "20:22" },
+    "8-13": { fajr: "03:56", sunrise: "05:26", dhuhr: "12:09", asr: "16:55", maghrib: "18:51", isha: "20:21" },
+    "8-14": { fajr: "03:57", sunrise: "05:27", dhuhr: "12:08", asr: "16:54", maghrib: "18:50", isha: "20:19" },
+    "8-15": { fajr: "03:58", sunrise: "05:27", dhuhr: "12:08", asr: "16:53", maghrib: "18:49", isha: "20:18" },
+    "8-16": { fajr: "03:59", sunrise: "05:28", dhuhr: "12:08", asr: "16:53", maghrib: "18:48", isha: "20:17" },
+    "8-17": { fajr: "04:00", sunrise: "05:29", dhuhr: "12:08", asr: "16:52", maghrib: "18:47", isha: "20:15" },
+    "8-18": { fajr: "04:01", sunrise: "05:29", dhuhr: "12:08", asr: "16:51", maghrib: "18:46", isha: "20:14" },
+    "8-19": { fajr: "04:02", sunrise: "05:30", dhuhr: "12:07", asr: "16:51", maghrib: "18:44", isha: "20:12" },
+    "8-20": { fajr: "04:03", sunrise: "05:31", dhuhr: "12:07", asr: "16:50", maghrib: "18:43", isha: "20:11" },
+    "8-21": { fajr: "04:03", sunrise: "05:31", dhuhr: "12:07", asr: "16:49", maghrib: "18:42", isha: "20:10" },
+    "8-22": { fajr: "04:04", sunrise: "05:32", dhuhr: "12:07", asr: "16:48", maghrib: "18:41", isha: "20:08" },
+    "8-23": { fajr: "04:05", sunrise: "05:33", dhuhr: "12:06", asr: "16:47", maghrib: "18:39", isha: "20:07" },
+    "8-24": { fajr: "04:06", sunrise: "05:34", dhuhr: "12:06", asr: "16:46", maghrib: "18:38", isha: "20:05" },
+    "8-25": { fajr: "04:07", sunrise: "05:34", dhuhr: "12:06", asr: "16:45", maghrib: "18:37", isha: "20:04" },
+    "8-26": { fajr: "04:08", sunrise: "05:35", dhuhr: "12:06", asr: "16:44", maghrib: "18:35", isha: "20:03" },
+    "8-27": { fajr: "04:09", sunrise: "05:35", dhuhr: "12:05", asr: "16:43", maghrib: "18:34", isha: "20:01" },
+    "8-28": { fajr: "04:10", sunrise: "05:36", dhuhr: "12:05", asr: "16:43", maghrib: "18:34", isha: "20:00" },
+    "8-29": { fajr: "04:11", sunrise: "05:36", dhuhr: "12:05", asr: "16:42", maghrib: "18:32", isha: "19:58" },
+    "8-30": { fajr: "04:11", sunrise: "05:37", dhuhr: "12:04", asr: "16:42", maghrib: "18:31", isha: "19:57" },
+    "8-31": { fajr: "04:12", sunrise: "05:38", dhuhr: "12:04", asr: "16:41", maghrib: "18:30", isha: "19:55" },
+    "9-1": { fajr: "04:13", sunrise: "05:38", dhuhr: "12:04", asr: "16:40", maghrib: "18:29", isha: "19:54" },
+    "9-2": { fajr: "04:14", sunrise: "05:39", dhuhr: "12:03", asr: "16:39", maghrib: "18:27", isha: "19:52" },
+    "9-3": { fajr: "04:15", sunrise: "05:40", dhuhr: "12:03", asr: "16:38", maghrib: "18:26", isha: "19:51" },
+    "9-4": { fajr: "04:16", sunrise: "05:40", dhuhr: "12:03", asr: "16:37", maghrib: "18:25", isha: "19:49" },
+    "9-5": { fajr: "04:16", sunrise: "05:41", dhuhr: "12:02", asr: "16:36", maghrib: "18:24", isha: "19:48" },
+    "9-6": { fajr: "04:17", sunrise: "05:42", dhuhr: "12:02", asr: "16:35", maghrib: "18:22", isha: "19:46" },
+    "9-7": { fajr: "04:18", sunrise: "05:42", dhuhr: "12:02", asr: "16:34", maghrib: "18:21", isha: "19:45" },
+    "9-8": { fajr: "04:19", sunrise: "05:43", dhuhr: "12:01", asr: "16:33", maghrib: "18:20", isha: "19:43" },
+    "9-9": { fajr: "04:20", sunrise: "05:44", dhuhr: "12:01", asr: "16:32", maghrib: "18:18", isha: "19:42" },
+    "9-10": { fajr: "04:20", sunrise: "05:44", dhuhr: "12:01", asr: "16:31", maghrib: "18:17", isha: "19:40" },
+    "9-11": { fajr: "04:21", sunrise: "05:45", dhuhr: "12:00", asr: "16:30", maghrib: "18:16", isha: "19:39" },
+    "9-12": { fajr: "04:22", sunrise: "05:45", dhuhr: "12:00", asr: "16:29", maghrib: "18:14", isha: "19:37" },
+    "9-13": { fajr: "04:23", sunrise: "05:46", dhuhr: "12:00", asr: "16:28", maghrib: "18:13", isha: "19:36" },
+    "9-14": { fajr: "04:24", sunrise: "05:47", dhuhr: "11:59", asr: "16:27", maghrib: "18:12", isha: "19:35" },
+    "9-15": { fajr: "04:24", sunrise: "05:47", dhuhr: "11:59", asr: "16:26", maghrib: "18:10", isha: "19:33" },
+    "9-16": { fajr: "04:25", sunrise: "05:48", dhuhr: "11:59", asr: "16:25", maghrib: "18:09", isha: "19:32" },
+    "9-17": { fajr: "04:26", sunrise: "05:48", dhuhr: "11:58", asr: "16:24", maghrib: "18:08", isha: "19:30" },
+    "9-18": { fajr: "04:27", sunrise: "05:49", dhuhr: "11:58", asr: "16:23", maghrib: "18:06", isha: "19:29" },
+    "9-19": { fajr: "04:27", sunrise: "05:50", dhuhr: "11:58", asr: "16:22", maghrib: "18:05", isha: "19:27" },
+    "9-20": { fajr: "04:28", sunrise: "05:50", dhuhr: "11:57", asr: "16:21", maghrib: "18:04", isha: "19:26" },
+    "9-21": { fajr: "04:29", sunrise: "05:51", dhuhr: "11:57", asr: "16:19", maghrib: "18:02", isha: "19:24" },
+    "9-22": { fajr: "04:30", sunrise: "05:52", dhuhr: "11:56", asr: "16:18", maghrib: "18:01", isha: "19:23" },
+    "9-23": { fajr: "04:30", sunrise: "05:52", dhuhr: "11:56", asr: "16:17", maghrib: "17:59", isha: "19:22" },
+    "9-24": { fajr: "04:31", sunrise: "05:53", dhuhr: "11:56", asr: "16:16", maghrib: "17:58", isha: "19:20" },
+    "9-25": { fajr: "04:32", sunrise: "05:54", dhuhr: "11:55", asr: "16:15", maghrib: "17:57", isha: "19:19" },
+    "9-26": { fajr: "04:32", sunrise: "05:54", dhuhr: "11:55", asr: "16:14", maghrib: "17:55", isha: "19:17" },
+    "9-27": { fajr: "04:33", sunrise: "05:55", dhuhr: "11:54", asr: "16:12", maghrib: "17:54", isha: "19:16" },
+    "9-28": { fajr: "04:34", sunrise: "05:56", dhuhr: "11:54", asr: "16:11", maghrib: "17:53", isha: "19:15" },
+    "9-29": { fajr: "04:34", sunrise: "05:56", dhuhr: "11:54", asr: "16:10", maghrib: "17:51", isha: "19:13" },
+    "9-30": { fajr: "04:35", sunrise: "05:57", dhuhr: "11:54", asr: "16:09", maghrib: "17:50", isha: "19:12" },
+    "10-1": { fajr: "04:36", sunrise: "05:58", dhuhr: "11:53", asr: "16:08", maghrib: "17:49", isha: "19:10" },
+    "10-2": { fajr: "04:36", sunrise: "05:59", dhuhr: "11:53", asr: "16:07", maghrib: "17:47", isha: "19:09" },
+    "10-3": { fajr: "04:37", sunrise: "05:59", dhuhr: "11:52", asr: "16:06", maghrib: "17:46", isha: "19:08" },
+    "10-4": { fajr: "04:38", sunrise: "06:00", dhuhr: "11:52", asr: "16:05", maghrib: "17:45", isha: "19:07" },
+    "10-5": { fajr: "04:39", sunrise: "06:01", dhuhr: "11:52", asr: "16:03", maghrib: "17:44", isha: "19:05" },
+    "10-6": { fajr: "04:39", sunrise: "06:01", dhuhr: "11:52", asr: "16:02", maghrib: "17:43", isha: "19:04" },
+    "10-7": { fajr: "04:40", sunrise: "06:02", dhuhr: "11:52", asr: "16:01", maghrib: "17:41", isha: "19:03" },
+    "10-8": { fajr: "04:41", sunrise: "06:02", dhuhr: "11:51", asr: "16:00", maghrib: "17:40", isha: "19:01" },
+    "10-9": { fajr: "04:41", sunrise: "06:03", dhuhr: "11:51", asr: "15:59", maghrib: "17:39", isha: "19:00" },
+    "10-10": { fajr: "04:42", sunrise: "06:04", dhuhr: "11:51", asr: "15:58", maghrib: "17:37", isha: "18:59" },
+    "10-11": { fajr: "04:43", sunrise: "06:04", dhuhr: "11:51", asr: "15:56", maghrib: "17:36", isha: "18:58" },
+    "10-12": { fajr: "04:43", sunrise: "06:05", dhuhr: "11:50", asr: "15:55", maghrib: "17:34", isha: "18:57" },
+    "10-13": { fajr: "04:44", sunrise: "06:06", dhuhr: "11:50", asr: "15:54", maghrib: "17:32", isha: "18:55" },
+    "10-14": { fajr: "04:45", sunrise: "06:06", dhuhr: "11:50", asr: "15:53", maghrib: "17:31", isha: "18:54" },
+    "10-15": { fajr: "04:45", sunrise: "06:07", dhuhr: "11:50", asr: "15:52", maghrib: "17:30", isha: "18:53" },
+    "10-16": { fajr: "04:46", sunrise: "06:08", dhuhr: "11:49", asr: "15:51", maghrib: "17:29", isha: "18:52" },
+    "10-17": { fajr: "04:47", sunrise: "06:09", dhuhr: "11:49", asr: "15:50", maghrib: "17:28", isha: "18:51" },
+    "10-18": { fajr: "04:48", sunrise: "06:09", dhuhr: "11:49", asr: "15:48", maghrib: "17:27", isha: "18:50" },
+    "10-19": { fajr: "04:48", sunrise: "06:10", dhuhr: "11:49", asr: "15:47", maghrib: "17:25", isha: "18:48" },
+    "10-20": { fajr: "04:49", sunrise: "06:11", dhuhr: "11:48", asr: "15:47", maghrib: "17:24", isha: "18:47" },
+    "10-21": { fajr: "04:50", sunrise: "06:12", dhuhr: "11:48", asr: "15:46", maghrib: "17:24", isha: "18:47" },
+    "10-22": { fajr: "04:50", sunrise: "06:12", dhuhr: "11:48", asr: "15:44", maghrib: "17:23", isha: "18:45" },
+    "10-23": { fajr: "04:51", sunrise: "06:13", dhuhr: "11:48", asr: "15:44", maghrib: "17:21", isha: "18:44" },
+    "10-24": { fajr: "04:52", sunrise: "06:14", dhuhr: "11:48", asr: "15:43", maghrib: "17:21", isha: "18:43" },
+    "10-25": { fajr: "04:53", sunrise: "06:15", dhuhr: "11:47", asr: "15:42", maghrib: "17:20", isha: "18:43" },
+    "10-26": { fajr: "04:53", sunrise: "06:16", dhuhr: "11:47", asr: "15:41", maghrib: "17:19", isha: "18:42" },
+    "10-27": { fajr: "04:54", sunrise: "06:16", dhuhr: "11:47", asr: "15:40", maghrib: "17:18", isha: "18:41" },
+    "10-28": { fajr: "04:55", sunrise: "06:18", dhuhr: "11:47", asr: "15:39", maghrib: "17:17", isha: "18:40" },
+    "10-29": { fajr: "04:55", sunrise: "06:18", dhuhr: "11:47", asr: "15:39", maghrib: "17:16", isha: "18:39" },
+    "10-30": { fajr: "04:56", sunrise: "06:19", dhuhr: "11:47", asr: "15:38", maghrib: "17:15", isha: "18:38" },
+    "10-31": { fajr: "04:57", sunrise: "06:20", dhuhr: "11:47", asr: "15:37", maghrib: "17:14", isha: "18:37" },
+    "11-1": { fajr: "04:58", sunrise: "06:21", dhuhr: "11:47", asr: "15:36", maghrib: "17:13", isha: "18:36" },
+    "11-2": { fajr: "04:58", sunrise: "06:22", dhuhr: "11:47", asr: "15:35", maghrib: "17:12", isha: "18:36" },
+    "11-3": { fajr: "04:59", sunrise: "06:23", dhuhr: "11:47", asr: "15:34", maghrib: "17:12", isha: "18:35" },
+    "11-4": { fajr: "05:00", sunrise: "06:23", dhuhr: "11:47", asr: "15:33", maghrib: "17:11", isha: "18:34" },
+    "11-5": { fajr: "05:01", sunrise: "06:24", dhuhr: "11:47", asr: "15:33", maghrib: "17:10", isha: "18:33" },
+    "11-6": { fajr: "05:01", sunrise: "06:25", dhuhr: "11:47", asr: "15:32", maghrib: "17:09", isha: "18:32" },
+    "11-7": { fajr: "05:02", sunrise: "06:26", dhuhr: "11:47", asr: "15:31", maghrib: "17:08", isha: "18:32" },
+    "11-8": { fajr: "05:03", sunrise: "06:27", dhuhr: "11:47", asr: "15:30", maghrib: "17:07", isha: "18:31" },
+    "11-9": { fajr: "05:04", sunrise: "06:28", dhuhr: "11:47", asr: "15:30", maghrib: "17:07", isha: "18:30" },
+    "11-10": { fajr: "05:04", sunrise: "06:29", dhuhr: "11:48", asr: "15:29", maghrib: "17:06", isha: "18:30" },
+    "11-11": { fajr: "05:05", sunrise: "06:30", dhuhr: "11:48", asr: "15:28", maghrib: "17:05", isha: "18:30" },
+    "11-12": { fajr: "05:06", sunrise: "06:30", dhuhr: "11:48", asr: "15:28", maghrib: "17:05", isha: "18:29" },
+    "11-13": { fajr: "05:07", sunrise: "06:31", dhuhr: "11:48", asr: "15:27", maghrib: "17:04", isha: "18:29" },
+    "11-14": { fajr: "05:07", sunrise: "06:32", dhuhr: "11:48", asr: "15:27", maghrib: "17:04", isha: "18:28" },
+    "11-15": { fajr: "05:08", sunrise: "06:33", dhuhr: "11:48", asr: "15:26", maghrib: "17:03", isha: "18:28" },
+    "11-16": { fajr: "05:09", sunrise: "06:34", dhuhr: "11:48", asr: "15:25", maghrib: "17:02", isha: "18:28" },
+    "11-17": { fajr: "05:10", sunrise: "06:35", dhuhr: "11:49", asr: "15:25", maghrib: "17:02", isha: "18:27" },
+    "11-18": { fajr: "05:11", sunrise: "06:36", dhuhr: "11:49", asr: "15:24", maghrib: "17:01", isha: "18:27" },
+    "11-19": { fajr: "05:11", sunrise: "06:37", dhuhr: "11:49", asr: "15:24", maghrib: "17:01", isha: "18:26" },
+    "11-20": { fajr: "05:12", sunrise: "06:38", dhuhr: "11:49", asr: "15:23", maghrib: "17:00", isha: "18:26" },
+    "11-21": { fajr: "05:13", sunrise: "06:39", dhuhr: "11:49", asr: "15:23", maghrib: "17:00", isha: "18:26" },
+    "11-22": { fajr: "05:14", sunrise: "06:39", dhuhr: "11:50", asr: "15:23", maghrib: "17:00", isha: "18:26" },
+    "11-23": { fajr: "05:14", sunrise: "06:40", dhuhr: "11:50", asr: "15:22", maghrib: "16:59", isha: "18:25" },
+    "11-24": { fajr: "05:15", sunrise: "06:41", dhuhr: "11:50", asr: "15:22", maghrib: "16:59", isha: "18:25" },
+    "11-25": { fajr: "05:16", sunrise: "06:42", dhuhr: "11:51", asr: "15:22", maghrib: "16:59", isha: "18:25" },
+    "11-26": { fajr: "05:16", sunrise: "06:43", dhuhr: "11:51", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "11-27": { fajr: "05:17", sunrise: "06:44", dhuhr: "11:51", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "11-28": { fajr: "05:18", sunrise: "06:45", dhuhr: "11:52", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "11-29": { fajr: "05:19", sunrise: "06:46", dhuhr: "11:52", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "11-30": { fajr: "05:20", sunrise: "06:46", dhuhr: "11:52", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "12-1": { fajr: "05:20", sunrise: "06:47", dhuhr: "11:53", asr: "15:21", maghrib: "16:58", isha: "18:25" },
+    "12-2": { fajr: "05:21", sunrise: "06:48", dhuhr: "11:53", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-3": { fajr: "05:22", sunrise: "06:49", dhuhr: "11:53", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-4": { fajr: "05:23", sunrise: "06:50", dhuhr: "11:54", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-5": { fajr: "05:23", sunrise: "06:51", dhuhr: "11:54", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-6": { fajr: "05:24", sunrise: "06:51", dhuhr: "11:55", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-7": { fajr: "05:25", sunrise: "06:52", dhuhr: "11:55", asr: "15:20", maghrib: "16:58", isha: "18:25" },
+    "12-8": { fajr: "05:25", sunrise: "06:53", dhuhr: "11:55", asr: "15:21", maghrib: "16:58", isha: "18:26" },
+    "12-9": { fajr: "05:26", sunrise: "06:54", dhuhr: "11:56", asr: "15:21", maghrib: "16:58", isha: "18:26" },
+    "12-10": { fajr: "05:27", sunrise: "06:54", dhuhr: "11:56", asr: "15:21", maghrib: "16:58", isha: "18:26" },
+    "12-11": { fajr: "05:27", sunrise: "06:55", dhuhr: "11:57", asr: "15:21", maghrib: "16:58", isha: "18:26" },
+    "12-12": { fajr: "05:28", sunrise: "06:56", dhuhr: "11:57", asr: "15:22", maghrib: "16:59", isha: "18:27" },
+    "12-13": { fajr: "05:29", sunrise: "06:57", dhuhr: "11:58", asr: "15:22", maghrib: "16:59", isha: "18:27" },
+    "12-14": { fajr: "05:29", sunrise: "06:57", dhuhr: "11:58", asr: "15:22", maghrib: "16:59", isha: "18:27" },
+    "12-15": { fajr: "05:30", sunrise: "06:58", dhuhr: "11:59", asr: "15:22", maghrib: "17:00", isha: "18:28" },
+    "12-16": { fajr: "05:31", sunrise: "06:59", dhuhr: "11:59", asr: "15:23", maghrib: "17:00", isha: "18:28" },
+    "12-17": { fajr: "05:31", sunrise: "06:59", dhuhr: "12:00", asr: "15:23", maghrib: "17:01", isha: "18:28" },
+    "12-18": { fajr: "05:32", sunrise: "07:00", dhuhr: "12:00", asr: "15:23", maghrib: "17:01", isha: "18:29" },
+    "12-19": { fajr: "05:32", sunrise: "07:00", dhuhr: "12:01", asr: "15:24", maghrib: "17:01", isha: "18:29" },
+    "12-20": { fajr: "05:33", sunrise: "07:01", dhuhr: "12:01", asr: "15:24", maghrib: "17:02", isha: "18:30" },
+    "12-21": { fajr: "05:33", sunrise: "07:01", dhuhr: "12:02", asr: "15:25", maghrib: "17:02", isha: "18:30" },
+    "12-22": { fajr: "05:34", sunrise: "07:02", dhuhr: "12:02", asr: "15:25", maghrib: "17:03", isha: "18:30" },
+    "12-23": { fajr: "05:34", sunrise: "07:02", dhuhr: "12:03", asr: "15:25", maghrib: "17:03", isha: "18:31" },
+    "12-24": { fajr: "05:35", sunrise: "07:03", dhuhr: "12:03", asr: "15:26", maghrib: "17:04", isha: "18:32" },
+    "12-25": { fajr: "05:35", sunrise: "07:03", dhuhr: "12:04", asr: "15:26", maghrib: "17:04", isha: "18:32" },
+    "12-26": { fajr: "05:36", sunrise: "07:04", dhuhr: "12:04", asr: "15:27", maghrib: "17:05", isha: "18:32" },
+    "12-27": { fajr: "05:36", sunrise: "07:04", dhuhr: "12:05", asr: "15:28", maghrib: "17:05", isha: "18:33" },
+    "12-28": { fajr: "05:37", sunrise: "07:04", dhuhr: "12:05", asr: "15:28", maghrib: "17:06", isha: "18:33" },
+    "12-29": { fajr: "05:37", sunrise: "07:05", dhuhr: "12:06", asr: "15:29", maghrib: "17:07", isha: "18:34" },
+    "12-30": { fajr: "05:37", sunrise: "07:05", dhuhr: "12:06", asr: "15:29", maghrib: "17:07", isha: "18:34" },
+    "12-31": { fajr: "05:37", sunrise: "07:05", dhuhr: "12:07", asr: "15:30", maghrib: "17:08", isha: "18:36" },
+  };
 
+  /* Looks up today's/a given date's daily times; falls back to the
+     monthly average (state.prayer.monthly) if that MM-DD isn't in
+     the table (e.g. Feb 29 on a leap year, or dates you add later). */
+  function getDailyPrayerTimes(dateObj, monthlyFallback) {
+    const key = (dateObj.getMonth() + 1) + "-" + dateObj.getDate();
+    const daily = DAILY_PRAYER_TIMES[key];
+    if (daily) return { ...monthlyFallback, ...daily };
+    return monthlyFallback;
+  }
     /* ---------- app state ----------
        passcodeHash, logo, donations, expenses, photos, videos, infra,
        layout and prayer all live in Firestore (CLOUD_DOC) and are filled
@@ -1741,8 +2127,7 @@
     function viewDonations() {
       const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
       const filtered = state.donations
-        .filter(d => (d.name + " " + d.city).toLowerCase().includes(state.donationQuery.toLowerCase()))
-        .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+        .filter(d => (d.name + " " + d.city).toLowerCase().includes(state.donationQuery.toLowerCase()));
 
       return `
     ${sectionHeader(t("nav_donations"), t("donations_sub", { n: state.donations.length, amt: currency(totalDonated) }))}
@@ -1795,7 +2180,7 @@
         const name = document.getElementById("d-name").value.trim();
         const amount = document.getElementById("d-amount").value;
         if (!name || !amount) return;
-        state.donations = [{ id: uid(), name, city: document.getElementById("d-city").value.trim(), amount: Number(amount), date: document.getElementById("d-date").value }, ...state.donations];
+        state.donations = [...state.donations, { id: uid(), name, city: document.getElementById("d-city").value.trim(), amount: Number(amount), date: document.getElementById("d-date").value }];
         if (!persist("donations")) alert(t("storage_full_warning"));
         renderMain();
       });
@@ -1941,14 +2326,16 @@
     function viewPhotos() {
       return `
     ${sectionHeader(t("nav_photos"), t("photos_sub", { n: state.photos.length }))}
-    <form id="photo-form" class="card form-card" style="grid-template-columns:1.6fr 1.2fr 1fr auto;">
-      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="p-url" placeholder="https://..." required /></label>
-      <label class="field"><span>${t('field_caption')}</span><input type="text" id="p-caption" placeholder="${t('ph_caption')}" /></label>
-      <label class="field"><span>${t('field_category')}</span>
-        <select id="p-cat">${optionsFor(PHOTO_CATEGORIES, PCAT_KEY_MAP)}</select>
-      </label>
-      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
-    </form>
+<form id="photo-form" class="card form-card" style="grid-template-columns:1.1fr auto 1.2fr 1fr 1fr auto;">
+  <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="p-file" accept="image/*" /></label>
+  <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'OR'}</div>
+  <label class="field"><span>${t('field_image_url')}</span><input type="url" id="p-url" placeholder="https://..." /></label>
+  <label class="field"><span>${t('field_caption')}</span><input type="text" id="p-caption" placeholder="${t('ph_caption')}" /></label>
+  <label class="field"><span>${t('field_category')}</span>
+    <select id="p-cat">${optionsFor(PHOTO_CATEGORIES, PCAT_KEY_MAP)}</select>
+  </label>
+  <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+</form>
     <div class="form-hint">${t('hint_photo')}</div>
     ${state.photos.length === 0 ? emptyState(ICONS.photos, t("empty_photos_title"), t("empty_photos_text")) : `
       <div class="grid-photos">
@@ -1971,13 +2358,33 @@
     function bindPhotos() {
       document.getElementById("photo-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const url = document.getElementById("p-url").value.trim();
-        if (!url) return;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalLabel = submitBtn.innerHTML;
+        const fileInput = document.getElementById("p-file");
+        const file = fileInput.files && fileInput.files[0];
+        let url = document.getElementById("p-url").value.trim();
+
+        if (!file && !url) return;
+
+        if (file) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = state.lang === 'ur' ? "اپ لوڈ ہو رہا ہے…" : "Uploading…";
+          try {
+            url = await resizeImageFile(file);
+          } catch (err) {
+            console.error(err);
+            alert(state.lang === 'ur' ? "تصویر پر کارروائی نہیں ہو سکی۔" : "Couldn't process that image. Try a different photo.");
+            submitBtn.disabled = false; submitBtn.innerHTML = originalLabel;
+            return;
+          }
+        }
+
         const entry = { id: uid(), url, caption: document.getElementById("p-caption").value.trim(), category: document.getElementById("p-cat").value };
         state.photos = [entry, ...state.photos];
         if (!persist("photos")) {
           state.photos = state.photos.filter(p => p.id !== entry.id);
           alert(t("storage_full_warning"));
+          submitBtn.disabled = false; submitBtn.innerHTML = originalLabel;
           return;
         }
         renderMain();
@@ -2245,7 +2652,7 @@
           const iso = dateObj.toISOString().slice(0, 10);
           const isFriday = dateObj.getDay() === 5;
           const override = overrides.find(o => o.date === iso);
-          const times = { ...base, ...(override || {}) };
+          const times = getDailyPrayerTimes(dateObj, { ...base, ...(override || {}) });
           return { dayNum, iso, isFriday, weekday: dayName(dateObj.getDay()), times, isToday: iso === today };
         });
         body = `
@@ -2307,7 +2714,20 @@
           renderMain();
         });
         const printBtn = document.getElementById("prayer-print");
-        if (printBtn) printBtn.addEventListener("click", () => window.print());
+        if (printBtn) printBtn.addEventListener("click", async () => {
+          printBtn.disabled = true;
+          const original = printBtn.innerHTML;
+          printBtn.innerHTML = "Generating\u2026";
+          try {
+            await downloadYearlyPrayerPdf(state.prayerYear);
+          } catch (e) {
+            console.error(e);
+            alert("Couldn't generate the PDF. Check your internet connection and try again.");
+          } finally {
+            printBtn.disabled = false;
+            printBtn.innerHTML = original;
+          }
+        });
       }
     }
 
