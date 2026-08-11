@@ -480,15 +480,94 @@
       flex-wrap: wrap;
       margin-bottom: 26px;
     }
+ .sticky-stats-header {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  background: var(--cream);
+  padding: 14px 0 16px;
+  margin-top: -8px;
+}
 
-    .clock-card {
-      background: linear-gradient(180deg, #1F5C46, #14342A);
-      color: #F4EFDD;
-      border-radius: 4px 4px 12px 12px;
-      padding: 16px 20px;
-      flex: 1 1 200px;
-      min-width: 200px;
-    }
+@media (max-width: 860px) {
+  .sticky-stats-header { top: 53px; }
+}
+
+.clock-row {
+  display: flex;
+  gap: 8px;
+}
+
+.clock-row .clock-card {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 12px 14px;
+}
+
+.clock-row .clock-label {
+  font-size: 10px;
+  gap: 4px;
+}
+
+.clock-row .clock-time {
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.clock-row .clock-date {
+  font-size: 10.5px;
+}
+
+@media (max-width: 420px) {
+  .clock-row .clock-card { padding: 10px 10px; }
+  .clock-row .clock-time { font-size: 15px; }
+  .clock-row .clock-label { font-size: 9px; }
+  .clock-row .clock-date { font-size: 9.5px; }
+}
+
+.finance-stats-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.finance-stats-row .stat-card {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 10px 10px;
+  border-radius: 4px 4px 8px 8px;
+}
+
+.finance-stats-row .stat-label {
+  font-size: 9.5px;
+  letter-spacing: .3px;
+}
+
+.finance-stats-row .stat-value {
+  font-size: 14px;
+  margin-top: 3px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.finance-stats-row .stat-sub {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+@media (max-width: 420px) {
+  .finance-stats-row .stat-card { padding: 8px 8px; }
+  .finance-stats-row .stat-value { font-size: 12.5px; }
+  .finance-stats-row .stat-label { font-size: 8.5px; }
+}
+.clock-card {
+  background: linear-gradient(180deg, #1F5C46, #14342A);
+  color: #F4EFDD;
+  border-radius: 12px;
+  padding: 16px 20px;
+  flex: 1 1 200px;
+  min-width: 200px;
+}
 
     .clock-label {
       font-size: 11.5px;
@@ -969,6 +1048,38 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .dash-stats-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  margin-bottom: 26px;
+}
+
+.dash-stats-row .stat-card {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 12px;
+  padding: 14px 14px;
+}
+
+.dash-stats-row .stat-label {
+  font-size: 10.5px;
+}
+
+.dash-stats-row .stat-value {
+  font-size: 19px;
+  margin-top: 4px;
+}
+
+.dash-stats-row .stat-sub {
+  font-size: 11px;
+}
+
+@media (max-width: 420px) {
+  .dash-stats-row .stat-value { font-size: 15px; }
+  .dash-stats-row .stat-card { padding: 10px 10px; }
+}
   </style>
 </head>
 
@@ -1831,6 +1942,96 @@
        layout and prayer all live in Firestore (CLOUD_DOC) and are filled
        in by boot() below, once the cloud data has loaded. `lang` stays a
        per-device preference in localStorage. */
+
+
+
+      async function downloadYearlyPrayerPdf(year) {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          throw new Error(
+            "jsPDF didn't load. Check that both <script> tags for jspdf and " +
+            "jspdf-autotable are in <head>, in that order, and that your browser " +
+            "isn't blocking the CDN (check the DevTools Console/Network tab for a 404 or CSP error)."
+          );
+        }
+
+        year = year || state.prayerYear || new Date().getFullYear();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+
+        if (typeof doc.autoTable !== "function") {
+          throw new Error(
+            "jspdf-autotable didn't load (doc.autoTable is missing). Make sure its " +
+            "<script> tag is AFTER the jspdf <script> tag in <head>."
+          );
+        }
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginX = 40;
+
+        let logoDataUrl = null;
+        if (state.logo) logoDataUrl = await urlToDataUrl(state.logo);
+
+        const HEAD = ["Date", "Day", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha", "Jumu'ah"];
+
+        for (let m = 0; m < 12; m++) {
+          if (m > 0) doc.addPage();
+          let y = 50;
+
+          if (logoDataUrl) {
+            try { doc.addImage(logoDataUrl, "PNG", marginX, y - 28, 36, 36); } catch (e) { console.warn("addImage failed:", e); }
+          }
+
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(18);
+          doc.text("Mahmood Masjid", pageWidth / 2, y, { align: "center" });
+          y += 20;
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(12);
+          doc.text("Prayer Times \u2014 " + MONTHS_EN[m] + " " + year + " \u00b7 Hanafi", pageWidth / 2, y, { align: "center" });
+          y += 18;
+
+          const daysInMonth = new Date(year, m + 1, 0).getDate();
+          const base = (state.prayer && state.prayer.monthly && state.prayer.monthly[m]) || emptyMonthlyTimes();
+          const overrides = (state.prayer && state.prayer.overrides) || [];
+          const rows = [];
+
+          for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(year, m, d);
+            const iso = dateObj.toISOString().slice(0, 10);
+            const isFriday = dateObj.getDay() === 5;
+            const override = overrides.find(o => o.date === iso);
+            let times = { ...base, ...(override || {}) };
+            if (typeof getDailyPrayerTimes === "function") times = getDailyPrayerTimes(dateObj, times);
+
+            rows.push([
+              String(d),
+              DAY_NAMES_EN[dateObj.getDay()],
+              times.fajr || "\u2014",
+              times.sunrise || "\u2014",
+              isFriday ? "\u2014" : (times.dhuhr || "\u2014"),
+              times.asr || "\u2014",
+              times.maghrib || "\u2014",
+              times.isha || "\u2014",
+              isFriday ? (times.jumma || "\u2014") : "\u2014",
+            ]);
+          }
+
+          doc.autoTable({
+            startY: y,
+            head: [HEAD],
+            body: rows,
+            styles: { fontSize: 9, cellPadding: 4, halign: "center" },
+            headStyles: { fillColor: [22, 56, 44], textColor: [244, 217, 138] },
+            alternateRowStyles: { fillColor: [250, 246, 236] },
+            columnStyles: { 0: { fontStyle: "bold" }, 1: { halign: "left" } },
+            margin: { left: marginX, right: marginX },
+          });
+        }
+
+        doc.save("Mahmood-Masjid-Prayer-Times-" + year + ".pdf");
+      }
+
     const state = {
       passcodeHash: null,
       unlocked: false,
@@ -2049,6 +2250,21 @@
   `;
     }
 
+  function financeStatsHeader() {
+    const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
+    const totalSpent = state.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+    const remaining = totalDonated - totalSpent;
+    return `
+    <div class="sticky-stats-header">
+      <div class="finance-stats-row">
+        ${statCard(t("stat_total_donated"), currency(totalDonated))}
+        ${statCard(t("stat_total_spent"), currency(totalSpent), null, "gold")}
+        ${statCard(t("stat_remaining"), currency(remaining), remaining >= 0 ? t("sub_funds_available") : t("sub_over_budget"), remaining < 0 ? "danger" : "default")}
+      </div>
+    </div>
+  `;
+  }
+
     let clockInterval = null;
     function renderMain() {
       if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
@@ -2105,23 +2321,23 @@
 
       return `
     ${sectionHeader(t("dash_title"), t("dash_sub"))}
-    <div class="stat-row">
-      <div class="clock-card">
-        <div class="clock-label">${ICONS.clock} ${t("clock_pk")}</div>
-        <div class="clock-time" id="clock-pk-time">${pk.time}</div>
-        <div class="clock-date" id="clock-pk-date">${pk.date}</div>
-      </div>
-      <div class="clock-card">
-        <div class="clock-label">${ICONS.clock} ${t("clock_uk")}</div>
-        <div class="clock-time" id="clock-uk-time">${uk.time}</div>
-        <div class="clock-date" id="clock-uk-date">${uk.date}</div>
-      </div>
-    </div>
-    <div class="stat-row">
-      ${statCard(t("stat_total_donated"), currency(totalDonated), t("sub_donations_count", { n: state.donations.length }))}
-      ${statCard(t("stat_total_spent"), currency(totalSpent), t("sub_expenses_count", { n: state.expenses.length }), "gold")}
-      ${statCard(t("stat_remaining"), currency(remaining), remaining >= 0 ? t("sub_funds_available") : t("sub_over_budget"), remaining < 0 ? "danger" : "default")}
-    </div>
+<div class="clock-row">
+  <div class="clock-card">
+    <div class="clock-label">${ICONS.clock} ${t("clock_pk")}</div>
+    <div class="clock-time" id="clock-pk-time">${pk.time}</div>
+    <div class="clock-date" id="clock-pk-date">${pk.date}</div>
+  </div>
+  <div class="clock-card">
+    <div class="clock-label">${ICONS.clock} ${t("clock_uk")}</div>
+    <div class="clock-time" id="clock-uk-time">${uk.time}</div>
+    <div class="clock-date" id="clock-uk-date">${uk.date}</div>
+  </div>
+</div>
+<div class="dash-stats-row">
+  ${statCard(t("stat_total_donated"), currency(totalDonated), t("sub_donations_count", { n: state.donations.length }))}
+  ${statCard(t("stat_total_spent"), currency(totalSpent), t("sub_expenses_count", { n: state.expenses.length }), "gold")}
+  ${statCard(t("stat_remaining"), currency(remaining), remaining >= 0 ? t("sub_funds_available") : t("sub_over_budget"), remaining < 0 ? "danger" : "default")}
+</div>
     ${sectionHeader(t("recent_donations"))}
     ${recent.length === 0 ? emptyState(ICONS.donations, t("empty_donations_title"), t("empty_donations_text")) : `
       <div class="table-wrap row-list">
@@ -2147,6 +2363,7 @@
 
       return `
     ${sectionHeader(t("nav_donations"), t("donations_sub", { n: state.donations.length, amt: currency(totalDonated) }))}
+    ${financeStatsHeader()}
     <form id="donation-form" class="card form-card" style="grid-template-columns:repeat(4,1fr) auto;">
       <label class="field"><span>${t('field_donor_name')}</span><input type="text" id="d-name" placeholder="${t('ph_donor_name')}" required /></label>
       <label class="field"><span>${t('field_city')}</span><input type="text" id="d-city" placeholder="${t('ph_city')}" /></label>
@@ -2250,6 +2467,7 @@
     const sorted = state.expenses;
     return `
     ${sectionHeader(t("nav_expenses"), t("expenses_sub", { n: state.expenses.length, amt: currency(totalSpent) }))}
+    ${financeStatsHeader()}
     <form id="expense-form" class="card form-card" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto;">
       <label class="field"><span>${t('field_description')}</span><input type="text" id="e-desc" placeholder="${t('ph_description')}" required /></label>
       <label class="field"><span>${t('field_category')}</span>
@@ -2629,8 +2847,10 @@
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="pill ${state.prayerMode === 'calendar' ? 'active' : ''}" data-mode="calendar">${t('mode_calendar')}</button>
       <button class="pill ${state.prayerMode === 'edit' ? 'active' : ''}" data-mode="edit">${t('mode_edit')}</button>
-      ${state.prayerMode === 'calendar' ? `<button class="btn-secondary" id="prayer-print">${ICONS.download} ${t('btn_download_pdf')}</button>` : ""}
-    </div>
+${state.prayerMode === 'calendar' ? `
+  <button class="btn-secondary" id="prayer-print-month">${ICONS.download} ${state.lang === 'ur' ? 'اس مہینے کی پی ڈی ایف' : 'Download This Month'}</button>
+  <button class="btn-secondary" id="prayer-print-year">${ICONS.download} ${state.lang === 'ur' ? 'پورا سال پی ڈی ایف' : 'Download Full Year'}</button>
+` : ""}    </div>
   `;
       let body;
       if (state.prayerMode === "edit") {
@@ -2728,21 +2948,30 @@
           state.prayerYear = Number(e.target.value) || state.prayerYear;
           renderMain();
         });
-        const printBtn = document.getElementById("prayer-print");
-        if (printBtn) printBtn.addEventListener("click", async () => {
-          printBtn.disabled = true;
-          const original = printBtn.innerHTML;
-          printBtn.innerHTML = "Generating\u2026";
+        async function runPdfDownload(btn, fn) {
+          btn.disabled = true;
+          const original = btn.innerHTML;
+          btn.innerHTML = "Generating…";
           try {
-            await downloadYearlyPrayerPdf(state.prayerYear);
+            await fn();
           } catch (e) {
             console.error(e);
-            alert("Couldn't generate the PDF. Check your internet connection and try again.");
+            alert("Couldn't generate the PDF:\n\n" + (e && e.message ? e.message : e));
           } finally {
-            printBtn.disabled = false;
-            printBtn.innerHTML = original;
+            btn.disabled = false;
+            btn.innerHTML = original;
           }
-        });
+        }
+
+        const monthBtn = document.getElementById("prayer-print-month");
+        if (monthBtn) monthBtn.addEventListener("click", () =>
+          runPdfDownload(monthBtn, () => downloadMonthlyPrayerPdf(state.prayerMonthIdx, state.prayerYear))
+        );
+
+        const yearBtn = document.getElementById("prayer-print-year");
+        if (yearBtn) yearBtn.addEventListener("click", () =>
+          runPdfDownload(yearBtn, () => downloadYearlyPrayerPdf(state.prayerYear))
+        );
       }
     }
 
