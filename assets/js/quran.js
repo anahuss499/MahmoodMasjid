@@ -1,5 +1,4 @@
-// quran.js - surah metadata (English and Urdu names for all 114 surahs)
-// English names are common accepted translations; Urdu names are provided in Arabic script (widely used Urdu names).
+
 const surahMeta = [
   {name: "Al-Fatihah",    english: "The Opening",                   urdu: "الفاتحہ"},
   {name: "Al-Baqarah",    english: "The Cow",                         urdu: "البقرہ"},
