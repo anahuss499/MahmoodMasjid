@@ -2229,10 +2229,10 @@
     }
 
     /* ================= EXPENSES ================= */
-    function viewExpenses() {
-      const totalSpent = state.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
-      const sorted = [...state.expenses].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-      return `
+  function viewExpenses() {
+    const totalSpent = state.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+    const sorted = state.expenses;
+    return `
     ${sectionHeader(t("nav_expenses"), t("expenses_sub", { n: state.expenses.length, amt: currency(totalSpent) }))}
     <form id="expense-form" class="card form-card" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto;">
       <label class="field"><span>${t('field_description')}</span><input type="text" id="e-desc" placeholder="${t('ph_description')}" required /></label>
@@ -2281,8 +2281,7 @@
         const description = document.getElementById("e-desc").value.trim();
         const amount = document.getElementById("e-amount").value;
         if (!description || !amount) return;
-        state.expenses = [{ id: uid(), description, category: document.getElementById("e-cat").value, amount: Number(amount), date: document.getElementById("e-date").value }, ...state.expenses];
-        if (!persist("expenses")) alert(t("storage_full_warning"));
+        state.expenses = [...state.expenses, { id: uid(), description, category: document.getElementById("e-cat").value, amount: Number(amount), date: document.getElementById("e-date").value }];        if (!persist("expenses")) alert(t("storage_full_warning"));
         renderMain();
       });
       document.querySelectorAll("[data-edit]").forEach(btn => {
