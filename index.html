@@ -790,7 +790,7 @@
 
 <div class="daily-wrap">
   <div class="section-header">
-    <h1>Daily Verse &amp; Hadith</h1>
+    <h1 data-en="Daily Verse &amp; Hadith" data-urdu="روزانہ آیت اور حدیث">Daily Verse &amp; Hadith</h1>
     <div class="ur">روزانہ آیت اور حدیث</div>
   </div>
 
@@ -800,7 +800,7 @@
   </div>
 
   <div class="refresh-row">
-    <button class="refresh-btn" onclick="showNext()">Show Another</button>
+    <button class="refresh-btn" onclick="showNext()" data-en="Show Another" data-urdu="ایک اور دکھائیں">Show Another</button>
   </div>
 </div>
 
@@ -1012,12 +1012,22 @@ let hadithSaved = false;
 const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 
 function renderCard(containerId, item, iconSvg, label, saved, toggleFn, copyFn, shareFn){
+  const isUrdu = document.body.classList.contains('urdu-mode');
+  const displayLabel = isUrdu
+    ? (label === 'Verse of the Day' ? 'آج کی آیت' : 'آج کی حدیث')
+    : label;
+  const displayTranslation = isUrdu ? item.ur : item.en;
+  const translationClass = isUrdu ? 'translation-ur' : 'translation-en';
+  const supportLabel = isUrdu ? 'عطیہ برائے بینک اکاؤنٹ:' : 'Support us — Bank Account:';
+  const saveLabel = isUrdu ? (saved ? 'محفوظ' : 'محفوظ کریں') : (saved ? 'Saved' : 'Save');
+  const copyLabel = isUrdu ? 'کاپی' : 'Copy';
+  const shareLabel = isUrdu ? 'شیئر' : 'Share';
   document.getElementById(containerId).innerHTML = `
     <div class="daily-card">
       <div class="card-top">
         <div class="icon-badge">${iconSvg}</div>
         <div class="card-top-text">
-          <div class="label">${label}</div>
+          <div class="label">${displayLabel}</div>
           <div class="date">${todayStr}</div>
         </div>
         <div class="badge">${item.ref.split(' ')[0]}</div>
@@ -1026,8 +1036,7 @@ function renderCard(containerId, item, iconSvg, label, saved, toggleFn, copyFn, 
         <div class="arabic-text">${item.arabic}</div>
       </div>
       <div class="translation-block">
-        <div class="translation-en">"${item.en}"${item.complete === false ? ' …' : ''}</div>
-        <div class="translation-ur">"${item.ur}"${item.complete === false ? ' …' : ''}</div>
+        <div class="${translationClass}">"${displayTranslation}"${item.complete === false ? ' …' : ''}</div>
         ${item.complete === false ? '<div class="excerpt-note">This is a shortened excerpt — the full narration continues.</div>' : ''}
       </div>
       <div class="reference-row">
@@ -1035,22 +1044,22 @@ function renderCard(containerId, item, iconSvg, label, saved, toggleFn, copyFn, 
       </div>
       <div class="support-strip">
         <div class="support-row">
-          <span class="support-label">Support us — Bank Account:</span>
+          <span class="support-label">${supportLabel}</span>
           <span class="bank">${bank}</span>
         </div>
       </div>
       <div class="actions">
         <button class="action-btn ${saved ? 'saved' : ''}" onclick="${toggleFn}()">
           <svg viewBox="0 0 24 24" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          ${saved ? 'Saved' : 'Save'}
+          ${saveLabel}
         </button>
         <button class="action-btn" onclick="${copyFn}()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copy
+          ${copyLabel}
         </button>
         <button class="action-btn" onclick="${shareFn}()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
-          Share
+          ${shareLabel}
         </button>
       </div>
     </div>
