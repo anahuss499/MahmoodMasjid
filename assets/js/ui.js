@@ -262,6 +262,7 @@
       if(langText) langText.textContent = 'EN';
       // Update next prayer name if available
       updateNextPrayerName();
+      if(typeof renderAll === 'function') renderAll();
     } else {
       body.classList.remove('urdu-mode');
       applyText('[data-urdu]', 'data-en');
@@ -272,6 +273,7 @@
       if(langText) langText.textContent = 'UR';
       // Update next prayer name if available
       updateNextPrayerName();
+      if(typeof renderAll === 'function') renderAll();
     }
     try{ localStorage.setItem('lang', urdu ? 'urdu' : 'en'); } catch(e){}
   }

@@ -2,6 +2,36 @@
 const LAT = 32.5847, LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 const METHOD = 1; // University of Islamic Sciences, Karachi - Sunni Hanafi method (Isha: 18° below horizon)
 const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) year-round
+const CALENDAR_API_URL = 'https://api.aladhan.com/v1/calendar';
+const CALENDAR_RETRY_DELAY_MS = 1500;
+
+function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function fetchCalendarMonth(month, year, retries = 4){
+  const url = `${CALENDAR_API_URL}?latitude=${LAT}&longitude=${LON}&method=${METHOD}&month=${month}&year=${year}&school=1`;
+
+  for(let attempt = 1; attempt <= retries; attempt++){
+    try{
+      const res = await fetch(url, { cache: 'no-store' });
+      const json = await res.json();
+
+      if (res.status === 429 || (json && json.code === 429) || (json && json.message && /rate limit/i.test(json.message))) {
+        throw new Error('API rate limit exceeded');
+      }
+
+      if (!res.ok || json.code !== 200) {
+        throw new Error(json && json.message ? json.message : `HTTP ${res.status}`);
+      }
+
+      return json.data;
+    } catch (err) {
+      if (attempt === retries) {
+        throw err;
+      }
+      await sleep(CALENDAR_RETRY_DELAY_MS * attempt);
+    }
+  }
+}
 
 function populateSelectors(){
   const monthSelect = document.getElementById('month-select');
@@ -26,17 +56,19 @@ async function loadCalendar(){
   }
   
   try{
-    const url = `https://api.aladhan.com/v1/calendar?latitude=${LAT}&longitude=${LON}&method=${METHOD}&month=${month}&year=${year}&school=1`;
-    const res = await fetch(url);
-    const json = await res.json();
-    if(json.code !== 200){ throw new Error('API error'); }
-    const days = json.data;
+    const days = await fetchCalendarMonth(month, year);
     // Build table
     const monthLabel = document.getElementById('month-select').selectedOptions[0].text;
+    const firstHijriMonth = days[0].date.hijri.month;
+    const lastHijriMonth = days[days.length - 1].date.hijri.month;
+    const hijriMonthName = firstHijriMonth.en === lastHijriMonth.en
+      ? (document.body.classList.contains('urdu-mode') ? firstHijriMonth.ar : firstHijriMonth.en)
+      : (document.body.classList.contains('urdu-mode')
+        ? `${firstHijriMonth.ar} / ${lastHijriMonth.ar}`
+        : `${firstHijriMonth.en} / ${lastHijriMonth.en}`);
     let html = `<h3 data-en="Prayer times — ${monthLabel} ${year}" data-urdu="نماز کے اوقات — ${monthLabel} ${year}">Prayer times — ${monthLabel} ${year}</h3>`;
     html += `<div class="table-wrap"><table class="prayer-table"><thead><tr>
       <th data-en="Date" data-urdu="تاریخ">Date</th>
-      <th data-en="Hijri" data-urdu="حجری">Hijri</th>
       <th data-en="Fajr" data-urdu="فجر">Fajr</th>
       <th data-en="Sunrise" data-urdu="طلوع آفتاب">Sunrise</th>
       <th data-en="Ishraq" data-urdu="اشراق">Ishraq</th>
@@ -50,7 +82,6 @@ async function loadCalendar(){
     const rows = [];
     days.forEach(d=>{
       const g = d.date.gregorian.date;
-      const h = d.date.hijri.date;
       const weekday = d.date.gregorian.weekday.en;
       const t = d.timings;
       const fajr = sanitizeTime(t.Fajr);
@@ -62,8 +93,8 @@ async function loadCalendar(){
       const ishraq = addMinutesToTime(sunrise, 20); // Ishraq ≈ sunrise + 20 minutes
       const duhaKubra = subtractMinutesFromTime(dhuhr, 45); // Duha al Kubra ≈ 45 minutes before Dhuhr
       const jummah = weekday === 'Friday' ? JUMMAH_TIME : '—';
-      html += `<tr><td>${g}</td><td>${h}</td><td>${fajr}</td><td>${sunrise}</td><td>${ishraq}</td><td>${duhaKubra}</td><td>${dhuhr}</td><td>${jummah}</td><td>${asr}</td><td>${maghrib}</td><td>${isha}</td></tr>`;
-      rows.push({date:g,hijri:h,fajr, sunrise, ishraq, duhaKubra, dhuhr, jummah, asr, maghrib, isha});
+        html += `<tr><td>${g}</td><td>${fajr}</td><td>${sunrise}</td><td>${ishraq}</td><td>${duhaKubra}</td><td>${dhuhr}</td><td>${jummah}</td><td>${asr}</td><td>${maghrib}</td><td>${isha}</td></tr>`;
+        rows.push({date:g,fajr, sunrise, ishraq, duhaKubra, dhuhr, jummah, asr, maghrib, isha});
     });
     html += `</tbody></table></div>`;
     area.innerHTML = html;
@@ -75,7 +106,7 @@ async function loadCalendar(){
     }
     // attach download behavior and show button
     document.getElementById('download-btn').style.display = 'inline-block';
-    document.getElementById('download-btn').onclick = ()=> downloadPDF(rows, month, year);
+    document.getElementById('download-btn').onclick = ()=> downloadPDF(rows, month, year, hijriMonthName);
   }catch(err){
     console.error('Calendar load error',err);
     area.innerHTML = '<p>Error loading calendar. Try again later.</p>';
@@ -111,7 +142,6 @@ async function loadFullYearCalendar(year){
     const calendarTitle = isUrdu ? 'نماز کا کیلنڈر' : 'Prayer Times Calendar';
     const labels = {
       date: isUrdu ? 'تاریخ' : 'Date',
-      hijri: isUrdu ? 'حجری' : 'Hijri',
       fajr: isUrdu ? 'فجر' : 'Fajr',
       sunrise: isUrdu ? 'طلوع' : 'Sunrise',
       ishraq: isUrdu ? 'اشراق' : 'Ishraq',
@@ -136,13 +166,10 @@ async function loadFullYearCalendar(year){
       <div class="full-year-grid">
     `;
     
-    // Load all 12 months
+    // Load all 12 months with staggered retries to avoid Aladhan rate limits
     for(let m=1; m<=12; m++){
-      const url = `https://api.aladhan.com/v1/calendar?latitude=${LAT}&longitude=${LON}&method=${METHOD}&month=${m}&year=${year}&school=1`;
-      const res = await fetch(url);
-      const json = await res.json();
-      if(json.code !== 200){ throw new Error('API error'); }
-      const days = json.data;
+      if(m > 1){ await sleep(1200); }
+      const days = await fetchCalendarMonth(m, year);
       const monthLabel = new Date(year,m-1,1).toLocaleString('en-US',{month:'long'});
       const monthLabelUrdu = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'][m-1];
       
@@ -168,7 +195,6 @@ async function loadFullYearCalendar(year){
         <table class="compact-prayer-table" ${isUrdu ? 'style="font-family: Jameel Noori Nastaleeq, serif;"' : ''}>
           <thead><tr>
             <th>${labels.date}</th>
-            <th>${labels.hijri}</th>
             <th>${labels.fajr}</th>
             <th>${labels.sunrise}</th>
             <th>${labels.ishraq}</th>
@@ -183,7 +209,6 @@ async function loadFullYearCalendar(year){
       
       days.forEach(d=>{
         const date = d.date.gregorian.day;
-        const hijri = d.date.hijri.day;
         const weekday = d.date.gregorian.weekday.en;
         const t = d.timings;
         const fajr = sanitizeTime(t.Fajr);
@@ -198,7 +223,6 @@ async function loadFullYearCalendar(year){
         
         html += `<tr>
           <td>${date}</td>
-          <td>${hijri}</td>
           <td>${fajr}</td>
           <td>${sunrise}</td>
           <td>${ishraq}</td>
@@ -224,13 +248,28 @@ async function loadFullYearCalendar(year){
     
     area.innerHTML = html;
     
-    // Hide download button for full year view
-    document.getElementById('download-btn').style.display = 'none';
+    // Keep the export available for the complete year view.
+    const downloadButton = document.getElementById('download-btn');
+    downloadButton.style.display = 'inline-block';
+    downloadButton.onclick = ()=> downloadFullYearPDF(year);
     
   }catch(err){
     console.error('Full year calendar error',err);
     area.innerHTML = '<p>Error loading full year calendar. Try again later.</p>';
   }
+}
+
+function calendarExportFooter(isUrdu){
+  const supportLabel = isUrdu ? 'عطیہ برائے بینک اکاؤنٹ' : 'Donations';
+  return `<div style="margin-top:8px;padding-top:5px;border-top:1px solid #8eb69b;text-align:center;font-size:8px;line-height:1.45;color:#163832;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:3px;">
+      <img src="/assets/img/fblogo.png" alt="Facebook" style="width:18px;height:18px;border-radius:4px;">
+      <img src="/assets/img/tiktoklogo.png" alt="TikTok" style="width:18px;height:18px;border-radius:4px;">
+      <img src="/assets/img/ytlogo.png" alt="YouTube" style="width:18px;height:18px;border-radius:4px;">
+      <strong>@mahmoodmasjid</strong>
+    </div>
+    <div><strong>www.mahmoodmasjid.com</strong> | ${supportLabel}: <strong>PK41ABPA0010154454310012</strong></div>
+  </div>`;
 }
 
 async function downloadFullYearPDF(year){
@@ -240,7 +279,6 @@ async function downloadFullYearPDF(year){
   const calendarTitle = isUrdu ? 'نماز کا کیلنڈر' : 'Prayer Times Calendar';
   const labels = {
     date: isUrdu ? 'تاریخ' : 'D',
-    hijri: isUrdu ? 'حجری' : 'H',
     fajr: isUrdu ? 'فجر' : 'Fajr',
     sunrise: isUrdu ? 'طلوع' : 'Sun',
     ishraq: isUrdu ? 'اشراق' : 'Ish',
@@ -254,15 +292,18 @@ async function downloadFullYearPDF(year){
   
   let monthsHTML = '';
   
-  // Fetch all 12 months
+  // Fetch all 12 months with staggered retries to avoid Aladhan rate limits
   for(let m=1; m<=12; m++){
-    const url = `https://api.aladhan.com/v1/calendar?latitude=${LAT}&longitude=${LON}&method=${METHOD}&month=${m}&year=${year}&school=1`;
-    const res = await fetch(url);
-    const json = await res.json();
-    if(json.code !== 200){ continue; }
-    const days = json.data;
+    if(m > 1){ await sleep(1200); }
+    let days;
+    try {
+      days = await fetchCalendarMonth(m, year);
+    } catch (err) {
+      console.warn('Skipping month due to calendar API error', { month: m, year, err });
+      continue;
+    }
     const monthLabelUrdu = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'][m-1];
-    const monthLabel = new Date(year,m-1,1).toLocaleString('en-US',{month:'short'});
+    const monthLabel = new Date(year,m-1,1).toLocaleString('en-US',{month:'long'});
     
     // Get Islamic month names
     const firstDay = days[0];
@@ -277,29 +318,35 @@ async function downloadFullYearPDF(year){
       : (isUrdu ? `${hijriMonthStartAr}/${hijriMonthEndAr}` : `${hijriMonthStart}/${hijriMonthEnd}`);
     
     const gregMonth = isUrdu ? monthLabelUrdu : monthLabel;
-    const displayMonth = `${gregMonth}<br><span style="font-size:3.2px;color:#666;">${hijriDisplay}</span>`;
+    const displayMonth = `${gregMonth}<br><span style="font-size:10px;color:#666;font-weight:500;">${hijriDisplay}</span>`;
     
-    let tableHTML = `<div style="break-inside:avoid;margin-bottom:1px;">
-      <h4 style="text-align:center;font-size:4.5px;margin:0 0 0.5px 0;color:#32cd32;font-weight:700;line-height:0.95;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${displayMonth}</h4>
-      <table style="width:100%;border-collapse:collapse;font-size:3.5px;line-height:0.9;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">
+    let tableHTML = `<div style="break-inside:avoid;break-after:page;page-break-after:always;margin:0;padding:6px 10px;min-height:180mm;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 5px;">
+        <img src="/assets/img/logo.png" alt="${mosqueName}" style="width:38px;height:38px;border-radius:6px;">
+        <div style="text-align:center;line-height:1.1;">
+          <div style="font-size:14px;font-weight:800;color:#0b2b26;margin-bottom:2px;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${mosqueName}</div>
+          <div style="font-size:8px;color:#666;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${address}</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:12px;font-weight:700;color:#163832;margin-bottom:4px;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${calendarTitle} - ${year}</div>
+      <h4 style="text-align:center;font-size:14px;margin:0 0 6px;color:#235347;font-weight:700;line-height:1.15;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${displayMonth}</h4>
+      <table style="width:100%;border-collapse:collapse;font-size:9px;line-height:1.15;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">
         <thead><tr style="background:#f5f5f5;">
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.date}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.hijri}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.fajr}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.sunrise}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.ishraq}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.duha}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.dhuhr}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.jummah}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.asr}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.maghrib}</th>
-          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.isha}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.date}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.fajr}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.sunrise}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.ishraq}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.duha}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.dhuhr}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.jummah}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.asr}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.maghrib}</th>
+          <th style="border:0.5px solid #aaa;padding:4px;font-size:8px;">${labels.isha}</th>
         </tr></thead>
         <tbody>`;
     
     days.forEach(d=>{
       const date = d.date.gregorian.day;
-      const hijri = d.date.hijri.day;
       const weekday = d.date.gregorian.weekday.en;
       const t = d.timings;
       const fajr = sanitizeTime(t.Fajr);
@@ -313,21 +360,20 @@ async function downloadFullYearPDF(year){
       const jummah = weekday === 'Friday' ? JUMMAH_TIME : '—';
       
       tableHTML += `<tr>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${date}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${hijri}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${fajr}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${sunrise}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${ishraq}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${duhaKubra}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${dhuhr}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${jummah}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${asr}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${maghrib}</td>
-        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${isha}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${date}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${fajr}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${sunrise}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${ishraq}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${duhaKubra}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${dhuhr}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${jummah}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${asr}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${maghrib}</td>
+        <td style="border:0.5px solid #aaa;padding:4px;text-align:center;">${isha}</td>
       </tr>`;
     });
     
-    tableHTML += `</tbody></table></div>`;
+    tableHTML += `</tbody></table>${calendarExportFooter(isUrdu)}</div>`;
     monthsHTML += tableHTML;
   }
   
@@ -335,22 +381,7 @@ async function downloadFullYearPDF(year){
     ? '<p style="text-align:center;margin-top:1.5px;padding:1px;background:rgba(50,205,50,0.08);border-radius:1px;color:#042204;font-size:3.5px;font-style:italic;font-family:Jameel Noori Nastaleeq;">* نوٹ: حجری تاریخیں چاند دیکھنے کی بنیاد پر تبدیل ہو سکتی ہیں</p>'
     : '<p style="text-align:center;margin-top:1.5px;padding:1px;background:rgba(50,205,50,0.08);border-radius:1px;color:#042204;font-size:3.5px;font-style:italic;">* Note: Dates may vary slightly based on moon sighting</p>';
   
-  const html = `
-    <div style="padding:2px;font-family:Arial,sans-serif;">
-      <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:2px;">
-        <img src="/assets/img/logo.png" alt="${mosqueName}" style="width:22px;height:22px;border-radius:3px;">
-        <div style="text-align:center;">
-          <div style="font-size:8px;font-weight:800;color:#042204;margin:0;line-height:0.95;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${mosqueName}</div>
-          <div style="font-size:6px;color:#666;line-height:0.95;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${address}</div>
-        </div>
-      </div>
-      <h2 style="text-align:center;margin:1px 0 2px;font-size:7px;line-height:0.95;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${calendarTitle} - ${year}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;">
-        ${monthsHTML}
-      </div>
-      ${moonNote}
-    </div>
-  `;
+  const html = `<div style="font-family:Arial,sans-serif;">${monthsHTML}${moonNote}</div>`;
   
   const opt = {
     margin: [1.5, 1.5, 1.5, 1.5],
@@ -363,7 +394,7 @@ async function downloadFullYearPDF(year){
   html2pdf().set(opt).from(html).save();
 }
 
-function downloadPDF(rows, month, year){
+function downloadPDF(rows, month, year, hijriMonthName){
   const isUrdu = document.body.classList.contains('urdu-mode');
   const monthName = new Date(2000,month-1,1).toLocaleString('en-US',{month:'long'});
   const title = isUrdu ? 'نماز کا کیلنڈر' : 'Prayer Times Calendar';
@@ -372,7 +403,6 @@ function downloadPDF(rows, month, year){
   const dateRange = `${monthName} ${year}`;
   const hdr = {
     date: isUrdu ? 'تاریخ' : 'Date',
-    hijri: isUrdu ? 'حجری' : 'Hijri',
     fajr: isUrdu ? 'فجر' : 'Fajr',
     sunrise: isUrdu ? 'طلوع آفتاب' : 'Sunrise',
     ishraq: isUrdu ? 'اشراق' : 'Ishraq',
@@ -385,7 +415,7 @@ function downloadPDF(rows, month, year){
   };
 
   const html = `
-    <div style="padding: 14px 16px; font-family: Arial, sans-serif;">
+    <div style="padding: 8px 10px; font-family: Arial, sans-serif;">
       <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:8px;">
         <img src="/assets/img/logo.png" alt="${mosqueName} logo" style="width:42px;height:42px;border-radius:6px;box-shadow:0 0 9px rgba(50,205,50,0.35);border:2px solid rgba(50,205,50,0.28)">
         <div style="text-align:center">
@@ -393,50 +423,49 @@ function downloadPDF(rows, month, year){
           <div style="font-size:11px;color:#666">${address}</div>
         </div>
       </div>
-      <h2 style="text-align: center; margin: 6px 0 10px; font-size:14px;">${title}</h2>
-      <p style="text-align: center; margin: 0 0 10px; color: #666; font-size:11px;">${dateRange}</p>
-      <table style="width: 100%; border-collapse: collapse; font-size: 10px;">
+      <h2 style="text-align: center; margin: 4px 0 6px; font-size:14px;">${title}</h2>
+      <p style="text-align: center; margin: 0 0 6px; color: #666; font-size:10px;">${dateRange}<br><span style="font-size:9px;">${hijriMonthName}</span></p>
+      <table style="width: 100%; border-collapse: collapse; font-size: 9px;">
         <thead>
           <tr style="background-color: #f0f0f0;">
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: left; white-space:nowrap;">${hdr.date}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: left; white-space:nowrap;">${hdr.hijri}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.fajr}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.sunrise}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.ishraq}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.duha}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.dhuhr}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.jummah}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.asr}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.maghrib}</th>
-            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.isha}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: left; white-space:nowrap;">${hdr.date}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.fajr}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.sunrise}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.ishraq}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.duha}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.dhuhr}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.jummah}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.asr}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.maghrib}</th>
+            <th style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${hdr.isha}</th>
           </tr>
         </thead>
         <tbody>
           ${rows.map(r=>`
             <tr>
-              <td style="border: 1px solid #ddd; padding: 5px; white-space:nowrap;">${r.date}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; white-space:nowrap;">${r.hijri}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.fajr}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.sunrise}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.ishraq}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.duhaKubra}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.dhuhr}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.jummah}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.asr}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.maghrib}</td>
-              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.isha}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; white-space:nowrap;">${r.date}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.fajr}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.sunrise}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.ishraq}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.duhaKubra}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.dhuhr}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.jummah}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.asr}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.maghrib}</td>
+              <td style="border: 1px solid #ddd; padding: 4px; text-align: center; white-space:nowrap;">${r.isha}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
+      ${calendarExportFooter(isUrdu)}
     </div>
   `;
   
   const opt = {
-    margin: 8,
+    margin: 5,
     filename: `Mahmood Masjid ${monthName} ${year} namaz calendar.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 1.8 },
+    html2canvas: { scale: 2, letterRendering: true, useCORS: true },
     jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
   };
   
