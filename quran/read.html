@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quran | Mahmood Masjid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://db.onlinewebfonts.com/c/05779d80159ce2736e595e72dfdecbcf?family=AlQuran+IndoPak+by+QuranWBW"
+        rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <style>
+        @font-face {
+            font-family: "IndoPak";
+            src: url("/quran/fonts/indopak2.woff") format("woff"), url("/quran/fonts/indopak2.woff") format("woff2"), url("/quran/fonts/indopak2.woff") format("woff");
+            font-display: block;
+        }
+
+        .shell {
+            padding-bottom: 6.5rem;
+        }
+
+        .bar {
+            position: sticky;
+            top: .5rem;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .5rem;
+            border-radius: 20px;
+            border: 1px solid var(--line-strong);
+            background: rgba(18, 24, 24, .86);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .bar .ghost-button,
+        .bar select,
+        .sheet .ghost-button {
+            font: inherit;
+            font-size: .95rem;
+            padding: .65rem .9rem;
+            border-radius: 14px;
+        }
+
+        .bar a.ghost-button {
+            text-decoration: none;
+        }
+
+        .bar select {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid var(--line-strong);
+            background: rgba(7, 11, 10, .5);
+            color: var(--text);
+            outline: 0;
+        }
+
+        .bar select option {
+            background: #111a1a;
+        }
+
+        .bar .ghost-button:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #count {
+            min-width: 3.4rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .mushaf {
+            margin: 1rem auto 0;
+            padding: 1.2rem .9rem;
+            width: min(100%, 38rem);
+        }
+
+        #page {
+            direction: rtl;
+            font-family: "IndoPak", "AlQuran IndoPak by QuranWBW", serif;
+            font-variant-ligatures: normal;
+            font-kerning: normal;
+            color: var(--text);
+        }
+
+        .ln {
+            display: block;
+            height: var(--lh);
+            line-height: var(--lh);
+            white-space: normal;
+            text-align: justify;
+            text-align-last: justify;
+        }
+
+        .ln.c,
+        .ln.b,
+        .ln.short {
+            text-align: center;
+            text-align-last: center;
+        }
+
+        .ln.s {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(var(--lh) * .9);
+            margin: calc(var(--lh) * .1) 0;
+            border: 1px solid var(--line-strong);
+            border-radius: 14px;
+            background: rgba(177, 191, 166, .08);
+            color: var(--accent);
+        }
+
+        .ay {
+            cursor: pointer;
+            border-radius: 8px;
+            scroll-margin-top: 6rem;
+            transition: background .15s ease, opacity .15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ay.saved {
+            background: rgba(177, 191, 166, .10);
+        }
+
+        .ay.sel {
+            background: rgba(177, 191, 166, .26);
+        }
+
+        /* parah mode: ayahs on this page that belong to the neighbouring parah */
+        .ay.out {
+            opacity: .3;
+        }
+
+        .note {
+            display: none;
+            margin-top: 1rem;
+            text-align: center;
+            color: #d9a3a3;
+            font-size: .85rem;
+        }
+
+        .sheet {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(.75rem + env(safe-area-inset-bottom, 0px));
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            width: min(calc(100% - 1rem), 30rem);
+            padding: .5rem .6rem;
+            border-radius: 20px;
+            border: 1px solid var(--line-strong);
+            background: rgba(18, 24, 24, .94);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .sheet[hidden] {
+            display: none;
+        }
+
+        #ref {
+            flex: 1;
+            min-width: 0;
+            padding-left: .4rem;
+            color: var(--muted);
+            font-size: .9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sheet .on {
+            border-color: rgba(177, 191, 166, .45);
+            background: rgba(177, 191, 166, .18);
+            color: var(--accent);
+        }
+
+        @media (max-width: 640px) {
+            .mushaf {
+                padding: 1rem .55rem;
+            }
+
+            .shell {
+                width: min(100% - .75rem, 1180px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lbl {
+                display: none;
+            }
+
+            .sheet .ghost-button {
+                padding: .65rem .8rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/assets/css/quran.css">
+</head>
+
+<body>
+    <div class="background-layer background-layer--one"></div>
+    <div class="background-layer background-layer--two"></div>
+
+    <main class="shell">
+        <div class="bar">
+            <a class="ghost-button" id="back" href="all-surahs.html" aria-label="Back">←</a>
+            <button class="ghost-button" id="prev" type="button" aria-label="Previous page">‹</button>
+            <span id="count"></span>
+            <button class="ghost-button" id="next" type="button" aria-label="Next page">›</button>
+            <select id="surah" aria-label="Surah"></select>
+        </div>
+
+        <section class="glass-card mushaf">
+            <div id="page" lang="ar"></div>
+        </section>
+        <p class="note" id="note">Font did not load. Check quran/fonts/indopak2.woff</p>
+    </main>
+
+
+    <script>
+        const $ = id => document.getElementById(id);
+        const KEY = 'quranSections';
+        let D, S = 1, P = 0, sel = null, deep = false;
+
+        /* ---------- parah mode (?parah=N) ----------
+           ST[n-1] = first surah:ayah of parah n; the last entry is the end sentinel.
+           L = list of [surah, pageIndex] covering the parah; LI = current position in L. */
+        const ST = [[1, 1], [2, 142], [2, 253], [3, 93], [4, 24], [4, 148], [5, 82], [6, 111], [7, 88], [8, 41], [9, 93], [11, 6], [12, 53], [15, 1], [17, 1], [18, 75], [21, 1], [23, 1], [25, 21], [27, 56], [29, 46], [33, 31], [36, 28], [39, 32], [41, 47], [46, 1], [51, 31], [58, 1], [67, 1], [78, 1], [115, 1]];
+        let L = null, LI = 0, PN = 0;
+        const inR = (s, a) => { const v = s * 1000 + a; return v >= ST[PN - 1][0] * 1000 + ST[PN - 1][1] && v < ST[PN][0] * 1000 + ST[PN][1]; };
+
+        function startParah(n) {
+            PN = n; const [sS, sA] = ST[n - 1], [ns, na] = ST[n];
+            const eS = na === 1 ? ns - 1 : ns; L = [];
+            for (let s = sS; s <= eS; s++) {
+                const last = D[s - 1].pages.length - 1;
+                const from = s === sS ? pageOf(s, sA) : 0;
+                const to = s === eS && na > 1 ? pageOf(eS, na - 1) : last;
+                for (let p = from; p <= to; p++) L.push([s, p]);
+            }
+            LI = 0; go(L[0][0], L[0][1]);
+        }
+        function step(d) {
+            if (L) { const n = LI + d; if (n >= 0 && n < L.length) { LI = n; go(L[n][0], L[n][1]); } }
+            else go(S, P + d);
+        }
+
+
+
+
+        /* ---------- loading & paging ---------- */
+        fetch('data/pages16.json').then(r => r.json()).then(d => {
+            D = d.surahs;
+            const u = new URLSearchParams(location.search), q = parseInt(u.get('surah')), a = parseInt(u.get('ayah')), pn = parseInt(u.get('parah'));
+            if (pn >= 1 && pn <= 30) {
+                for (let n = 1; n <= 30; n++) { const o = document.createElement('option'); o.value = n; o.textContent = 'Parah ' + n; $('surah').appendChild(o); }
+                $('back').href = 'all-parahs.html';
+                startParah(pn);
+            } else {
+                D.forEach((s, i) => { const o = document.createElement('option'); o.value = i + 1; o.textContent = (i + 1) + '. ' + s.en; $('surah').appendChild(o); });
+                if (q >= 1 && q <= 114) { deep = !!a; go(q, a ? pageOf(q, a) : 0, a || null); }
+                else { let p = {}; try { p = JSON.parse(localStorage.getItem('quranPos')) || {}; } catch (e) { } go(p.s || 1, p.i || 0); }
+            }
+            Promise.all([document.fonts.load('24px IndoPak', 'بِسْمِ'), document.fonts.load('24px "AlQuran IndoPak by QuranWBW"', 'بِسْمِ')])
+                .then(r => { if (!r[0].length && !r[1].length) $('note').style.display = 'block'; })
+                .finally(() => { fit(); document.fonts.ready.then(() => { fit(); if (deep) scrollToSel(); }); });
+        });
+
+        /* which page of the surah contains this ayah */
+        function pageOf(s, a) {
+            const i = D[s - 1].pages.findIndex(rows => rows.some(r => (r[0] === 'a' || r[0] === 'c') && r[1].some(g => g[0] === a)));
+            return i < 0 ? 0 : i;
+        }
+        function scrollToSel() {
+            const el = document.querySelector('.ay.sel');
+            if (el) el.scrollIntoView({ block: 'center' }); else window.scrollTo({ top: 0 });
+        }
+
+        /* Only the chosen surah is shown: its own pages, its own lines. */
+        function go(s, i, a) {
+            S = Math.min(114, Math.max(1, s | 0));
+            const pages = D[S - 1].pages; P = Math.min(pages.length - 1, Math.max(0, i | 0));
+            const root = $('page'); root.innerHTML = '';
+            pages[P].forEach(([t, x]) => {
+                const d = document.createElement('div'); d.className = 'ln ' + t;
+                if (t === 's') d.textContent = 'سُورَةُ ' + D[S - 1].ar;
+                else if (t === 'b') d.textContent = x;
+                else x.forEach(([ay, txt], k) => {
+                    if (k) d.appendChild(document.createTextNode(' '));
+                    const sp = document.createElement('span'); sp.className = 'ay'; sp.dataset.a = ay; sp.textContent = txt;
+                    if (L && !inR(S, ay)) sp.classList.add('out');
+                    d.appendChild(sp);
+                });
+                root.appendChild(d);
+            });
+            $('surah').value = S;
+            $('count').textContent = (P + 1) + ' / ' + pages.length;
+            $('prev').disabled = P === 0; $('next').disabled = P >= pages.length - 1;
+            if (L) {
+                $('surah').value = PN;
+                $('count').textContent = (LI + 1) + ' / ' + L.length;
+                $('prev').disabled = LI === 0; $('next').disabled = LI >= L.length - 1;
+            }
+            try { localStorage.setItem('quranPos', JSON.stringify({ s: S, i: P })); } catch (e) { }
+            markSaved(); select(a || null); fit();
+            a ? scrollToSel() : window.scrollTo({ top: 0 });
+        }
+
+        /* Each line gets the font size that makes it fill the width exactly (kept close to the page's
+           median size). Lines that would still look gappy are centred instead of stretched. */
+        function fit() {
+            if (!D) return;
+            const root = $('page'), W = root.clientWidth; if (!W) return;
+            const lines = [...root.querySelectorAll('.ln:not(.s)')];
+            root.style.fontSize = '40px';
+            lines.forEach(l => { l.style.cssText = 'display:inline-block;white-space:nowrap;height:auto'; });
+            const fits = lines.map(l => 40 * W / Math.max(1, l.getBoundingClientRect().width));
+            const justified = fits.filter((f, i) => lines[i].classList.contains('a')).sort((a, b) => a - b);
+            const pool = justified.length ? justified : fits.slice().sort((a, b) => a - b);
+            const B = Math.min(46, pool[Math.floor(pool.length / 2)] * 0.985);
+            root.style.setProperty('--lh', (B * 2.1) + 'px');
+            lines.forEach((l, i) => {
+                const f = fits[i] * 0.985;
+                let size;
+                l.style.cssText = '';
+                if (l.classList.contains('a')) {
+                    size = Math.min(f, B * 1.12);
+                    l.classList.toggle('short', size / f < 0.8);   // too short to stretch: centre it
+                } else size = Math.min(f, B * (l.classList.contains('b') ? 1.05 : 1));
+                l.style.fontSize = size + 'px';
+            });
+            const h = root.querySelector('.ln.s'); if (h) h.style.fontSize = (B * 0.95) + 'px';
+        }
+        addEventListener('resize', fit);
+
+        $('prev').onclick = () => step(-1);
+        $('next').onclick = () => step(1);
+        $('surah').onchange = e => L ? startParah(+e.target.value) : go(+e.target.value, 0);
+        document.addEventListener('keydown', e => {
+            if (e.target.closest('select')) return;
+            if (e.key === 'ArrowLeft') step(-1);
+            if (e.key === 'ArrowRight') step(1);
+            if (e.key === 'Escape') clearSel();
+        });
+    </script>
+    <script src="/assets/js/read-fit.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#235347">
+    <title>Quran — Mahmood Masjid</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Read the Holy Quran online at Mahmood Masjid. Access all 114 Surahs with Arabic text, transliteration, and English translations. Islamic spiritual content and Quranic learning.">
+    <meta name="keywords"
+        content="Quran, Holy Quran, online Quran, Surah, Islamic text, Quranic reading, Arabic Quran, Quran translation, Mosque Near me, Pakistan Prayet Times 2026, Pakistan Prayer times january 2026, fajr time gujrat Pakistan 2026, zuhr time gujrat Pakistan 2026, asr time gujrat Pakistan 2026, maghrib time gujrat Pakistan 2026, isha time gujrat Pakistan 2026, Gujrat Masjid Near Me">
+    <meta name="author" content="Mahmood Masjid">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mahmoodmasjid.com/HolyQuran">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mahmoodmasjid.com/HolyQuran">
+    <meta property="og:title" content="Quran — Mahmood Masjid">
+    <meta property="og:description" content="Read the Holy Quran online with Arabic text and English translations.">
+    <meta property="og:image" content="https://www.mahmoodmasjid.com/assets/img/logo.png">
+    <meta property="og:site_name" content="Mahmood Masjid">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.mahmoodmasjid.com/HolyQuran">
+    <meta name="twitter:title" content="Quran — Mahmood Masjid">
+    <meta name="twitter:description" content="Read the Holy Quran online with translations.">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "The Holy Quran",
+    "description": "Read the Holy Quran online at Mahmood Masjid. Access all 114 Surahs with Arabic text, transliteration, and English translations.",
+    "image": "https://www.mahmoodmasjid.com/assets/img/logo.png",
+    "author": {
+      "@type": "Organization",
+      "name": "Mahmood Masjid"
+    },
+    "url": "https://www.mahmoodmasjid.com/quran.html",
+    "inLanguage": ["ar", "en", "ur"],
+    "isAccessibleForFree": true
+  }
+  </script>
+
+    <!-- Fonts: Orbitron for headings, Inter for UI, Noto Naskh Arabic for Arabic text, Jameel Noori Nastaleeq for Urdu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap"
+        rel="stylesheet">
+    <link rel="preload" href="../assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/style.css">
+    </noscript>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png?v=2">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png?v=2">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/quran/fonts/indopak2.woff" as="font" type="font/woff" crossorigin>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mahmood Masjid">
+</head>
+<style>
+    /* IndoPak Arabic font: adjust the path if your woff lives elsewhere */
+    @font-face {
+        font-family: "IndoPak";
+        src: url("/quran/fonts/indopak2.woff") format("woff");
+        font-display: swap;
+    }
+
+    .ar {
+        direction: rtl;
+        font-family: "IndoPak", serif;
+        font-size: 1.7rem;
+        line-height: 2.2;
+        margin: .25rem 0 .5rem;
+        color: var(--text);
+    }
+
+    a.catalog-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+<link rel="stylesheet" href="/assets/css/quran.css">
+
+
+<body>
+    <main class="shell">
+        <header class="page-hero glass-panel">
+            <div>
+                <p class="eyebrow">Quran / All Parahs</p>
+                <h1>All 30 Parahs</h1>
+                <p class="hero__text">Use this page for reading and tracking by parah. Each card shows the opening words
+                    and the
+                    surah:ayah range.</p>
+                <div class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span>/</span>
+                    <a href="/pages/quran.html">Quran</a>
+                    <span>/</span>
+                    <span>All Parahs</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-card glass-card">
+            <p class="section-tag">Parah Cards</p>
+            <div class="catalog-grid" id="grid"></div>
+        </section>
+    </main>
+
+    <script>
+        // [Arabic name, transliteration, range]
+        const P = [
+            ['الٓمٓ', 'Alif Laam Meem', '1:1 – 2:141'],
+            ['سَيَقُولُ', 'Sayaqool', '2:142 – 2:252'],
+            ['تِلْكَ الرُّسُلُ', 'Tilkal Rusul', '2:253 – 3:92'],
+            ['لَنْ تَنَالُوا', 'Lan Tanaaloo', '3:93 – 4:23'],
+            ['وَالْمُحْصَنَاتُ', 'Wal Muhsanaat', '4:24 – 4:147'],
+            ['لَا يُحِبُّ اللّٰهُ', 'La Yuhibbullah', '4:148 – 5:81'],
+            ['وَإِذَا سَمِعُوا', 'Wa Iza Samiuu', '5:82 – 6:110'],
+            ['وَلَوْ أَنَّنَا', 'Wa Law Annana', '6:111 – 7:87'],
+            ['قَالَ الْمَلَأُ', 'Qaalal Mala', '7:88 – 8:40'],
+            ['وَاعْلَمُوا', 'Wa-alamu', '8:41 – 9:92'],
+            ['يَعْتَذِرُونَ', 'Yatadhiruun', '9:93 – 11:5'],
+            ['وَمَا مِنْ دَابَّةٍ', 'Wa Ma Min Daabbah', '11:6 – 12:52'],
+            ['وَمَا أُبَرِّئُ', 'Wa Ma Ubarri-u', '12:53 – 14:52'],
+            ['رُبَمَا', 'Rubama', '15:1 – 16:128'],
+            ['سُبْحَانَ الَّذِي', 'Subhanalladhi', '17:1 – 18:74'],
+            ['قَالَ أَلَمْ', 'Qaal Alam', '18:75 – 20:135'],
+            ['اقْتَرَبَ', 'Iqtaraba', '21:1 – 22:78'],
+            ['قَدْ أَفْلَحَ', 'Qad Aflaha', '23:1 – 25:20'],
+            ['وَقَالَ الَّذِينَ', 'Wa Qaalalladhina', '25:21 – 27:55'],
+            ['أَمَّنْ خَلَقَ', 'Amman Khalaqa', '27:56 – 29:45'],
+            ['اتْلُ مَا أُوحِيَ', 'Utlu Ma Uhiya', '29:46 – 33:30'],
+            ['وَمَنْ يَقْنُتْ', 'Wa Man Yaqnut', '33:31 – 36:27'],
+            ['وَمَا لِيَ', 'Wa Maa Liya', '36:28 – 39:31'],
+            ['فَمَنْ أَظْلَمُ', 'Faman Azlamu', '39:32 – 41:46'],
+            ['إِلَيْهِ يُرَدُّ', 'Ilayhi Yuraddu', '41:47 – 45:37'],
+            ['حٰمٓ', 'Haa Meem', '46:1 – 51:30'],
+            ['قَالَ فَمَا خَطْبُكُمْ', 'Qaala Fama Khatbukum', '51:31 – 57:29'],
+            ['قَدْ سَمِعَ اللّٰهُ', 'Qad Samiallahu', '58:1 – 66:12'],
+            ['تَبَارَكَ الَّذِي', 'Tabarakalladhi', '67:1 – 77:50'],
+            ['عَمَّ', 'Amma', '78:1 – 114:6']
+        ];
+        const grid = document.getElementById('grid');
+        P.forEach(([ar, tr, range], i) => {
+            const c = document.createElement('a'); c.className = 'catalog-card'; c.href = 'read.html?parah=' + (i + 1);
+            c.innerHTML = '<h3>Parah ' + (i + 1) + '</h3><p class="ar" lang="ar">' + ar + '</p><p class="section-copy">' + tr + ' · ' + range + '</p>';
+            grid.appendChild(c);
+        });
+    </script>
+</body>
+
+</html> 

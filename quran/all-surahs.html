@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#235347">
+    <title>Quran — Mahmood Masjid</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Read the Holy Quran online at Mahmood Masjid. Access all 114 Surahs with Arabic text, transliteration, and English translations. Islamic spiritual content and Quranic learning.">
+    <meta name="keywords"
+        content="Quran, Holy Quran, online Quran, Surah, Islamic text, Quranic reading, Arabic Quran, Quran translation, Mosque Near me, Pakistan Prayet Times 2026, Pakistan Prayer times january 2026, fajr time gujrat Pakistan 2026, zuhr time gujrat Pakistan 2026, asr time gujrat Pakistan 2026, maghrib time gujrat Pakistan 2026, isha time gujrat Pakistan 2026, Gujrat Masjid Near Me">
+    <meta name="author" content="Mahmood Masjid">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mahmoodmasjid.com/HolyQuran">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mahmoodmasjid.com/HolyQuran">
+    <meta property="og:title" content="Quran — Mahmood Masjid">
+    <meta property="og:description" content="Read the Holy Quran online with Arabic text and English translations.">
+    <meta property="og:image" content="https://www.mahmoodmasjid.com/assets/img/logo.png">
+    <meta property="og:site_name" content="Mahmood Masjid">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.mahmoodmasjid.com/HolyQuran">
+    <meta name="twitter:title" content="Quran — Mahmood Masjid">
+    <meta name="twitter:description" content="Read the Holy Quran online with translations.">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "The Holy Quran",
+    "description": "Read the Holy Quran online at Mahmood Masjid. Access all 114 Surahs with Arabic text, transliteration, and English translations.",
+    "image": "https://www.mahmoodmasjid.com/assets/img/logo.png",
+    "author": {
+      "@type": "Organization",
+      "name": "Mahmood Masjid"
+    },
+    "url": "https://www.mahmoodmasjid.com/quran.html",
+    "inLanguage": ["ar", "en", "ur"],
+    "isAccessibleForFree": true
+  }
+  </script>
+
+    <!-- Fonts: Orbitron for headings, Inter for UI, Noto Naskh Arabic for Arabic text, Jameel Noori Nastaleeq for Urdu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap"
+        rel="stylesheet">
+    <link rel="preload" href="../assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/style.css">
+    </noscript>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png?v=2">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png?v=2">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/quran/fonts/indopak2.woff" as="font" type="font/woff" crossorigin>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mahmood Masjid">
+</head>
+<style>
+    .page-hero__main h1 {
+        white-space: normal;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    .page-hero__main .breadcrumb {
+        justify-content: center;
+    }
+
+    .list-wrap {
+        margin-top: 1.25rem;
+        padding: 1.35rem;
+    }
+
+    .surah-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .surah {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .3rem;
+        min-height: 7.5rem;
+        padding: 1rem;
+        text-align: center;
+        border-radius: 20px;
+        border: 1px solid rgba(224, 230, 221, .12);
+        background: rgba(255, 255, 255, .04);
+    }
+
+    .surah:hover {
+        border-color: rgba(214, 221, 209, .26);
+        background: rgba(255, 255, 255, .06);
+    }
+
+    .surah .num {
+        color: var(--accent);
+        font-size: .78rem;
+        letter-spacing: .18em;
+    }
+
+    .surah .en {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1.1;
+    }
+
+    .surah .ar {
+        color: var(--muted);
+        font-size: 1.15rem;
+    }
+
+    .surah.is-hidden {
+        display: none;
+    }
+
+    .none {
+        display: none;
+        color: var(--muted);
+        text-align: center;
+        margin: 1.5rem 0 .5rem;
+    }
+
+    /* mobile: simple list */
+    @media (max-width: 640px) {
+        .list-wrap {
+            padding: 1rem;
+        }
+
+        .surah-grid {
+            display: block;
+            margin-top: .5rem;
+        }
+
+        .surah {
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: .9rem;
+            min-height: 0;
+            padding: .85rem .25rem;
+            text-align: left;
+            border: 0;
+            border-bottom: 1px solid var(--line);
+            border-radius: 0;
+            background: none;
+        }
+
+        .surah:hover {
+            background: none;
+        }
+
+        .surah .num {
+            min-width: 2rem;
+            letter-spacing: 0;
+            font-size: .9rem;
+        }
+
+        .surah .en {
+            flex: 1;
+            font-size: 1.3rem;
+        }
+
+        .surah .ar {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+<link rel="stylesheet" href="/assets/css/quran.css">
+<body>
+    <div class="background-layer background-layer--one"></div>
+    <div class="background-layer background-layer--two"></div>
+
+    <main class="shell">
+        <header class="page-hero page-hero--home glass-panel">
+            <div class="page-hero__main">
+                <p class="eyebrow">Quran</p>
+                <h1>All Surahs</h1>
+                <div class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span>/</span>
+                    <a href="../pages/quran.html">Quran</a>
+                    <span>/</span>
+                    <span>All Surahs</span>
+                </div>
+                <div class="search-wrap search-wrap--stacked search-wrap--center" role="search">
+                    <label class="sr-only" for="q">Search surahs</label>
+                    <input id="q" type="search" placeholder="Search by name or number…" autocomplete="off" />
+                    <button class="ghost-button" id="clear" type="button">Clear</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-card glass-card list-wrap">
+            <p class="section-tag">114 Surahs</p>
+            <div class="surah-grid" id="grid"></div>
+            <p class="none" id="none">No surah found.</p>
+        </section>
+    </main>
+
+    <script>
+        const S = `Al-Fatiha|الفاتحة
+Al-Baqarah|البقرة
+Aal-E-Imran|آل عمران
+An-Nisa|النساء
+Al-Ma'idah|المائدة
+Al-An'am|الأنعام
+Al-A'raf|الأعراف
+Al-Anfal|الأنفال
+At-Tawbah|التوبة
+Yunus|يونس
+Hud|هود
+Yusuf|يوسف
+Ar-Ra'd|الرعد
+Ibrahim|إبراهيم
+Al-Hijr|الحجر
+An-Nahl|النحل
+Al-Isra|الإسراء
+Al-Kahf|الكهف
+Maryam|مريم
+Ta-Ha|طه
+Al-Anbiya|الأنبياء
+Al-Hajj|الحج
+Al-Mu'minun|المؤمنون
+An-Nur|النور
+Al-Furqan|الفرقان
+Ash-Shu'ara|الشعراء
+An-Naml|النمل
+Al-Qasas|القصص
+Al-Ankabut|العنكبوت
+Ar-Rum|الروم
+Luqman|لقمان
+As-Sajdah|السجدة
+Al-Ahzab|الأحزاب
+Saba|سبأ
+Fatir|فاطر
+Ya-Sin|يس
+As-Saffat|الصافات
+Sad|ص
+Az-Zumar|الزمر
+Ghafir|غافر
+Fussilat|فصلت
+Ash-Shura|الشورى
+Az-Zukhruf|الزخرف
+Ad-Dukhan|الدخان
+Al-Jathiyah|الجاثية
+Al-Ahqaf|الأحقاف
+Muhammad|محمد
+Al-Fath|الفتح
+Al-Hujurat|الحجرات
+Qaf|ق
+Adh-Dhariyat|الذاريات
+At-Tur|الطور
+An-Najm|النجم
+Al-Qamar|القمر
+Ar-Rahman|الرحمن
+Al-Waqi'ah|الواقعة
+Al-Hadid|الحديد
+Al-Mujadila|المجادلة
+Al-Hashr|الحشر
+Al-Mumtahanah|الممتحنة
+As-Saff|الصف
+Al-Jumu'ah|الجمعة
+Al-Munafiqun|المنافقون
+At-Taghabun|التغابن
+At-Talaq|الطلاق
+At-Tahrim|التحريم
+Al-Mulk|الملك
+Al-Qalam|القلم
+Al-Haqqah|الحاقة
+Al-Ma'arij|المعارج
+Nuh|نوح
+Al-Jinn|الجن
+Al-Muzzammil|المزمل
+Al-Muddaththir|المدثر
+Al-Qiyamah|القيامة
+Al-Insan|الإنسان
+Al-Mursalat|المرسلات
+An-Naba|النبأ
+An-Nazi'at|النازعات
+Abasa|عبس
+At-Takwir|التكوير
+Al-Infitar|الانفطار
+Al-Mutaffifin|المطففين
+Al-Inshiqaq|الانشقاق
+Al-Buruj|البروج
+At-Tariq|الطارق
+Al-A'la|الأعلى
+Al-Ghashiyah|الغاشية
+Al-Fajr|الفجر
+Al-Balad|البلد
+Ash-Shams|الشمس
+Al-Layl|الليل
+Ad-Duha|الضحى
+Ash-Sharh|الشرح
+At-Tin|التين
+Al-Alaq|العلق
+Al-Qadr|القدر
+Al-Bayyinah|البينة
+Az-Zalzalah|الزلزلة
+Al-Adiyat|العاديات
+Al-Qari'ah|القارعة
+At-Takathur|التكاثر
+Al-Asr|العصر
+Al-Humazah|الهمزة
+Al-Fil|الفيل
+Quraysh|قريش
+Al-Ma'un|الماعون
+Al-Kawthar|الكوثر
+Al-Kafirun|الكافرون
+An-Nasr|النصر
+Al-Masad|المسد
+Al-Ikhlas|الإخلاص
+Al-Falaq|الفلق
+An-Nas|الناس`.split('\n');
+
+        const grid = document.getElementById('grid');
+        S.forEach((line, i) => {
+            const [en, ar] = line.split('|');
+            const d = document.createElement('a');
+            d.className = 'surah'; d.href = 'read.html?surah=' + (i + 1);
+            d.dataset.search = (i + 1) + ' ' + en.toLowerCase().replace(/[-']/g, '') + ' ' + en.toLowerCase();
+            d.innerHTML = `<span class="num">${i + 1}</span><span class="en"></span><span class="ar" lang="ar" dir="rtl"></span>`;
+            d.querySelector('.en').textContent = en;
+            d.querySelector('.ar').textContent = ar;
+            grid.appendChild(d);
+        });
+
+        const q = document.getElementById('q');
+        function filter() {
+            const v = q.value.trim().toLowerCase().replace(/[-']/g, '');
+            let shown = 0;
+            grid.querySelectorAll('.surah').forEach(el => {
+                const hit = !v || el.dataset.search.includes(v);
+                el.classList.toggle('is-hidden', !hit);
+                if (hit) shown++;
+            });
+            document.getElementById('none').style.display = shown ? 'none' : 'block';
+        }
+        q.oninput = filter;
+        document.getElementById('clear').onclick = () => { q.value = ''; filter(); q.focus(); };
+    </script>
+</body>
