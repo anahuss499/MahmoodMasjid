@@ -20,9 +20,10 @@
             font-display: block;
         }
 
-        .shell {
-            padding-bottom: 6.5rem;
-        }
+.shell {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
 
         .bar {
             position: sticky;
@@ -79,28 +80,36 @@
             font-size: .9rem;
         }
 
-        .mushaf {
-            margin: 1rem auto 0;
-            padding: 1.2rem .9rem;
-            width: min(100%, 38rem);
-        }
+.mushaf {
+    margin: 1rem auto 0;
+    padding: 1.2rem .9rem;
+    width: min(100%, 38rem);
+    /* Forces system graphics card to render glyph edges safely */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow: visible; 
+}
+#page {
+    direction: rtl;
+    font-family: "IndoPak", "AlQuran IndoPak by QuranWBW", serif;
+    font-variant-ligatures: normal;
+    font-kerning: normal;
+    color: var(--text);
+    /* Add a base font size relative to your line height variables */
+    font-size: 1.85rem; 
+}
 
-        #page {
-            direction: rtl;
-            font-family: "IndoPak", "AlQuran IndoPak by QuranWBW", serif;
-            font-variant-ligatures: normal;
-            font-kerning: normal;
-            color: var(--text);
-        }
-
-        .ln {
-            display: block;
-            height: var(--lh);
-            line-height: var(--lh);
-            white-space: normal;
-            text-align: justify;
-            text-align-last: justify;
-        }
+.ln {
+    display: block;
+    height: var(--lh);
+    line-height: var(--lh);
+    white-space: nowrap; /* Prevents unwanted inner line breaks during scaling */
+    text-align: justify;
+    text-align-last: justify;
+    /* Add extra breathing room inside the line container to prevent clipping */
+    padding: 0 10px; 
+    box-sizing: border-box;
+}
 
         .ln.c,
         .ln.b,
@@ -209,6 +218,11 @@
                 padding: .65rem .8rem;
             }
         }
+        @media (max-width: 480px) {
+    #page {
+        font-size: 1.55rem; 
+    }
+}
     </style>
     <link rel="stylesheet" href="/assets/css/quran.css">
 </head>
@@ -326,14 +340,33 @@
            median size). Lines that would still look gappy are centred instead of stretched. */
         function fit() {
             if (!D) return;
-            const root = $('page'), W = root.clientWidth; if (!W) return;
+            const root = $('page');
+
+            const styles = getComputedStyle(root);
+            const W =
+                root.clientWidth -
+                parseFloat(styles.paddingLeft || 0) -
+                parseFloat(styles.paddingRight || 0); if (!W) return;
             const lines = [...root.querySelectorAll('.ln:not(.s)')];
-            root.style.fontSize = '40px';
+            root.style.fontSize =
+                window.innerWidth <= 640
+                    ? '24px'
+                    : '34px';
             lines.forEach(l => { l.style.cssText = 'display:inline-block;white-space:nowrap;height:auto'; });
-            const fits = lines.map(l => 40 * W / Math.max(1, l.getBoundingClientRect().width));
+            const base =
+                window.innerWidth <= 640
+                    ? 24
+                    : 34;
+
+            const fits = lines.map(
+                l => base * W / Math.max(1, l.getBoundingClientRect().width)
+            ); nes.map(l => 40 * W / Math.max(1, l.getBoundingClientRect().width));
             const justified = fits.filter((f, i) => lines[i].classList.contains('a')).sort((a, b) => a - b);
             const pool = justified.length ? justified : fits.slice().sort((a, b) => a - b);
-            const B = Math.min(46, pool[Math.floor(pool.length / 2)] * 0.985);
+            const B = Math.min(
+                window.innerWidth <= 640 ? 30 : 38,
+                pool[Math.floor(pool.length / 2)] * 0.95
+            );
             root.style.setProperty('--lh', (B * 2.1) + 'px');
             lines.forEach((l, i) => {
                 const f = fits[i] * 0.985;
@@ -343,6 +376,14 @@
                     size = Math.min(f, B * 1.12);
                     l.classList.toggle('short', size / f < 0.8);   // too short to stretch: centre it
                 } else size = Math.min(f, B * (l.classList.contains('b') ? 1.05 : 1));
+                size = Math.max(
+                    20,
+                    Math.min(
+                        window.innerWidth <= 640 ? 32 : 40,
+                        size
+                    )
+                );
+
                 l.style.fontSize = size + 'px';
             });
             const h = root.querySelector('.ln.s'); if (h) h.style.fontSize = (B * 0.95) + 'px';

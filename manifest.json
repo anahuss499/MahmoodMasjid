@@ -35,7 +35,7 @@
       "name": "Read Quran",
       "short_name": "Quran",
       "description": "Open Quran section",
-      "url": "/quran.html",
+      "url": "/pages/quran.html",
       "icons": [
         {
           "src": "/assets/img/logo.png?v=2",
@@ -47,7 +47,7 @@
       "name": "Azkar & Duas",
       "short_name": "Azkar",
       "description": "Open Azkar and Duas section",
-      "url": "/azkar.html",
+      "url": "/pages/azkar.html",
       "icons": [
         {
           "src": "/assets/img/logo.png?v=2",
@@ -59,7 +59,7 @@
       "name": "Prayer Times",
       "short_name": "Prayers",
       "description": "View prayer calendar",
-      "url": "/prayer-calendar.html",
+      "url": "/pages/prayer-calendar.html",
       "icons": [
         {
           "src": "/assets/img/logo.png?v=2",

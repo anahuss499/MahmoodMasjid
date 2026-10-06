@@ -62,9 +62,9 @@
             --glow: rgba(212, 175, 106, 0.16);
 
             /* ---- large-screen defaults (TV / monitor / laptop) ---- */
-            --sidebar-w: 400px;
-            --gap: 16px;
-            --pad: 32px;
+            --sidebar-w: 360px;
+            --gap: 12px;
+            --pad: 24px;
 
             --fs-title: 26px;
             --fs-date: 14px;
@@ -77,8 +77,8 @@
             --fs-badge: 12px;
 
             --fs-eyebrow: 18px;
-            --fs-h1: 40px;
-            --fs-card-title: 24px;
+            --fs-h1: 36px;
+            --fs-card-title: 22px;
             --fs-arabic: 33px;
             --fs-translit: 17px;
             --fs-urdu: 21px;
@@ -108,7 +108,7 @@
         }
 
         /* ---- medium screens: tablets / small laptops ---- */
-        @media (max-width: 1180px) {
+        @media (max-width: 960px) {
             :root {
                 --sidebar-w: 320px;
                 --pad: 22px;
@@ -690,12 +690,12 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 20px 24px;
+            padding: 14px 18px;
         }
 
         .page {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1400px;
             margin: auto 0;
             display: flex;
             flex-direction: column;
@@ -740,11 +740,11 @@
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 14px;
         }
 
         .cards .card {
-            flex: 1 1 300px;
+            flex: 1 1 280px;
         }
 
         .card {
@@ -832,12 +832,12 @@
             align-items: center;
             justify-content: flex-start;
             font-family: 'Cormorant Garamond', serif;
-            padding: 18px 24px;
+            padding: 14px 18px;
         }
 
         .adh-page {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: auto 0;
             display: flex;
             flex-direction: column;
@@ -878,11 +878,11 @@
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px 18px;
+            gap: 10px 14px;
         }
 
         .adh-grid .adh-card {
-            flex: 1 1 320px;
+            flex: 1 1 280px;
         }
 
         .adh-card {
@@ -1936,6 +1936,7 @@
         // browsers without the Font Loading API) before measuring,
         // and always fall back to a sensible fixed duration if
         // measurement fails.
+
         function buildDonorTicker() {
             const track = document.getElementById('donor-ticker-track');
             if (!track) return;

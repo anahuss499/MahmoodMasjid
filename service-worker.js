@@ -1,16 +1,19 @@
 const CACHE_NAME = 'mahmood-masjid-v9';
-const NETWORK_FIRST_PATHS = ['/prayer-calendar.html', '/assets/js/calendar.js', '/assets/js/main.js', '/assets/js/pwa.js', '/index.html', '/'];
+const NETWORK_FIRST_PATHS = ['/pages/prayer-calendar.html', '/assets/js/calendar.js', '/assets/js/main.js', '/assets/js/pwa.js', '/pages/index.html', '/index.html', '/'];
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
+  '/pages/index.html',
   '/notification-preview.html',
   '/test-notifications.html',
-  '/quran.html',
-  '/azkar.html',
+  '/pages/quran.html',
+  '/pages/azkar.html',
+  '/pages/prayer-calendar.html',
+  '/pages/about.html',
+  '/pages/contact.html',
+  '/pages/map.html',
+  '/pages/newsfeed.html',
   '/durood.html',
-  '/prayer-calendar.html',
-  '/about.html',
-  '/contact.html',
   '/assets/css/style.css',
   '/assets/js/main.js',
   '/assets/js/ui.js',

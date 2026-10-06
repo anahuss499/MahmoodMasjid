@@ -1942,7 +1942,385 @@
        layout and prayer all live in Firestore (CLOUD_DOC) and are filled
        in by boot() below, once the cloud data has loaded. `lang` stays a
        per-device preference in localStorage. */
+  /* ============================================================
+     FLOATING TOOLS BUTTON — Calculator / Date / Donation Notes
+     Self-contained: injects its own CSS, no separate <style> edit
+     needed. Just paste this whole block, then call
+     initFloatingTools() once from renderShell() (see bottom note).
+     ============================================================ */
 
+    (function injectFloatingToolsCss() {
+      if (document.getElementById("ft-styles")) return;
+      const style = document.createElement("style");
+      style.id = "ft-styles";
+      style.textContent = `
+    #floating-tools-btn {
+      position: fixed;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #1F5C46, #14342A);
+      color: #F4D98A;
+      border: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      z-index: 900;
+      touch-action: none;
+      user-select: none;
+    }
+    #floating-tools-btn:active { cursor: grabbing; }
+    #floating-tools-panel {
+      position: fixed;
+      width: 300px;
+      max-width: calc(100vw - 24px);
+      background: #FBF8F1;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      border: 1px solid #E4DCC7;
+      z-index: 901;
+      overflow: hidden;
+      display: none;
+    }
+    #floating-tools-panel.open { display: block; }
+    .ft-tabs { display: flex; border-bottom: 1px solid #E4DCC7; background: #FAF6EC; }
+    .ft-tab {
+      flex: 1; border: none; background: transparent; padding: 10px 6px;
+      font-size: 12px; font-weight: 700; color: #6E7263; cursor: pointer;
+    }
+    .ft-tab.active { color: #1F5C46; border-bottom: 2px solid #1F5C46; }
+    .ft-body { padding: 14px; max-height: 380px; overflow-y: auto; }
+    .ft-close {
+      position: absolute; top: 8px; right: 8px; background: transparent;
+      border: none; color: #8A8D7C; cursor: pointer; z-index: 2;
+    }
+    body.rtl .ft-close { right: auto; left: 8px; }
+    .ft-calc-display {
+      background: #16382C; color: #F4EFDD; border-radius: 8px; padding: 12px;
+      text-align: right; font-size: 22px; font-weight: 700; margin-bottom: 10px;
+      min-height: 34px; word-break: break-all;
+    }
+    .ft-calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .ft-calc-grid button {
+      padding: 10px 0; border-radius: 8px; border: 1px solid #E4DCC7;
+      background: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .ft-calc-grid button.ft-op { background: #F4D98A; border-color: #B08D3F; }
+    .ft-calc-grid button.ft-equals { background: #1F5C46; color: #fff; grid-column: span 2; }
+    .ft-calc-grid button.ft-clear { background: #FBF1EF; color: #A6483F; border-color: #E7C9C4; }
+    .ft-date-big { font-size: 22px; font-weight: 700; color: #1A2E22; }
+    .ft-date-sub { font-size: 13px; color: #8A8D7C; margin-top: 4px; }
+    .ft-mini-cal { margin-top: 14px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-size: 11px; text-align: center; }
+    .ft-mini-cal .ft-dow { font-weight: 700; color: #8A8D7C; padding-bottom: 4px; }
+    .ft-mini-cal .ft-day { padding: 5px 0; border-radius: 6px; }
+    .ft-mini-cal .ft-day.ft-today { background: #1F5C46; color: #fff; font-weight: 700; }
+    .ft-notes-search { width: 100%; margin-bottom: 8px; box-sizing: border-box; border: 1px solid #DDD5BE; border-radius: 8px; padding: 9px 11px; font-size: 14px; background: #FCFAF5; }
+    .ft-notes-list { max-height: 160px; overflow-y: auto; border: 1px solid #E4DCC7; border-radius: 8px; }
+    .ft-notes-item { padding: 8px 10px; border-bottom: 1px solid #F0EBDD; cursor: pointer; font-size: 13px; }
+    .ft-notes-item:last-child { border-bottom: none; }
+    .ft-notes-item:hover { background: #FAF6EC; }
+    .ft-notes-item.ft-selected { background: #EEF6F1; }
+    .ft-notes-item .ft-note-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #B08D3F; margin-right: 5px; }
+    .ft-notes-editor textarea {
+      width: 100%; box-sizing: border-box; min-height: 70px; margin-top: 8px;
+      border: 1px solid #DDD5BE; border-radius: 8px; padding: 9px 11px; font-size: 14px;
+      background: #FCFAF5; resize: vertical; font-family: inherit;
+    }
+    .ft-notes-editor label { display: block; font-size: 13px; font-weight: 600; color: #4B4E40; margin-top: 10px; }
+    .ft-notes-editor button {
+      margin-top: 8px; background: #1F5C46; color: #FBF6E9; border: none;
+      border-radius: 8px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    }
+  `;
+      document.head.appendChild(style);
+    })();
+
+    const FT = { open: false, tab: "calc", calcExpr: "", notesQuery: "", notesSelectedId: null };
+
+    function ftPosition() { return store.get("mm_ft_pos", { x: null, y: null }); }
+    function ftSavePosition(pos) { store.set("mm_ft_pos", pos); }
+
+    function initFloatingTools() {
+      if (document.getElementById("floating-tools-btn")) return; // already mounted, don't duplicate
+
+      const btn = document.createElement("button");
+      btn.id = "floating-tools-btn";
+      btn.setAttribute("aria-label", "Tools");
+      btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>';
+      document.body.appendChild(btn);
+
+      const panel = document.createElement("div");
+      panel.id = "floating-tools-panel";
+      document.body.appendChild(panel);
+      // Stops any click inside the panel — including switching tabs, which
+      // replaces the panel's inner content — from being mistaken for a
+      // click "outside" the panel by the listener below.
+      panel.addEventListener("click", (e) => e.stopPropagation());
+
+      const saved = ftPosition();
+      if (saved && saved.x != null && saved.y != null) {
+        btn.style.left = saved.x + "px";
+        btn.style.top = saved.y + "px";
+      } else {
+        btn.style.right = "20px";
+        btn.style.bottom = "84px";
+      }
+
+      let dragging = false, moved = false, startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+      function pointerDown(e) {
+        const p = e.touches ? e.touches[0] : e;
+        dragging = true; moved = false;
+        const rect = btn.getBoundingClientRect();
+        startX = p.clientX; startY = p.clientY;
+        startLeft = rect.left; startTop = rect.top;
+        btn.style.right = "auto"; btn.style.bottom = "auto";
+        btn.style.left = rect.left + "px"; btn.style.top = rect.top + "px";
+        e.preventDefault();
+      }
+      function pointerMove(e) {
+        if (!dragging) return;
+        const p = e.touches ? e.touches[0] : e;
+        const dx = p.clientX - startX, dy = p.clientY - startY;
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+        let newLeft = startLeft + dx, newTop = startTop + dy;
+        newLeft = Math.max(4, Math.min(window.innerWidth - btn.offsetWidth - 4, newLeft));
+        newTop = Math.max(4, Math.min(window.innerHeight - btn.offsetHeight - 4, newTop));
+        btn.style.left = newLeft + "px";
+        btn.style.top = newTop + "px";
+        if (FT.open) positionPanel();
+      }
+      function pointerUp() {
+        if (!dragging) return;
+        dragging = false;
+        if (moved) {
+          const rect = btn.getBoundingClientRect();
+          ftSavePosition({ x: rect.left, y: rect.top });
+        } else {
+          toggleFtPanel();
+        }
+      }
+
+      btn.addEventListener("mousedown", pointerDown);
+      window.addEventListener("mousemove", pointerMove);
+      window.addEventListener("mouseup", pointerUp);
+      btn.addEventListener("touchstart", pointerDown, { passive: false });
+      window.addEventListener("touchmove", pointerMove, { passive: false });
+      window.addEventListener("touchend", pointerUp);
+      window.addEventListener("resize", () => { if (FT.open) positionPanel(); });
+
+      function positionPanel() {
+        const rect = btn.getBoundingClientRect();
+        const panelWidth = Math.min(300, window.innerWidth - 24);
+        let left = rect.left + rect.width / 2 - panelWidth / 2;
+        left = Math.max(12, Math.min(window.innerWidth - panelWidth - 12, left));
+        const panelHeightGuess = 340;
+        if (rect.top - panelHeightGuess > 8) {
+          panel.style.top = "";
+          panel.style.bottom = (window.innerHeight - rect.top + 10) + "px";
+        } else {
+          panel.style.bottom = "";
+          panel.style.top = (rect.bottom + 10) + "px";
+        }
+        panel.style.left = left + "px";
+        panel.style.width = panelWidth + "px";
+      }
+
+      function toggleFtPanel() {
+        FT.open = !FT.open;
+        if (FT.open) {
+          positionPanel();
+          renderFtPanel();
+          panel.classList.add("open");
+        } else {
+          panel.classList.remove("open");
+        }
+      }
+
+      document.addEventListener("click", (e) => {
+        if (!FT.open) return;
+        if (panel.contains(e.target) || btn.contains(e.target)) return;
+        FT.open = false;
+        panel.classList.remove("open");
+      });
+    }
+
+    function ftSetTab(tab) { FT.tab = tab; renderFtPanel(); }
+
+    function renderFtPanel() {
+      const panel = document.getElementById("floating-tools-panel");
+      if (!panel) return;
+      const isUr = typeof state !== "undefined" && state.lang === "ur";
+      panel.innerHTML = `
+    <div style="position:relative;">
+      <button class="ft-close" id="ft-close-btn">&times;</button>
+      <div class="ft-tabs">
+        <button class="ft-tab ${FT.tab === 'calc' ? 'active' : ''}" data-ft-tab="calc">${isUr ? 'کیلکولیٹر' : 'Calculator'}</button>
+        <button class="ft-tab ${FT.tab === 'date' ? 'active' : ''}" data-ft-tab="date">${isUr ? 'تاریخ' : 'Date'}</button>
+        <button class="ft-tab ${FT.tab === 'notes' ? 'active' : ''}" data-ft-tab="notes">${isUr ? 'نوٹس' : 'Notes'}</button>
+      </div>
+      <div class="ft-body">${FT.tab === 'calc' ? ftCalcHtml() : FT.tab === 'date' ? ftDateHtml() : ftNotesHtml()}</div>
+    </div>
+  `;
+      document.getElementById("ft-close-btn").addEventListener("click", () => {
+        FT.open = false;
+        panel.classList.remove("open");
+      });
+      panel.querySelectorAll("[data-ft-tab]").forEach(b => {
+        b.addEventListener("click", () => ftSetTab(b.getAttribute("data-ft-tab")));
+      });
+      if (FT.tab === "calc") bindFtCalc();
+      if (FT.tab === "notes") bindFtNotes();
+    }
+
+    /* ---- Calculator ---- */
+    function ftCalcHtml() {
+      const display = FT.calcExpr || "0";
+      return `
+    <div class="ft-calc-display" id="ft-calc-display">${escapeHtml(display)}</div>
+    <div class="ft-calc-grid">
+      <button class="ft-clear" data-ft-key="C">C</button>
+      <button data-ft-key="(">(</button>
+      <button data-ft-key=")">)</button>
+      <button class="ft-op" data-ft-key="/">&divide;</button>
+      <button data-ft-key="7">7</button>
+      <button data-ft-key="8">8</button>
+      <button data-ft-key="9">9</button>
+      <button class="ft-op" data-ft-key="*">&times;</button>
+      <button data-ft-key="4">4</button>
+      <button data-ft-key="5">5</button>
+      <button data-ft-key="6">6</button>
+      <button class="ft-op" data-ft-key="-">&minus;</button>
+      <button data-ft-key="1">1</button>
+      <button data-ft-key="2">2</button>
+      <button data-ft-key="3">3</button>
+      <button class="ft-op" data-ft-key="+">+</button>
+      <button data-ft-key="0">0</button>
+      <button data-ft-key=".">.</button>
+      <button data-ft-key="back">&#9003;</button>
+      <button class="ft-equals" data-ft-key="=">=</button>
+    </div>
+  `;
+    }
+    function ftCalcEvaluate(expr) {
+      if (!/^[0-9+\-*/().\s]+$/.test(expr)) throw new Error("invalid");
+      const result = Function('"use strict"; return (' + expr + ")")();
+      if (typeof result !== "number" || !isFinite(result)) throw new Error("invalid");
+      return result;
+    }
+    function bindFtCalc() {
+      document.querySelectorAll("[data-ft-key]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const isUr = typeof state !== "undefined" && state.lang === "ur";
+          const errorText = isUr ? "غلطی" : "Error";
+          const key = btn.getAttribute("data-ft-key");
+          if (key === "C") { FT.calcExpr = ""; }
+          else if (key === "back") { FT.calcExpr = FT.calcExpr.slice(0, -1); }
+          else if (key === "=") {
+            try { FT.calcExpr = String(ftCalcEvaluate(FT.calcExpr || "0")); }
+            catch (e) { FT.calcExpr = errorText; }
+          } else {
+            if (FT.calcExpr === errorText) FT.calcExpr = "";
+            FT.calcExpr += key;
+          }
+          const disp = document.getElementById("ft-calc-display");
+          if (disp) disp.textContent = FT.calcExpr || "0";
+        });
+      });
+    }
+
+    /* ---- Date ---- */
+    function ftDateHtml() {
+      const isUr = typeof state !== "undefined" && state.lang === "ur";
+      const now = new Date();
+      const dayNamesShort = isUr ? ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthNamesFull = isUr
+        ? ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"]
+        : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const big = now.getDate() + " " + monthNamesFull[now.getMonth()] + " " + now.getFullYear();
+      const sub = dayNamesShort[now.getDay()] + " \u00b7 " + now.toLocaleTimeString(isUr ? "ur" : "en-GB", { hour: "2-digit", minute: "2-digit" });
+
+      const year = now.getFullYear(), month = now.getMonth();
+      const firstDow = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      let cells = "";
+      for (let i = 0; i < firstDow; i++) cells += '<div class="ft-day"></div>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        cells += '<div class="ft-day ' + (d === now.getDate() ? "ft-today" : "") + '">' + d + "</div>";
+      }
+
+      return `
+    <div class="ft-date-big">${big}</div>
+    <div class="ft-date-sub">${sub}</div>
+    <div class="ft-mini-cal">
+      ${dayNamesShort.map(n => `<div class="ft-dow">${n.slice(0, 2)}</div>`).join("")}
+      ${cells}
+    </div>
+  `;
+    }
+
+    /* ---- Notes on donations ---- */
+    function ftNotesHtml() {
+      const isUr = typeof state !== "undefined" && state.lang === "ur";
+      const q = FT.notesQuery.toLowerCase();
+      const matches = state.donations
+        .filter(d => !q || (d.name + " " + (d.city || "")).toLowerCase().includes(q))
+        .slice(0, 30);
+      const selected = state.donations.find(d => d.id === FT.notesSelectedId);
+      return `
+    <input type="text" class="ft-notes-search" id="ft-notes-search" placeholder="${isUr ? 'عطیہ دہندہ تلاش کریں' : 'Search donor by name or city'}" value="${escapeHtml(FT.notesQuery)}" />
+    <div class="ft-notes-list">
+      ${matches.length === 0
+          ? `<div class="ft-notes-item" style="color:#8A8D7C;">${isUr ? 'کوئی نہیں ملا' : 'No matches'}</div>`
+          : matches.map(d => `
+            <div class="ft-notes-item ${d.id === FT.notesSelectedId ? 'ft-selected' : ''}" data-ft-donation="${d.id}">
+              ${d.note ? '<span class="ft-note-dot"></span>' : ''}${escapeHtml(d.name)} <span style="color:#8A8D7C;">&middot; ${currency(d.amount)}</span>
+            </div>
+          `).join("")
+        }
+    </div>
+    ${selected ? `
+      <div class="ft-notes-editor">
+        <label>${isUr ? 'نوٹ' : 'Note'} &mdash; ${escapeHtml(selected.name)}</label>
+        <textarea id="ft-note-text" placeholder="${isUr ? 'مثلاً وعدہ شدہ رقم، قسط کی تفصیل...' : 'e.g. pledged amount, installment details, follow-up reminder...'}">${escapeHtml(selected.note || "")}</textarea>
+        <button id="ft-note-save">${isUr ? 'محفوظ کریں' : 'Save Note'}</button>
+      </div>
+    ` : ""}
+  `;
+    }
+    function bindFtNotes() {
+      const isUr = typeof state !== "undefined" && state.lang === "ur";
+      const search = document.getElementById("ft-notes-search");
+      if (search) {
+        search.addEventListener("input", (e) => {
+          FT.notesQuery = e.target.value;
+          renderFtPanel();
+          const el = document.getElementById("ft-notes-search");
+          if (el) { el.focus(); el.setSelectionRange(FT.notesQuery.length, FT.notesQuery.length); }
+        });
+      }
+      document.querySelectorAll("[data-ft-donation]").forEach(item => {
+        item.addEventListener("click", () => {
+          FT.notesSelectedId = item.getAttribute("data-ft-donation");
+          renderFtPanel();
+        });
+      });
+      const saveBtn = document.getElementById("ft-note-save");
+      if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+          const text = document.getElementById("ft-note-text").value;
+          state.donations = state.donations.map(d => d.id === FT.notesSelectedId ? { ...d, note: text } : d);
+          persist("donations");
+          saveBtn.textContent = isUr ? "محفوظ ہو گیا \u2713" : "Saved \u2713";
+          setTimeout(() => {
+            const b = document.getElementById("ft-note-save");
+            if (b) b.textContent = isUr ? "محفوظ کریں" : "Save Note";
+          }, 1200);
+        });
+      }
+    }
 
 
       async function downloadYearlyPrayerPdf(year) {
@@ -2031,7 +2409,82 @@
 
         doc.save("Mahmood-Masjid-Prayer-Times-" + year + ".pdf");
       }
+    async function downloadDonorsPdf() {
+        ensurePdfLibsLoaded();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+        if (typeof doc.autoTable !== "function") {
+          throw new Error("jspdf-autotable didn't load (doc.autoTable is missing). Make sure its <script> tag is AFTER the jspdf <script> tag in <head>.");
+        }
 
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginX = 40;
+        let y = 50;
+
+        let logoDataUrl = null;
+        if (state.logo) logoDataUrl = await urlToDataUrl(state.logo);
+        if (logoDataUrl) {
+          try { doc.addImage(logoDataUrl, "PNG", marginX, y - 28, 36, 36); } catch (e) { console.warn("addImage failed:", e); }
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Mahmood Masjid", pageWidth / 2, y, { align: "center" });
+        y += 20;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
+        doc.text(
+          "Donor List \u2014 " + state.donations.length + " donation(s) \u00b7 Total " + currency(totalDonated),
+          pageWidth / 2, y, { align: "center" }
+        );
+        y += 10;
+        doc.setFontSize(9);
+        doc.setTextColor(130, 130, 130);
+        doc.text("Generated " + new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }), pageWidth / 2, y + 10, { align: "center" });
+        doc.setTextColor(0, 0, 0);
+        y += 22;
+
+        // Keeps the same order shown in the Donations tab (file order, not re-sorted).
+        const rows = state.donations.map((d, i) => [
+          String(i + 1),
+          d.name || "",
+          d.city || "\u2014",
+          d.date || "\u2014",
+          currency(d.amount),
+        ]);
+
+        doc.autoTable({
+          startY: y,
+          head: [["#", "Name", "City", "Date", "Amount"]],
+          body: rows,
+          styles: { fontSize: 9, cellPadding: 4 },
+          headStyles: { fillColor: [22, 56, 44], textColor: [244, 217, 138] },
+          alternateRowStyles: { fillColor: [250, 246, 236] },
+          columnStyles: {
+            0: { halign: "center", cellWidth: 30 },
+            1: { halign: "left" },
+            2: { halign: "left" },
+            3: { halign: "center", cellWidth: 75 },
+            4: { halign: "right", fontStyle: "bold", cellWidth: 90 },
+          },
+          margin: { left: marginX, right: marginX },
+          // Repeats "Mahmood Masjid" as a running footer on every page, since
+          // the donor list can run to many pages for a large mosque.
+          didDrawPage: (data) => {
+            const h = doc.internal.pageSize.getHeight();
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            doc.text("Mahmood Masjid \u00b7 Donor List", marginX, h - 20);
+            doc.text("Page " + doc.internal.getNumberOfPages(), pageWidth - marginX, h - 20, { align: "right" });
+            doc.setTextColor(0, 0, 0);
+          },
+        });
+
+        doc.save("Mahmood-Masjid-Donors.pdf");
+      }
+    
     const state = {
       passcodeHash: null,
       unlocked: false,
@@ -2218,6 +2671,7 @@
         document.getElementById("sidebar").classList.toggle("open");
       });
       renderMain();
+      initFloatingTools();
     }
 
     function sectionHeader(title, sub, rightHtml) {
@@ -2362,9 +2816,13 @@
         .filter(d => (d.name + " " + d.city).toLowerCase().includes(state.donationQuery.toLowerCase()));
 
       return `
-    ${sectionHeader(t("nav_donations"), t("donations_sub", { n: state.donations.length, amt: currency(totalDonated) }))}
-    ${financeStatsHeader()}
-    <form id="donation-form" class="card form-card" style="grid-template-columns:repeat(4,1fr) auto;">
+  ${sectionHeader(
+        t("nav_donations"),
+        t("donations_sub", { n: state.donations.length, amt: currency(totalDonated) }),
+        `<button class="btn-secondary" id="donors-print">${ICONS.download} ${state.lang === 'ur' ? 'پی ڈی ایف ڈاؤن لوڈ کریں' : 'Download PDF'}</button>`
+      )}
+  ${financeStatsHeader()}
+  <form id="donation-form" class="card form-card" style="grid-template-columns:repeat(4,1fr) auto;">
       <label class="field"><span>${t('field_donor_name')}</span><input type="text" id="d-name" placeholder="${t('ph_donor_name')}" required /></label>
       <label class="field"><span>${t('field_city')}</span><input type="text" id="d-city" placeholder="${t('ph_city')}" /></label>
       <label class="field"><span>${t('field_amount')}</span><input type="number" min="0" id="d-amount" placeholder="5000" required /></label>
@@ -2393,7 +2851,7 @@
           </div>
         ` : `
           <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr auto;">
-            <span style="font-weight:600;">${escapeHtml(d.name)}</span>
+            <span style="font-weight:600;">${escapeHtml(d.name)}${d.note ? `<span class="donor-note-badge" data-note-donor="${d.id}" title="${escapeHtml(d.note)}" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-inline-start:6px;vertical-align:middle;cursor:pointer;"></span>` : ''}</span>
             <span style="color:var(--muted);">${escapeHtml(d.city || "—")}</span>
             <span style="color:var(--muted);">${escapeHtml(d.date)}</span>
             <span style="font-weight:700;color:var(--green-mid);">${currency(d.amount)}</span>
@@ -2458,6 +2916,21 @@
             renderMain();
           });
         });
+      });
+      const donorsPrintBtn = document.getElementById("donors-print");
+      if (donorsPrintBtn) donorsPrintBtn.addEventListener("click", async () => {
+        donorsPrintBtn.disabled = true;
+        const original = donorsPrintBtn.innerHTML;
+        donorsPrintBtn.innerHTML = state.lang === 'ur' ? "تیار ہو رہا ہے…" : "Generating…";
+        try {
+          await downloadDonorsPdf();
+        } catch (e) {
+          console.error(e);
+          alert("Couldn't generate the PDF:\n\n" + (e && e.message ? e.message : e));
+        } finally {
+          donorsPrintBtn.disabled = false;
+          donorsPrintBtn.innerHTML = original;
+        }
       });
     }
 
@@ -2948,30 +3421,83 @@ ${state.prayerMode === 'calendar' ? `
           state.prayerYear = Number(e.target.value) || state.prayerYear;
           renderMain();
         });
-        async function runPdfDownload(btn, fn) {
-          btn.disabled = true;
-          const original = btn.innerHTML;
-          btn.innerHTML = "Generating…";
-          try {
-            await fn();
-          } catch (e) {
-            console.error(e);
-            alert("Couldn't generate the PDF:\n\n" + (e && e.message ? e.message : e));
-          } finally {
-            btn.disabled = false;
-            btn.innerHTML = original;
+
+        async function downloadDonorsPdf() {
+          ensurePdfLibsLoaded();
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({ unit: "pt", format: "a4" });
+          if (typeof doc.autoTable !== "function") {
+            throw new Error("jspdf-autotable didn't load (doc.autoTable is missing). Make sure its <script> tag is AFTER the jspdf <script> tag in <head>.");
           }
+
+          const pageWidth = doc.internal.pageSize.getWidth();
+          const marginX = 40;
+          let y = 50;
+
+          let logoDataUrl = null;
+          if (state.logo) logoDataUrl = await urlToDataUrl(state.logo);
+          if (logoDataUrl) {
+            try { doc.addImage(logoDataUrl, "PNG", marginX, y - 28, 36, 36); } catch (e) { console.warn("addImage failed:", e); }
+          }
+
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(18);
+          doc.text("Mahmood Masjid", pageWidth / 2, y, { align: "center" });
+          y += 20;
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(12);
+          const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
+          doc.text(
+            "Donor List \u2014 " + state.donations.length + " donation(s) \u00b7 Total " + currency(totalDonated),
+            pageWidth / 2, y, { align: "center" }
+          );
+          y += 10;
+          doc.setFontSize(9);
+          doc.setTextColor(130, 130, 130);
+          doc.text("Generated " + new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }), pageWidth / 2, y + 10, { align: "center" });
+          doc.setTextColor(0, 0, 0);
+          y += 22;
+
+          // Keeps the same order shown in the Donations tab (file order, not re-sorted).
+          const rows = state.donations.map((d, i) => [
+            String(i + 1),
+            d.name || "",
+            d.city || "\u2014",
+            d.date || "\u2014",
+            currency(d.amount),
+          ]);
+
+          doc.autoTable({
+            startY: y,
+            head: [["#", "Name", "City", "Date", "Amount"]],
+            body: rows,
+            styles: { fontSize: 9, cellPadding: 4 },
+            headStyles: { fillColor: [22, 56, 44], textColor: [244, 217, 138] },
+            alternateRowStyles: { fillColor: [250, 246, 236] },
+            columnStyles: {
+              0: { halign: "center", cellWidth: 30 },
+              1: { halign: "left" },
+              2: { halign: "left" },
+              3: { halign: "center", cellWidth: 75 },
+              4: { halign: "right", fontStyle: "bold", cellWidth: 90 },
+            },
+            margin: { left: marginX, right: marginX },
+            // Repeats "Mahmood Masjid" as a running footer on every page, since
+            // the donor list can run to many pages for a large mosque.
+            didDrawPage: (data) => {
+              const h = doc.internal.pageSize.getHeight();
+              doc.setFontSize(8);
+              doc.setTextColor(150, 150, 150);
+              doc.text("Mahmood Masjid \u00b7 Donor List", marginX, h - 20);
+              doc.text("Page " + doc.internal.getNumberOfPages(), pageWidth - marginX, h - 20, { align: "right" });
+              doc.setTextColor(0, 0, 0);
+            },
+          });
+
+          doc.save("Mahmood-Masjid-Donors.pdf");
         }
 
-        const monthBtn = document.getElementById("prayer-print-month");
-        if (monthBtn) monthBtn.addEventListener("click", () =>
-          runPdfDownload(monthBtn, () => downloadMonthlyPrayerPdf(state.prayerMonthIdx, state.prayerYear))
-        );
-
-        const yearBtn = document.getElementById("prayer-print-year");
-        if (yearBtn) yearBtn.addEventListener("click", () =>
-          runPdfDownload(yearBtn, () => downloadYearlyPrayerPdf(state.prayerYear))
-        );
       }
     }
 
