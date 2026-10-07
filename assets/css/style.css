@@ -914,6 +914,33 @@ a.btn,
   }
 }
 
+.subscribe {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.subscribe input {
+  width: 320px;
+  max-width: 90%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.subscribe button {
+  padding: 12px 20px;
+  background: #0c6b3f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.subscribe button:hover {
+  background: #09512f;
+}
+
 .lead{color:var(--muted)}
 .card{background:var(--card-bg);padding:20px;border-radius:var(--radius);box-shadow:var(--elevation);border:1px solid var(--glass-border);margin:20px 0;transition:transform .18s ease, box-shadow .18s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(12,18,22,0.12)}
@@ -1699,19 +1726,13 @@ body.urdu-mode .social-card h2{
 }
 
 .side-menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0);
-  opacity: 0;
   pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 998;
+  opacity: 0;
 }
 
-.side-menu.open ~ .side-menu-overlay {
-  background: rgba(0, 0, 0, 0.4);
-  opacity: 1;
+.side-menu.open~.side-menu-overlay {
   pointer-events: auto;
+  opacity: 1;
 }
 
 @media (max-width: 640px) {
