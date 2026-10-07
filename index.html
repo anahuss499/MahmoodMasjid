@@ -520,7 +520,7 @@
         <section class="hero">
             <div class="hero-grid">
                 <div class="hero-left">
-                    <h1 data-en="Mahmood Masjid" data-urdu="محمود مسجد">Mahmood Masjid</h1>
+                    <h1 data-en="Mahmood Masjid" data-urdu="محمود مسجد"> Mahmood Masjid</h1>
                     <p class="lead" data-en="Accurate prayer times & community services — Gujrat, Pakistan"
                         data-urdu="درست نماز کے اوقات اور کمیونٹی خدمات — گجرات، پاکستان">Accurate prayer times &
                         community services — Gujrat, Pakistan</p>
@@ -1515,6 +1515,20 @@
                         class="btn ghost" href="/contact.html" data-en="Contact" data-urdu="رابطہ کریں">Contact</a></p>
             </section>
 
+            <section class="subscribe">
+                <h2>Stay Connected with Mahmood Masjid</h2>
+                 
+                <form id="subscribeForm">
+                    <input type="email" id="email" placeholder="Enter your email" required />
+                     
+                    <button type="submit">
+                        Subscribe
+                    </button>
+                </form>
+                 
+                <p id="message"></p>
+            </section>
+
             <footer class="site-footer">
                 <div class="footer-grid">
                     <div class="footer-left"><small
@@ -1550,6 +1564,50 @@
     <script defer src="../assets/js/main.js?v=10"></script>
     <script defer src="../assets/js/ui.js"></script>
     <script defer src="../assets/js/pwa.js"></script>
+
+    <script>
+document
+.getElementById("subscribeForm")
+.addEventListener("submit", async function (e) {
+ 
+e.preventDefault();
+ 
+const email =
+document.getElementById("email").value;
+ 
+try {
+ 
+await fetch(
+"https://script.google.com/macros/s/AKfycby6wPUK7LAZuHdL5gNcNw4g2rAnNZHDIiMQGK5wiLVji0IiskCKfzFbzakhBMe5wWv2Wg/exec",
+{
+method: "POST",
+mode: "no-cors",
+headers: {
+"Content-Type":
+"application/json"
+},
+body: JSON.stringify({
+email: email
+})
+}
+);
+ 
+document.getElementById("message")
+.innerHTML =
+"✅ Thank you for subscribing!";
+ 
+this.reset();
+ 
+} catch (error) {
+ 
+document.getElementById("message")
+.innerHTML =
+"❌ Something went wrong.";
+ 
+}
+ 
+});
+</script>
 </body>
 
 </html>
