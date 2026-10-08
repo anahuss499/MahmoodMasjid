@@ -81,18 +81,8 @@
       sideMenu.classList.remove('open');
     }
   }
-  toggle.forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      e.preventDefault();
-      // Toggle side menu instead of old dropdown
-      const sideMenu = document.getElementById('side-menu');
-      if(sideMenu){
-        sideMenu.classList.toggle('open');
-        btn.setAttribute('aria-expanded', sideMenu.classList.contains('open'));
-      }
-    });
-  });
+ 
+  
 
   // compact mode removed
 

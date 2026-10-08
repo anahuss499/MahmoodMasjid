@@ -566,6 +566,8 @@ updateShabeMirajLanguage();
 
 // Side Menu Functionality
 function initSideMenu() {
+  console.log(document.getElementById('side-menu-toggle'));
+  console.log(document.getElementById('side-menu'));
   const sideMenu = document.getElementById('side-menu');
   const sideMenuToggle = document.getElementById('side-menu-toggle');
   const sideMenuOverlay = document.getElementById('side-menu-overlay');
@@ -619,21 +621,18 @@ function initSideMenu() {
 
   document.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+
+    // Only start swipe from left edge
+    if (touchStartX > 40) {
+      isSwiping = false;
+      return;
+    }
+
     isSwiping = true;
-  }, { passive: true });
-
-  document.addEventListener('touchmove', (e) => {
-    if (!isSwiping) return;
-    touchEndX = e.touches[0].clientX;
-    touchEndY = e.touches[0].clientY;
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    if (!isSwiping) return;
-    isSwiping = false;
-    handleSwipe();
-  }, { passive: true });
+  });
+  window.addEventListener('load', async () => {
+    loadNews();
+  });
 
   function handleSwipe() {
     const swipeDistanceX = touchEndX - touchStartX;
