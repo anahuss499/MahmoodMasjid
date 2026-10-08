@@ -110,20 +110,27 @@
                 try {
 
                     await fetch(
-                        "YOUR_UNSUBSCRIBE_SCRIPT_URL",
+                        "https://script.google.com/macros/s/AKfycbx0_Beut54yyxUzdmgV6kyJ2V8_WSLGkWK-CZeqhMSCo6I6INiCpAjtqaNU2V4_lfU3Pg/exec",
                         {
                             method: "POST",
+                            mode: "no-cors",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
                             body: JSON.stringify({
                                 email: email
                             })
-                        });
+                        }
+                    );
 
                     document.getElementById("message")
                         .innerHTML =
-                        "✅ You have been unsubscribed.";
+                        "✅ You have been successfully unsubscribed.";
 
                 }
-                catch {
+                catch (error) {
+
+                    console.error(error);
 
                     document.getElementById("message")
                         .innerHTML =
