@@ -4,86 +4,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Unsubscribe - Mahmood Masjid</title>
 
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
+            padding: 20px;
 
-            background: linear-gradient(135deg,
-                    #052a27,
-                    #0c6b3f);
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                linear-gradient(135deg,
+                    #edf7ee,
+                    #dff4e1);
         }
 
         .card {
-            width: 90%;
-            max-width: 500px;
 
-            padding: 40px;
+            width: 100%;
+            max-width: 620px;
 
+            background:
+                rgba(255, 255, 255, 0.75);
+
+            border: 1px solid #b9e3bf;
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.08);
+
+        }
+
+        .header {
+
+            background:
+                linear-gradient(135deg,
+                    #e7f7e8,
+                    #d2f0d6);
+
+            padding: 40px 30px;
             text-align: center;
 
-            border-radius: 25px;
-
-            background: rgba(255, 255, 255, .12);
-
-            border: 1px solid rgba(255, 255, 255, .18);
-
-            backdrop-filter: blur(10px);
-
-            color: white;
         }
 
         .logo {
-            width: 140px;
-            margin-bottom: 20px;
+
+            max-width: 140px;
+            width: 100%;
+            height: auto;
+
+        }
+
+        .header h1 {
+
+            margin: 20px 0 10px;
+
+            font-size: 34px;
+
+            color: #165c2f;
+
+        }
+
+        .header p {
+
+            color: #4f6857;
+
+            font-size: 15px;
+
+        }
+
+        .content {
+
+            padding: 35px;
+            text-align: center;
+
+        }
+
+        .content h2 {
+
+            color: #1e7e34;
+            margin-bottom: 15px;
+
+        }
+
+        .content p {
+
+            color: #304537;
+
+            line-height: 1.8;
+
+            margin-bottom: 25px;
+
+        }
+
+        .info-box {
+
+            background:
+                rgba(255, 255, 255, 0.75);
+
+            border: 1px solid #cce8cf;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            margin-bottom: 30px;
+
         }
 
         button {
-            background: #f4eec9;
-            color: #06342f;
+
             border: none;
-            padding: 14px 24px;
-            border-radius: 10px;
-            cursor: pointer;
+
+            background: #1e7e34;
+
+            color: white;
+
             font-size: 15px;
+
             font-weight: bold;
+
+            padding: 14px 30px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: .25s;
+
         }
 
         button:hover {
-            background: white;
+
+            background: #145224;
+
         }
 
         #message {
+
             margin-top: 20px;
+
             font-weight: bold;
+
+            color: #1e7e34;
+
+        }
+
+        .footer {
+
+            background:
+                rgba(255, 255, 255, 0.6);
+
+            border-top:
+                1px solid #cce8cf;
+
+            text-align: center;
+
+            padding: 25px;
+
+        }
+
+        .footer a.address {
+
+            color: #304537;
+
+            text-decoration: none;
+
+            line-height: 1.7;
+
+            display: block;
+
+        }
+
+        .socials {
+
+            margin: 20px 0;
+
+        }
+
+        .socials img {
+
+            width: 36px;
+
+            margin: 0 6px;
+
+            vertical-align: middle;
+
+        }
+
+        .website {
+
+            font-size: 13px;
+
+            color: #617468;
+
+            margin-bottom: 12px;
+
+        }
+
+        .home-link {
+
+            color: #1e7e34;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
         }
     </style>
+
 </head>
 
 <body>
 
     <div class="card">
 
-        <img src="https://www.mahmoodmasjid.com/assets/img/logo.png" class="logo" alt="Mahmood Masjid">
+        <div class="header">
 
-        <h1>Unsubscribe</h1>
+            <img src="https://www.mahmoodmasjid.com/assets/img/logo.png" class="logo" alt="Mahmood Masjid">
 
-        <p>
-            Click the button below to stop receiving
-            email updates from Mahmood Masjid.
-        </p>
+            <h1>Mahmood Masjid</h1>
 
-        <button id="unsubscribeButton">
-            Unsubscribe Me
-        </button>
+            <p>
+                Accurate prayer times & community services
+            </p>
 
-        <div id="message"></div>
+        </div>
+
+        <div class="content">
+
+            <h2>Unsubscribe</h2>
+
+            <p>
+                We're sorry to see you go.
+                If you no longer wish to receive email updates,
+                prayer reminders and community announcements,
+                click the button below.
+            </p>
+
+            <div class="info-box">
+
+                <p style="margin:0;">
+                    Your email address will be marked as
+                    <strong>Unsubscribed</strong>
+                    and you will stop receiving newsletter emails.
+                </p>
+
+            </div>
+
+            <button id="unsubscribeButton">
+
+                Unsubscribe Me
+
+            </button>
+
+            <div id="message"></div>
+
+        </div>
+
+        <div class="footer">
+
+            <a class="address" href="https://maps.app.goo.gl/cFXQFPNAv5V6amoKA" target="_blank">
+
+                📍 Mahmood Abad, P.O. Fatehpur, Gujrat<br>
+                Punjab, Pakistan
+
+            </a>
+
+            <div class="socials">
+
+                <a href="https://www.youtube.com/@mahmoodmasjid" target="_blank">
+                    <img src="https://www.mahmoodmasjid.com/assets/images/ytlogo.png" alt="YouTube">
+                </a>
+
+                <a href="https://www.facebook.com/people/Mahmood-Masjid/61582326976125/" target="_blank">
+                    <img src="https://www.mahmoodmasjid.com/assets/images/fblogo.png" alt="Facebook">
+                </a>
+
+                <a href="https://www.tiktok.com/@mahmoodmasjid" target="_blank">
+                    <img src="https://www.mahmoodmasjid.com/assets/images/tiktoklogo.png" alt="TikTok">
+                </a>
+
+                <a href="https://whatsapp.com/channel/0029VbCi0sUE50UrWSulQu3N" target="_blank">
+                    <img src="https://www.mahmoodmasjid.com/assets/images/whatsapp.png" alt="WhatsApp">
+                </a>
+
+            </div>
+
+            <div class="website">
+
+                www.mahmoodmasjid.com
+
+            </div>
+
+            <a class="home-link" href="https://www.mahmoodmasjid.com">
+
+                Return to Website
+
+            </a>
+
+        </div>
 
     </div>
 
@@ -127,10 +360,15 @@
                         .innerHTML =
                         "✅ You have been successfully unsubscribed.";
 
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "https://www.mahmoodmasjid.com";
+
+                    }, 4000);
+
                 }
                 catch (error) {
-
-                    console.error(error);
 
                     document.getElementById("message")
                         .innerHTML =
