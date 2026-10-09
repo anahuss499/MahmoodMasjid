@@ -566,8 +566,7 @@ updateShabeMirajLanguage();
 
 // Side Menu Functionality
 function initSideMenu() {
-  console.log(document.getElementById('side-menu-toggle'));
-  console.log(document.getElementById('side-menu'));
+
   const sideMenu = document.getElementById('side-menu');
   const sideMenuToggle = document.getElementById('side-menu-toggle');
   const sideMenuOverlay = document.getElementById('side-menu-overlay');
@@ -576,43 +575,79 @@ function initSideMenu() {
 
   if (!sideMenu || !sideMenuToggle) return;
 
-  // Toggle menu on button click - only open side menu, close any nav menu
-  sideMenuToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    
-    // Close main nav if it's open
-    if (body.classList.contains('nav-open')) {
-      body.classList.remove('nav-open');
-      document.querySelectorAll('.nav-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
-    }
-    
-    // Toggle side menu
-    sideMenu.classList.toggle('open');
-  }, { capture: true });
+  // ---------------------------
+  // Main Mobile Nav
+  // ---------------------------
+  document.querySelectorAll('.nav-toggle').forEach(btn => {
 
-  // Close menu on overlay click
+    btn.addEventListener('click', () => {
+
+      // Close side menu if open
+      sideMenu.classList.remove('open');
+
+      const open = body.classList.toggle('nav-open');
+
+      btn.setAttribute(
+        'aria-expanded',
+        open ? 'true' : 'false'
+      );
+    });
+
+  });
+
+  // ---------------------------
+  // Side Menu Toggle Function
+  // ---------------------------
+  function toggleSideMenu() {
+
+    body.classList.remove('nav-open');
+
+    document.querySelectorAll('.nav-toggle').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+    });
+
+    sideMenu.classList.toggle('open');
+  }
+
+  // Desktop click
+  sideMenuToggle.addEventListener('click', toggleSideMenu);
+
+  // Mobile touch
+  sideMenuToggle.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    toggleSideMenu();
+  }, { passive: false });
+
+  // ---------------------------
+  // Overlay close
+  // ---------------------------
   if (sideMenuOverlay) {
     sideMenuOverlay.addEventListener('click', () => {
       sideMenu.classList.remove('open');
     });
   }
 
-  // Close menu on item click
-  sideMenuItems.forEach((item) => {
+  // ---------------------------
+  // Close when clicking menu item
+  // ---------------------------
+  sideMenuItems.forEach(item => {
     item.addEventListener('click', () => {
       sideMenu.classList.remove('open');
     });
   });
 
-  // Close menu on escape key
+  // ---------------------------
+  // ESC Key
+  // ---------------------------
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       sideMenu.classList.remove('open');
     }
   });
 
-  // Swipe to open/close menu - Right-to-left opens, left-to-right closes
+  // ---------------------------
+  // Swipe Support
+  // ---------------------------
   let touchStartX = 0;
   let touchStartY = 0;
   let touchEndX = 0;
@@ -620,53 +655,92 @@ function initSideMenu() {
   let isSwiping = false;
 
   document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
 
-    // Only start swipe from left edge
-    if (touchStartX > 40) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+
+    // Only start from right edge
+    if (touchStartX < (window.innerWidth - 40)) {
       isSwiping = false;
       return;
     }
 
     isSwiping = true;
   });
-  window.addEventListener('load', async () => {
-    loadNews();
+
+  document.addEventListener('touchmove', (e) => {
+
+    if (!isSwiping) return;
+
+    touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
   });
 
-  function handleSwipe() {
+  document.addEventListener('touchend', () => {
+
+    if (!isSwiping) return;
+
     const swipeDistanceX = touchEndX - touchStartX;
     const swipeDistanceY = Math.abs(touchEndY - touchStartY);
-    const minSwipeDistance = 80; // Minimum swipe distance in pixels
 
-    // Ignore if mostly vertical swipe
-    if (swipeDistanceY > Math.abs(swipeDistanceX)) return;
+    if (swipeDistanceY > Math.abs(swipeDistanceX)) {
+      isSwiping = false;
+      return;
+    }
 
-    const isMenuOpen = sideMenu.classList.contains('open');
+    const minSwipeDistance = 80;
 
-    // Swipe RIGHT to LEFT (negative distance) = OPEN menu
-    if (!isMenuOpen && swipeDistanceX < -minSwipeDistance) {
+    // Open menu
+    if (
+      !sideMenu.classList.contains('open') &&
+      swipeDistanceX < -minSwipeDistance
+    ) {
       sideMenu.classList.add('open');
     }
-    // Swipe LEFT to RIGHT (positive distance) = CLOSE menu
-    else if (isMenuOpen && swipeDistanceX > minSwipeDistance) {
+
+    // Close menu
+    if (
+      sideMenu.classList.contains('open') &&
+      swipeDistanceX > minSwipeDistance
+    ) {
       sideMenu.classList.remove('open');
     }
-  }
 
-  // Set active menu item based on current page
+    isSwiping = false;
+  });
+
+  // ---------------------------
+  // Active Menu Item
+  // ---------------------------
   const currentPath = window.location.pathname;
-  sideMenuItems.forEach((item) => {
+
+  sideMenuItems.forEach(item => {
+
     const href = item.getAttribute('href');
-    if (href === currentPath || (currentPath === '/' && href === '/')) {
+
+    if (
+      href === currentPath ||
+      (currentPath === '/' && href === '/')
+    ) {
       item.classList.add('active');
     } else {
       item.classList.remove('active');
     }
   });
+
+  // ---------------------------
+  // Optional loadNews
+  // ---------------------------
+  window.addEventListener('load', () => {
+
+    if (typeof loadNews === 'function') {
+      loadNews();
+    }
+  });
+
 }
 
-// Initialize side menu when DOM is ready
+// Init
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initSideMenu);
 } else {

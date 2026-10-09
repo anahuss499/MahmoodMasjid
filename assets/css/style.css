@@ -1599,214 +1599,292 @@ body.urdu-mode .social-card h2{
   }
 }
 
-/* Animated Side Menu Styles */
+/* =========================
+   Glassmorphic Side Menu
+========================= */
+.side-menu {
+  left: auto;
+  right: 0;
+}
 .side-menu {
   position: fixed;
-  right: 0;
   top: 0;
-  width: 280px;
+  right: 0;
+  width: min(320px, 85vw);
   height: 100vh;
-  background: #ffffff;
-  border-radius: 16px 0 0 16px;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  border-left: 2px solid rgba(255, 255, 255, 0.35);
+
+  box-shadow:
+    -10px 0 40px rgba(0, 0, 0, .25),
+    inset 1px 0 0 rgba(255, 255, 255, .15);
+
   z-index: 999;
-  transform: translateX(100%) translateZ(0);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+
+  transform: translate3d(100%, 0, 0);
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 60px;
-  will-change: transform;
-  -webkit-transform: translateX(100%) translateZ(0);
-  -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+  padding-bottom: 80px;
 }
 
 .side-menu.open {
-  transform: translateX(0) translateZ(0);
-  -webkit-transform: translateX(0) translateZ(0);
-  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.2);
+  transform: translate3d(0, 0, 0);
 }
 
+/* =========================
+   Content
+========================= */
+
 .side-menu-content {
-  display: flex;
-  flex-direction: column;
+  padding: 20px;
   height: 100%;
-  padding: 16px;
 }
 
 .side-menu-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 10px;
 }
+
+/* =========================
+   Menu Item
+========================= */
 
 .side-menu-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
-  border-radius: 10px;
-  color: var(--text);
+  gap: 14px;
+
+  padding: 15px;
+
   text-decoration: none;
-  transition: all 0.2s ease;
-  border-left: 3px solid transparent;
-  position: relative;
-  cursor: pointer;
+  color: var(--text);
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .15);
+
+  transition: .3s ease;
 }
 
 .side-menu-item:hover {
-  background: rgba(50, 205, 50, 0.08);
-  border-left-color: var(--green);
-  transform: translateX(4px);
+  transform: translateX(-6px);
+
+  background: rgba(50, 205, 50, .12);
+
+  border-color: rgba(50, 205, 50, .25);
+
+  box-shadow:
+    0 8px 20px rgba(50, 205, 50, .12);
 }
 
 .side-menu-item.active {
-  background: linear-gradient(90deg, rgba(50, 205, 50, 0.15), rgba(50, 205, 50, 0.05));
-  border-left-color: var(--green);
+  background: rgba(50, 205, 50, .18);
+
+  border: 1px solid rgba(50, 205, 50, .3);
+
   color: var(--green);
-  font-weight: 600;
+
+  box-shadow:
+    0 0 25px rgba(50, 205, 50, .18);
 }
 
 .side-menu-item.active::after {
   content: '';
-  position: absolute;
-  right: 16px;
+
   width: 8px;
   height: 8px;
-  background: var(--green);
+
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(50, 205, 50, 0.6);
+
+  margin-left: auto;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 12px var(--green),
+    0 0 25px var(--green);
 }
 
+/* =========================
+   Icon
+========================= */
+
 .side-menu-icon {
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
-  color: inherit;
+  width: 22px;
+  height: 22px;
+
+  min-width: 22px;
+
   fill: currentColor;
-  transition: transform 0.2s ease;
+  color: currentColor;
+
+  transition: .3s ease;
 }
 
 .side-menu-item:hover .side-menu-icon {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .side-menu-label {
-  font-size: 0.95rem;
+  font-size: .95rem;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
+
+/* =========================
+   Overlay
+========================= */
+
+.side-menu-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, .55);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity .35s ease;
+
+  z-index: 998;
+}
+
+.side-menu.open~.side-menu-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =========================
+   Floating Toggle
+========================= */
 
 .side-menu-toggle {
   position: fixed;
-  right: 16px;
-  bottom: 20px;
-  width: 50px;
-  height: 50px;
+
+  right: 18px;
+  bottom: 22px;
+
+  width: 62px;
+  height: 62px;
+
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(50, 205, 50, 0.2), rgba(50, 205, 50, 0.08));
-  border: 2px solid var(--green);
+
+  background: rgba(255, 255, 255, .12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, .25);
+
   color: var(--green);
+
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(50, 205, 50, 0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  touch-action: manipulation;
+
+box-shadow:
+    -25px 0 50px rgba(0, 0, 0, .35),
+    inset 1px 0 0 rgba(255, 255, 255, .2);
+
+  transition: .35s ease;
 }
 
 .side-menu-toggle:hover {
-  background: var(--green);
-  color: #ffffff;
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(50, 205, 50, 0.35);
+  transform: scale(1.08);
+
+  box-shadow:
+    0 0 25px rgba(50, 205, 50, .35);
 }
 
-.side-menu.open ~ .side-menu-toggle {
-  right: 296px;
-  bottom: 20px;
-  background: linear-gradient(135deg, var(--green), #163832);
-  border-color: #163832;
-  color: #ffffff;
+/* Move button when menu opens */
+
+.side-menu.open~.side-menu-toggle {
+  right: 338px;
+
+  background: rgba(50, 205, 50, .18);
+
+  color: #fff;
+
+  border-color: rgba(50, 205, 50, .4);
 }
+
+/* =========================
+   Hamburger Animation
+========================= */
 
 .toggle-icon {
   width: 24px;
   height: 24px;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .toggle-icon::before,
 .toggle-icon::after,
-.toggle-icon > span {
+.toggle-icon>span {
   content: '';
+
   display: block;
-  width: 20px;
+
+  width: 22px;
   height: 2px;
+
+  border-radius: 4px;
+
   background: currentColor;
-  border-radius: 2px;
-  transition: all 0.3s ease;
+
+  transition: .35s ease;
 }
 
-.side-menu.open ~ .side-menu-toggle .toggle-icon::before {
+.side-menu.open~.side-menu-toggle .toggle-icon::before {
   transform: translateY(8px) rotate(45deg);
 }
 
-.side-menu.open ~ .side-menu-toggle .toggle-icon::after {
+.side-menu.open~.side-menu-toggle .toggle-icon::after {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-.side-menu.open ~ .side-menu-toggle .toggle-icon > span {
+.side-menu.open~.side-menu-toggle .toggle-icon>span {
   opacity: 0;
 }
 
-.side-menu-overlay {
-  pointer-events: none;
-  opacity: 0;
-}
-
-.side-menu.open~.side-menu-overlay {
-  pointer-events: auto;
-  opacity: 1;
-}
+/* =========================
+   Mobile
+========================= */
 
 @media (max-width: 640px) {
+
   .side-menu {
-    width: 240px;
-    border-radius: 0 12px 12px 0;
+    width: 280px;
   }
 
-  .side-menu-item {
-    padding: 12px 14px;
-    gap: 12px;
+  .side-menu.open~.side-menu-toggle {
+    right: 295px;
   }
 
-  .side-menu-icon {
-    width: 20px;
-    height: 20px;
+  .side-menu-toggle {
+    width: 58px;
+    height: 58px;
   }
 
-  .side-menu-label {
-    font-size: 0.9rem;
-  }
-
-  .profile-avatar {
-    width: 48px;
-    height: 48px;
-  }
-
-  .profile-name {
-    font-size: 0.95rem;
-  }
-
-  .side-menu.open ~ .side-menu-toggle {
-    right: 256px;
-  }
 }
 
 /* ========================================

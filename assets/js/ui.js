@@ -75,75 +75,53 @@
     btn.setAttribute('aria-expanded', String(open));
     if(open) body.classList.add('nav-open'); else body.classList.remove('nav-open');
   }
-  function closeSideMenuIfOpen(){
+  function closeSideMenuIfOpen() {
     const sideMenu = document.getElementById('side-menu');
-    if(sideMenu && sideMenu.classList.contains('open')){
+
+    if (sideMenu && sideMenu.classList.contains('open')) {
       sideMenu.classList.remove('open');
     }
   }
- 
-  
 
-  // compact mode removed
+  /* ESC key closes all menus */
+  document.addEventListener('keydown', (e) => {
 
-  // no compact toggle listeners
+    if (e.key === 'Escape') {
 
-  // initialize compact from localStorage
-  // ignore legacy navCompact; always show labels
+      if (body.classList.contains('nav-open')) {
 
-  // close nav on escape
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape'){
-      if(body.classList.contains('nav-open')){
         body.classList.remove('nav-open');
-        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
+
+        document
+          .querySelectorAll('.nav-toggle')
+          .forEach(btn =>
+            btn.setAttribute('aria-expanded', 'false')
+          );
       }
+
       closeSideMenuIfOpen();
     }
+
   });
-  // close nav on resize > breakpoint
-  window.addEventListener('resize', ()=>{
-    if(window.innerWidth > breakpoint && body.classList.contains('nav-open')){
+
+  /* Close mobile nav on desktop resize */
+  window.addEventListener('resize', () => {
+
+    if (
+      window.innerWidth > breakpoint &&
+      body.classList.contains('nav-open')
+    ) {
+
       body.classList.remove('nav-open');
-      document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
+
+      document
+        .querySelectorAll('.nav-toggle')
+        .forEach(btn =>
+          btn.setAttribute('aria-expanded', 'false')
+        );
     }
+
   });
-
-  // Swipe gesture detection for menu (installed app only)
-  function isInstalledApp(){
-    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-  }
-
-  if(isInstalledApp()){
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const swipeThreshold = 100; // pixels
-
-    document.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, false);
-
-    document.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, false);
-
-    function handleSwipe() {
-      const diff = touchStartX - touchEndX;
-      
-      // Swiped left (close menu)
-      if(diff > swipeThreshold && body.classList.contains('nav-open')){
-        body.classList.remove('nav-open');
-        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
-      }
-      
-      // Swiped right (open menu) - only if nav-open is not already open
-      if(diff < -swipeThreshold && !body.classList.contains('nav-open')){
-        body.classList.add('nav-open');
-        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','true'));
-      }
-    }
-  }
 
   // Logo modal support
   let logoModal = null;
