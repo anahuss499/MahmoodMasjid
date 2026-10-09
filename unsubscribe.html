@@ -343,7 +343,7 @@
                 try {
 
                     await fetch(
-                        "https://script.google.com/macros/s/AKfycbx0_Beut54yyxUzdmgV6kyJ2V8_WSLGkWK-CZeqhMSCo6I6INiCpAjtqaNU2V4_lfU3Pg/exec",
+                        "https://script.google.com/macros/s/AKfycbx8r4d5ZUe1-pnHuibhx-T4LKG4EMO714xRmyusXY0bCfycgogHtEc5GMqjpGIfkaGbkA/exec",
                         {
                             method: "POST",
                             mode: "no-cors",
@@ -351,7 +351,8 @@
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
-                                email: email
+                                email: email,
+                                action: "unsubscribe"
                             })
                         }
                     );
