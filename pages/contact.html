@@ -59,6 +59,80 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Mahmood Masjid">
 </head>
+<style>
+  .contact-form{
+  margin-top:20px;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.contact-form label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:16px;
+}
+
+.checkbox-label{
+  display:flex !important;
+  gap:10px;
+  align-items:flex-start;
+  font-weight:400 !important;
+}
+
+.btn-primary{
+  background:#235347;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.btn-primary:hover{
+  opacity:.9;
+}
+
+#contact-status{
+  margin-top:12px;
+  font-weight:600;
+}
+.marketing-optin{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin:20px 0;
+  padding:14px;
+  background:#f7faf7;
+  border:1px solid rgba(35,83,71,.15);
+  border-radius:10px;
+}
+
+.marketing-optin input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  margin-top:2px;
+  accent-color:#235347;
+  flex-shrink:0;
+}
+
+.marketing-optin label{
+  margin:0;
+  font-size:.95rem;
+  line-height:1.6;
+  font-weight:400;
+}
+</style>
 <body>
   <!-- Language Selection Modal -->
   <div class="lang-modal-overlay" id="lang-modal-overlay">
@@ -230,10 +304,58 @@
           <small data-en="For domestic transfers within Pakistan, use Account Number and Branch. For international transfers, include IBAN and SWIFT/BIC. May Allah reward your generosity." data-urdu="پاکستان کے اندرونی ٹرانسفر کے لیے اکاؤنٹ نمبر اور برانچ استعمال کریں۔ بین الاقوامی ٹرانسفر کے لیے آئی بی اے این اور سوئفٹ/بی آئی سی شامل کریں۔ اللہ آپ کی سخاوت کا بہترین بدلہ دے۔">For domestic transfers within Pakistan, use Account Number and Branch. For international transfers, include IBAN and SWIFT/BIC. May Allah reward your generosity.</small>
         </p>
       </div>
+      <h2 data-en="Send us a Message" data-urdu="ہمیں پیغام بھیجیں">
+        Send us a Message
+      </h2>
+      
+      <form id="contact-form" class="contact-form">
+      
+        <div class="form-group">
+          <label for="name" data-en="Your Name" data-urdu="آپ کا نام">
+            Your Name
+          </label>
+      
+          <input type="text" id="name" name="name" required>
+        </div>
+      
+        <div class="form-group">
+          <label for="email" data-en="Email Address" data-urdu="ای میل ایڈریس">
+            Email Address
+          </label>
+      
+          <input type="email" id="email" name="email" required>
+        </div>
+      
+        <div class="form-group">
+          <label for="message" data-en="Message" data-urdu="پیغام">
+            Message
+          </label>
+      
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
+      
+<div class="marketing-optin">
+  <input type="checkbox" id="contact-marketing">
+
+  <label for="contact-marketing" data-en="I would like to receive updates and Islamic content by email"
+    data-urdu="میں ای میل کے ذریعے اپ ڈیٹس اور اسلامی مواد حاصل کرنا چاہتا ہوں">
+
+    I would like to receive updates and Islamic content by email
+
+  </label>
+</div>
+      
+        <button type="submit" class="btn-primary">
+          Send Message
+        </button>
+      
+        <p id="contact-status"></p>
+      
+      </form>
+
 
       <h3 data-en="Address" data-urdu="پتہ">Address</h3>
       <p>Mahmood Masjid, Mahmood Abad, Gujrat, Punjab, Pakistan</p>
-      <p>Phone: +447448410756</p>
     </section> 
   </main>
 
@@ -249,6 +371,80 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    document
+      .getElementById('contact-form')
+      .addEventListener('submit', async (e) => {
+
+        e.preventDefault();
+
+        const status =
+          document.getElementById('contact-status');
+
+        status.textContent = 'Sending...';
+
+        try {
+
+          const response = await fetch(
+            'https://script.google.com/macros/s/AKfycby4UjaGeZIWoBXnoDRbP8tDPctpRlsk7IGShuGfoQhzqtbUbftsIiI_MKHczF2r9WXZlg/exec',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+              },
+              body: JSON.stringify({
+
+                type: 'contact',
+
+                name:
+                  document.getElementById('name').value,
+
+                email:
+                  document.getElementById('email').value,
+
+                message:
+                  document.getElementById('message').value,
+
+                marketing:
+                  document.getElementById('contact-marketing').checked,
+
+                language:
+                  localStorage.getItem('language') || 'en'
+
+              })
+            }
+          );
+
+          const result =
+            await response.text();
+
+          if (result === 'Success') {
+
+            status.textContent =
+              '✅ Message Sent';
+
+            document
+              .getElementById('contact-form')
+              .reset();
+
+          } else {
+
+            status.textContent =
+              '❌ Failed';
+          }
+
+        } catch (err) {
+
+          console.log(err);
+
+          status.textContent =
+            '❌ Error sending message';
+
+        }
+
+      });
+  </script>
   <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
   <script defer src="../assets/js/main.js"></script>
   <script defer src="../assets/js/ui.js"></script>
